@@ -6,7 +6,6 @@
 clear all
 close all
 addpath(genpath('/Applications/fsl/'))
-addpath(genpath('/usr/local/fsl'))
 addpath(genpath('/usr/local/fsl/bin'))
 addpath(genpath('/Users/jallen/Documents/MATLAB/short_project_2'))
 
@@ -31,7 +30,7 @@ offsetListNum = 3;
 [SNR signal background] = calcSNR(TEimages,TE,'showFigure');
 %%
 run('compartmentSignals.m')
-
+§
 %%
 run('visualiseImages.m')
 
