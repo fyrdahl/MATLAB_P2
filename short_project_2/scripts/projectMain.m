@@ -52,7 +52,8 @@ T1 = 282.5;
 T2 = 214.1;
 
 freqOffset = 0;
-[simMtransverse, simImageMtransverse, M, Mxy,flipAngles] = SimBloch(T1, T2, fingerprintLists(:,:,offsetListNum), 'showPlot',freqOffset);
+nSlices = 2;
+[simMtransverse, simImageMtransverse, M, Mxy,flipAngles] = SimBloch(T1, T2, fingerprintLists(:,:,offsetListNum), 'showPlot', freqOffset, nSlices);
 
 run('plotSim.m')
 
