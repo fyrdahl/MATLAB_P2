@@ -30,7 +30,7 @@ offsetListNum = 3;
 [SNR signal background] = calcSNR(TEimages,TE,'showFigure');
 %%
 run('compartmentSignals.m')
-§
+
 %%
 run('visualiseImages.m')
 
@@ -56,8 +56,10 @@ freqOffset = 0;
 
 run('plotSim.m')
 
+%%
 run('calcSimilarity.m')
 
+%%
 run('compileDictionary.m')
 
 

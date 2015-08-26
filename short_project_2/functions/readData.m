@@ -43,7 +43,7 @@ switch phantomName
             
             for i = 1:size(TEImageInfo,1)             
                 if strfind(TEImageInfo(i).name(1,:),['TE',num2str(TE(TE_ind))]) > 0
-                    TE_filename = ['/Users/jallen/Documents/MATLAB/short_project_2/nifti_data/', TEImageInfo(i).name(1,:)]
+                    TE_filename = ['/Users/jallen/Documents/MATLAB/short_project_2/nifti_data/', TEImageInfo(i).name(1,:)];
                     TEimages(:,:,TE(TE_ind)) = read_avw(TE_filename);                                
                 end
             end           
@@ -53,7 +53,7 @@ switch phantomName
             for i = 1:size(TIImageInfo,1)
                 
                 if strfind(TIImageInfo(i).name(1,:),['TI',num2str(TI(TI_ind))]) > 0
-                    TI_filename = ['/Users/jallen/Documents/MATLAB/short_project_2/nifti_data/', TIImageInfo(i).name(1,:)]
+                    TI_filename = ['/Users/jallen/Documents/MATLAB/short_project_2/nifti_data/', TIImageInfo(i).name(1,:)];
                     TIimages(:,:,TI(TI_ind)) = read_avw(TI_filename);
                 end
             end
@@ -63,7 +63,7 @@ switch phantomName
         
         %FINGERPRINTING IMAGES
         
-        fp_filename = ['/Users/jallen/Documents/MATLAB/short_project_2/nifti_data/20150819/fp/', FPImageInfo.name(1,:)]
+        fp_filename = ['/Users/jallen/Documents/MATLAB/short_project_2/nifti_data/20150819/fp/', FPImageInfo.name(1,:)];
         FPimages(:,:,:,:) = read_avw(fp_filename);
         
         
@@ -97,13 +97,13 @@ switch phantomName
             name = TIImageInfo(i).name;
             i
             if name(1,28)==['m']
-                tmpTI(i,1:2) = name(1,26:27)
+                tmpTI(i,1:2) = name(1,26:27);
             end
             if name(1,29)==['m']
-                tmpTI(i,1:3) = name(1,26:28)
+                tmpTI(i,1:3) = name(1,26:28);
             end
             if name(1,30)==['m']
-                tmpTI(i,1:4) = name(1,26:29)
+                tmpTI(i,1:4) = name(1,26:29);
             end
             
             TI(i) = str2num(tmpTI(i,:))
@@ -148,8 +148,10 @@ switch phantomName
         
         
     otherwise
-        error('Unrecognised phantom name')
+        error('Unrecognised phantom name') %('sphereD170' or 'Jack'?)
 end
 
+
+disp('readData: complete')
 end
 
