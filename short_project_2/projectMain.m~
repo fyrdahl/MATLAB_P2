@@ -1,7 +1,5 @@
 %% ONBI short project 2 - Magnetic Resonance Fingerprinting
-% Author: Jack Allen
-% Supervisor: Prof. Peter Jezzard
-% Start Date: 13th July 2015
+% Supervisor: 
 
 clear all
 close all
@@ -10,7 +8,8 @@ addpath(genpath('/usr/local/fsl'))
 addpath(genpath('/usr/local/fsl/bin'))
 addpath(genpath('/Users/jallen/Documents/MATLAB/short_project_2'))
 
-%% Read in the images
+%%
+
 %which phantom is the data from? ('sphereD170' or 'Jack'?)
 phantomName = 'sphereD170';
 
@@ -26,25 +25,28 @@ phantomName = 'sphereD170';
 offsetListNum = 3;
 
 [TEImageInfo, TIImageInfo, FPImageInfo, TEimages, TIimages, FPimages, TE, TI] = readData(phantomName, offsetListNum);
-
-%% select a ROI and a sample of the background, to calculate SNR
+%%
 [SNR signal background] = calcSNR(TEimages,TE,'showFigure');
 %%
 run('compartmentSignals.m')
-
 %%
+% mask including whole phantom
+load('/Users/jallen/Documents/MATLAB/short_project_2/mask.mat')
 run('visualiseImages.m')
 
-%% fit curves to calculate T1 and T2
+%% normalise pixel values
+% TEimages(:,:,TE) = TEimages(:,:,TE)/max(max(max(TEimages(:,:,:))));
+% TIimages(:,:,TE) = TIimages(:,:,TI)/max(max(max(TIimages(:,:,:))));
+
+%% Calculate T1 and T2
 
 [compartmentT1s, compartmentT2s, fittedCurve, goodness, output] = fitEvolutionCurves(TEimages, TIimages, TE(2:end)', TI(2:end)', 'compartments', compartmentCenters);
 
 % run('calcT1T2withMeans.m')
 
-%% read in the list of timing offsets used for acquisition
+%%
 run('readFingerprintOffsetList.m')
 fingerprintLists(:,:,offsetListNum)
-
 %% simulate magnetisation evolution
 %check bloch simulation by using properties of the phantom
 
