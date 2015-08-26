@@ -118,9 +118,6 @@ if plotFlag == 'showPlot'
     
 end
 
+%%%%%% % % %%%
 disp('bloch simulation: complete')
-
 end
-
-
-
