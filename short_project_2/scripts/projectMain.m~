@@ -11,7 +11,7 @@ addpath(genpath('/Users/jallen/Documents/MATLAB/short_project_2'))
 
 %% Read in the images
 %which phantom is the data from? ('sphereD170' or 'Jack'?)
-phantomName = 'Jack';
+phantomName = '';
 
 % Choose the offset list to use. List 2 is the original 'random' list of
 % offsets. Lists 3:8 are variations on List2, as described below.
@@ -28,7 +28,6 @@ offsetListNum = 8;
 
 %% select a ROI and a sample of the background, to calculate SNR
 [SNR signal background] = calcSNR(TEimages,TE,'showFigure');
-
 %%
 run('compartmentSignals.m')
 
@@ -56,25 +55,6 @@ freqOffset = 0;
 nSlices = 2;
 [simMtransverse, simImageMtransverse, M, Mxy,flipAngles] = SimBloch(T1, T2, fingerprintLists(:,:,offsetListNum), 'showPlot', freqOffset, nSlices);
 
-plotNumCompartments = 6
-
-figure;
-imagesc(TEimages(:,:,TE(1)))
-hold on
-compartmentLabels = ['1', '2','3','4','5','6'];
-for i = 1:plotNumCompartments
-plot(compartmentCenters(i,1),compartmentCenters(i,2),'*')
-text(compartmentCenters(i,1),compartmentCenters(i,2), compartmentLabels(i) )
-end
-
-figure;
-imagesc(TIimages(:,:,TI(1)))
-hold on
-compartmentLabels = ['1', '2','3','4','5','6'];
-for i = 1:plotNumCompartments
-plot(compartmentCenters(i,1),compartmentCenters(i,2),'*')
-text(compartmentCenters(i,1),compartmentCenters(i,2), compartmentLabels(i) )
-end
 run('plotSim.m')
 
 %%

@@ -4,7 +4,7 @@ figure; hold on
 ySim = simImageMtransverse(:)./simImageMtransverse(1);
 ySim = Mxy(:)./Mxy(1);
 % plot(ySim,'x','MarkerSize',20)
-plot(ySim,'x','MarkerSize',20)
+plot(ySim,'+','MarkerSize',20)
 y = zeros(3,(size(FPimages,4)/2));
 
 sliceNumber = 1;
@@ -24,7 +24,7 @@ yImageROI = normROIimageMean;
 errorbar(yImageROI(1:24),ROIimageStd/ROIimageMean(1),'^');
 
 %signal from each compartment
-for n = 1:plotNumCompartments
+for n = 1:2
     for i = 1:(size(FPimages,4)/2)
         y(n,i) = squeeze(FPimages(compartmentCenters(n,1),compartmentCenters(n,2),sliceNumber,i));
     end
@@ -35,7 +35,7 @@ for n = 1:plotNumCompartments
     
     errorbar(y(n,:),repmat(normStdBG,1,24),'*' );
 end
-legend 'Simulated Signal' 'ROI mean and std' 'pixel with BG std' 'pixel with BG std' 
+legend 'Simulated Signal' 'ROI mean and std' 'pixel
 xlabel 'TE indices'
 ylabel 'signal (normalised to first measurement)'
 
