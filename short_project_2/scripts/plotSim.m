@@ -24,9 +24,10 @@ yImageROI = normROIimageMean;
 errorbar(yImageROI(1:24),ROIimageStd/ROIimageMean(1),'^');
 
 %signal from each compartment
+title (['Phantom: ',phantomName,', Offset list: ',num2str(offsetListNum),', compartment center coords list: ',num2str(compartmentList)]);
 for n = 1:plotNumCompartments
     for i = 1:(size(FPimages,4)/2)
-        y(n,i) = squeeze(FPimages(compartmentCenters(n,1),compartmentCenters(n,2),sliceNumber,i));
+        y(n,i) = squeeze(FPimages(compartmentCenters(n,1,compartmentCentersList),compartmentCenters(n,2,compartmentCentersList),sliceNumber,i));
     end
     normStdBG = (std(background(:)))/y(n,1);
     y(n,:) = y(n,:)/y(n,1);

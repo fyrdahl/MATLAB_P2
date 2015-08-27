@@ -14,7 +14,7 @@ switch region
         for n = 1:6
             compartmentCenters = varargin{1} ;
             %subtract noise
-            curve2 = log( squeeze(TEimages(compartmentCenters(n,1),compartmentCenters(n,2),T2_x)))
+            curve2 = log( squeeze(TEimages(compartmentCenters(n,1,1),compartmentCenters(n,2,1),T2_x)))
             %curve = squeeze(mean(mean(images(23:47,22:43,x))));
             
             [fittedCurve, goodness, output] = fit(T2_x,curve2,T2model,'Upper',[5000 4000 500],'Lower',[0 0 -100],'StartPoint',[0.5 200 100])
@@ -29,7 +29,7 @@ switch region
         %% Fit T1 decay
         for n = 1:6
             compartmentCenters = varargin{1} ;
-            curve1 = squeeze(TIimages(compartmentCenters(n,1),compartmentCenters(n,2),T1_x));
+            curve1 = squeeze(TIimages(compartmentCenters(n,1,2),compartmentCenters(n,2,2),T1_x));
             %curve = [compartmentTIimages(n,:)]'
             %                 [fittedCurve, goodness, output] = fit(x,curve,T1model,'Upper',[2000 2000 1 5000],'Lower',[0 -5000 0.9 0],'StartPoint',[1000 100 0.5 100]);
             %                 compartmentT1s(n) = fittedCurve.T1

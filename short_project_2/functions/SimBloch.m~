@@ -3,7 +3,6 @@ function [Mtransverse, simImageMtransverse, M,Mxy,flipAngles, t0s] = SimBloch(T1
 
 % magnetisation evolution equations in this function are from 'Handbook of MRI pulse sequences - section 3.3'
 
-
 clear simImageMtransverse
 clear M
 
@@ -14,20 +13,18 @@ TEoffsets = fingerprintOffsetList(:,2);
 flipAngles(:,1) = degtorad(fingerprintOffsetList(:,3));
 flipAngles(:,2) = degtorad(fingerprintOffsetList(:,4));
 
-% initial magnetisation and time
+%initialise magnetisation and time
 elapsedTime = 1;
 Mzeq = 1; %equilibrium magnetisation
-M0 = 1; %or the first loop M0 (Mz at t0)
+M0 = 1; %For the first loop M0 (Mz at t0)
 t0 = 1;
-M(:,t0) = M0*[0;0;1]'; %initial magnetisation vector is along z
+M(:,t0) = M0*[0;0;1]';
 Mxy = zeros(1, numel(fingerprintOffsetList(:,1)))
-
-%% Signal evolution
+%%
 
 for n = 1:numel(fingerprintOffsetList(:,1))
     
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    % Immediately before Pulse 1 
+    % Immediately before Pulse 1 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     t0 = elapsedTime;
     Mtransverse(t0) = complex( M(1,t0), M(2,t0));
     t0s(n) = t0
@@ -37,27 +34,31 @@ for n = 1:numel(fingerprintOffsetList(:,1))
     M(:,t0+1) = M0*[0, sin(flipAngles(n,1)), cos(flipAngles(n,1))]';
     Mtransverse(t0+1) = complex( M(1,t0+1), M(2,t0+1));
     
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    % evolution from after pulse 1, until pulse 2 
+    
+    % evolution from after pulse 1, until pulse 2 %%%%%%%%%%%%%%%%%
     % disp('decay 1')
     elapsedTime = t0 + 1;
     for t = (elapsedTime) : (elapsedTime + (TEmin + TEoffsets(n))/2)
-              
+        
+        % M(1,:) = 0 if freqOffset = 0
+        % M(2,:) = M(3,t0)*sin(FA1) if freqOffset = 0
+        % M(3,:) = M(3,t0)*cos(FA1) + Mzeq*(1 - exp(-(t-elapsedTime)/T1))
         M(:,t) =  M(3,t0)*[exp(-(t-elapsedTime)/T2)*sin(flipAngles(n,1))*sin(freqOffset*(t-elapsedTime));
             exp(-(t-elapsedTime)/T2)*sin(flipAngles(n,1))*cos(freqOffset*(t-elapsedTime));
             exp(-(t-elapsedTime)/T1)*cos(flipAngles(n,1)) + (Mzeq/M(3,t0))*(1 - exp(-(t-elapsedTime)/T1))];
-        % e.g:  M(1,t) = Mx(t) = 0 if freqOffset = 0
-        %       M(2,t) = My(t) = Mz(t0)*sin(FA1) if freqOffset = 0
-        %       M(3,t) = Mz(t) = Mz(t0)*cos(FA1) + Mzeq*(1 - exp(-(t-elapsedTime)/T1))
         
         Mtransverse(t) = complex(M(1,t) , M(2,t));
     end
     elapsedTime = t;
     
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    % Effect of pulse 2 at TE/2 
+    % Effect of pulse 2 at TE/2 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %  disp('flip 2');
-       
+    
+    %rotation about the x axis
+    %         R = [1, 0, 0;
+    %             0, cos(flipAngles(n,2)), -sin(flipAngles(n,2));
+    %             0, sin(flipAngles(n,2)), cos(flipAngles(n,2))];
+    
     %rotation about the y axis
     R = [cos(flipAngles(n,2)), 0, -sin(flipAngles(n,2));
         0, 1, 0;
@@ -68,8 +69,8 @@ for n = 1:numel(fingerprintOffsetList(:,1))
     
     tau = elapsedTime + 1;
     
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    % evolution from after pulse 2, until the newly calculated TR 
+    
+    % evolution from after pulse 2, until the newly calculated TR %%%%%%
     % disp('decay 2')
     for t = (tau) : t0 + TRmin + (nSlices*TEoffsets(n)) + TRoffsets(n)
         
@@ -103,9 +104,9 @@ for n = 1:numel(fingerprintOffsetList(:,1))
     
 end
 
-%% plotting the signal evolution
 if plotFlag == 'showPlot'
-      
+    %% plot signal evolution
+    
     figure
     hold on
     plot(M(1,:))
@@ -120,7 +121,6 @@ if plotFlag == 'showPlot'
     set(gca,'fontsize',20)
     
 end
-%%
 
 disp('bloch simulation: complete')
 end

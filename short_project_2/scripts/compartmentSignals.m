@@ -1,20 +1,43 @@
 %
 switch phantomName
     case 'Jack'
-        compartmentCenters(1,1:2) = [37 24];
-        compartmentCenters(2,1:2) = [28 21];
-        compartmentCenters(3,1:2) = [22 28];
-        compartmentCenters(4,1:2) = [25 36];
-        compartmentCenters(5,1:2) = [34 38];
-        compartmentCenters(6,1:2) = [39 31];
+        
+        %TE
+        compartmentCenters(1,1:2,1) = [23 36];
+        compartmentCenters(2,1:2,1) = [21 28];
+        compartmentCenters(3,1:2,1) = [28 22];
+        compartmentCenters(4,1:2,1) = [36 25];
+        compartmentCenters(5,1:2,1) = [38 34];
+        compartmentCenters(6,1:2,1) = [31 39];
+        
+        %TR
+        compartmentCenters(1,1:2,2) = [compartmentCenters(1,1:2,1) + 3];
+        compartmentCenters(2,1:2,2) = [compartmentCenters(2,1:2,1) + 3];
+        compartmentCenters(3,1:2,2) = [compartmentCenters(3,1:2,1) + 3];
+        compartmentCenters(4,1:2,2) = [compartmentCenters(4,1:2,1) + 3];
+        compartmentCenters(5,1:2,2) = [compartmentCenters(5,1:2,1) + 3];
+        compartmentCenters(6,1:2,2) = [compartmentCenters(6,1:2,1) + 3];
+        
+        % fingerprinting
+        compartmentCenters(1,1:2,3) = [23 37];
+        compartmentCenters(2,1:2,3) = [24 28];
+        compartmentCenters(3,1:2,3) = [32 25];
+        compartmentCenters(4,1:2,3) = [38 30];
+        compartmentCenters(5,1:2,3) = [37 38];
+        compartmentCenters(6,1:2,3) = [30 42];
         
     case 'sphereD170'
-        compartmentCenters(1,1:2) = [21 21];
-        compartmentCenters(2,1:2) = [22 22];
-        compartmentCenters(3,1:2) = [23 23];
-        compartmentCenters(4,1:2) = [41 21];
-        compartmentCenters(5,1:2) = [39 38];
-        compartmentCenters(6,1:2) = [42 30];
+       
+        compartmentCenters(1,1:2,1) = [21 21];
+        compartmentCenters(2,1:2,1) = [22 22];
+        compartmentCenters(3,1:2,1) = [24 24];
+        compartmentCenters(4,1:2,1) = [27 27];
+        compartmentCenters(5,1:2,1) = [32 32];
+        compartmentCenters(6,1:2,1) = [39 42];
+        
+      
+        
+    
 end
 
 TE = TE
