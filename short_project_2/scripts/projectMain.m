@@ -103,7 +103,7 @@ run('plotSim.m')
 % calculate proton density (M0) as the scaling factor between the measured
 % signal and the simulated (Ma2013)
 
-%% DICTIONARY
+%% create dictionary
 clear dictionaryParams
 dictionaryParams(1,:) = 200:10:300 ; % T1
 dictionaryParams(2,:) = 200:10:300 ; % T2
@@ -113,16 +113,18 @@ nTimeCoursePts = numel(Mxy);
 
 for List = 2:8
 [signalDictionary(:,:,:,List)] = compileDictionary(fingerprintLists, List, dictionaryParams, nTimeCoursePts, freqOffset, nSlices);
+% !!! must normalise dictionary entries to have the same sum squared
+% magnitude (use sumsqr() )
 end
-%%
+%% check similarity and use dictionary to measure T1 and T2
 data = FPimages(compartmentCenters(1,1),compartmentCenters(1,2),:,1:24);
 
-[matchedT1, matchedT2, bestT1ind, bestT2ind] = calcSimilarity(data, signalDictionary(:,:,:,offsetListNum), sliceNumber, dictionaryParams);
+[matchedT1(offsetListNum,:), matchedT2(offsetListNum,:), bestT1ind(offsetListNum,:), bestT2ind(offsetListNum,:), M0] = calcSimilarity(data, signalDictionary(:,:,:,offsetListNum), sliceNumber, dictionaryParams, Mxy);
 
 %%visualise spread of matched T1s and T2s
-figure; hist(squeeze(matchedT1))
+figure; hist(squeeze(matchedT1(offsetListNum,:)))
 figure;
-hist(squeeze(matchedT2))
+hist(squeeze(matchedT2(offsetListNum,:)))
 %%
 figure; plot(squeeze(data(1,1,1,:)), '-*')
 hold on
