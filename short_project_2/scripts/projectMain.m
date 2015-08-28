@@ -22,7 +22,7 @@ phantomName = 'sphereD170';
 % 6: TR offset = 1500, TE offset = 20, FA1 = 90
 % 7: TR offset = 1500, TE offset = 20
 % 8: TR offset = 15000
-offsetListNum = 7;
+offsetListNum = 3;
 
 [TEImageInfo, TIImageInfo, FPImageInfo, TEimages, TIimages, FPimages, TE, TI] = readData(phantomName, offsetListNum);
 
@@ -99,7 +99,6 @@ end
 run('plotSim.m')
 
 %%
-run('calcSimilarity.m')
 
 % normalise dictionary entries to have the same sum squared magnitude
 % select one dictionary entry for each pixel, using the complex data for simulation and pixel
@@ -109,6 +108,11 @@ run('calcSimilarity.m')
 %%
 run('compileDictionary.m')
 
+[similarity, bestMatch] = calcSimilarity(data, signalDictionary, sliceNumber)
 
+size(data)
+size(bestMatch)
 
-
+figure; plot(squeeze(data(1,1,1,:)), '-*')
+hold on
+plot(squeeze(bestMatch(1,1,:))*data(1,1,1,1),'--.')
