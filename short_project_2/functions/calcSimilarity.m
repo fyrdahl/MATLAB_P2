@@ -1,4 +1,4 @@
-function [similarity, bestMatch] = calcSimilarity(data, signalDictionary, sliceNumber)
+function [matchedT1, matchedT2, bestT1ind, bestT2ind] = calcSimilarity(data, signalDictionary, sliceNumber, dictionaryParams)
 % Jack Allen.
 % University of Oxford.
 % jack.allen@jesus.ox.ac.uk
@@ -13,6 +13,7 @@ function [similarity, bestMatch] = calcSimilarity(data, signalDictionary, sliceN
 similarity = zeros(size(data,1), size(data,2), size(signalDictionary,1), size(signalDictionary,2));
 maxSimilarityScore = zeros(size(data,1), size(data,2));
 
+tic
 for data_i = 1 : size(data,1)
     for data_j = 1 : size(data,2)
         
@@ -22,24 +23,15 @@ for data_i = 1 : size(data,1)
             end
         end
         
-        maxSimilarityScore(data_i,data_j) = max(max(squeeze(similarity(data_i,data_j,:,:))))
-        [bestT1ind, bestT2ind] = find(squeeze(similarity(data_i,data_j,:,:)) >= maxSimilarityScore(data_i,data_j))
-        matchedT1 = dictionaryParams(1, bestT1ind)
-        matchedT2 = dictionaryParams(2, bestT2ind)
-        
-        for nbestT1ind = 1 : numel(bestT1ind)
-            for nbestT2ind = 1 : numel(bestT2ind)
-                bestMatch(data_i, data_j, :, nbestT1ind, nbestT2ind) = squeeze(signalDictionary(bestT1ind(nbestT1ind), bestT2ind(nbestT2ind), :))  ;
-            end
-        end
-        
+        maxSimilarityScore(data_i,data_j) = max(max(squeeze(similarity(data_i,data_j,:,:))));
+        [bestT1ind, bestT2ind] = find(squeeze(similarity(data_i,data_j,:,:)) >= maxSimilarityScore(data_i,data_j));
+        matchedT1(data_i,data_j,:) = dictionaryParams(1, bestT1ind)
+        matchedT2(data_i,data_j,:) = dictionaryParams(2, bestT2ind)
+               
     end
     
-    
-    
-    
-    
-    
-    
-    
+    disp(['calculating similarity: ',num2str( (data_i/size(data,1))*100) , ' percent complete'])
+end
+toc
+
 end

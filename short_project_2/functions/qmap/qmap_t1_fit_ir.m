@@ -162,10 +162,10 @@ for ii = find(~(sum(data, 2) == 0))';
   end
   res(ii)      = residual;
   
-  pause(1.5)
   % Optinal debug plotting
   if debug == 1 && (toc - dbgtime) > .250
     % Only re-draw every 1 second
+    
     dbgtime = toc;
 
     % Setup Figure

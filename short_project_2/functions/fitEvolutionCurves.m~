@@ -2,8 +2,8 @@ function[compartmentT1s, compartmentT2s, T2curves, T1curves, fittedCurve, goodne
 
 % Models to fit to the data
 % T2model = @(a,T2,c, x) a*exp(-x*(1/T2)) + c
-T2model = @(a,T2,c, x) a + -x*(1/T2) + c;
-T1model = @(Mzeq,Mz0,B,T1, x) Mzeq - (Mzeq - Mz0)*B*exp(-x*(1/T1));
+T2model = @(a,T2,c, x) a + -x*(1/T2) + c
+T1model = @(Mzeq,Mz0,B,T1, x) Mzeq - (Mzeq - Mz0)*B*exp(-x*(1/T1))
 
 switch region
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -14,7 +14,7 @@ switch region
         for n = 1:6
             compartmentCenters = varargin{1} ;
             
-            T2curves(:,n) = log( squeeze(TEimages(compartmentCenters(n,1),compartmentCenters(n,2),T2_x)))
+            T2curves(:,n) = log( squeeze(TEimages(compartmentCenters(n,1,1),compartmentCenters(n,2,1),T2_x)))
             
             [fittedCurve, goodness, output] = fit(T2_x,T2curves(:,n),T2model,'Upper',[5000 4000 500],'Lower',[0 0 -100],'StartPoint',[0.5 200 100])
             
@@ -29,21 +29,19 @@ switch region
         for n = 1:6
             
             compartmentCenters = varargin{1} ;
+            T1curves(:,n) = squeeze(TIimages(compartmentCenters(n,1,2),compartmentCenters(n,2,2),T1_x));
             
+            data(n,:) = T1curves(:,n);
             fittedCurve = 0;
             goodness = 0;
             output = 0;
             
-            T1curves(n,:) = squeeze(TIimages(compartmentCenters(n,1),compartmentCenters(n,2),T1_x));
-            opts = struct('debug',1,'fiteff',1);
+            TIdata = reshape(TIimages,[ size(images,1)*size(images,2),size(images,3)] );            
+            opts = struct('debug',1,'fiteff',1);            
+            [pd r1 eff res] = qmap_t1_fit_ir(TIdata, 0.001*T1_x,opts);
             
-            [pd r1 eff res] = qmap_t1_fit_ir(T1curves(n,:), 0.001*T1_x,opts);
             disp(['fit number: ',num2str(n)])
-            
             compartmentT1s(n) = (1/r1)*1000
-            
-            
-            
             
         end
         
