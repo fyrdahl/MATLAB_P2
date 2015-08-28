@@ -8,7 +8,8 @@ function [similarity] = calcSimilarity(data, signalDictionary)
 % University of Oxford.
 % jack.allen@jesus.ox.ac.uk
 %
-% Function to calculate the similarity of a time course with each entry in a dictionary of time courses.
+% Function to calculate the similarity of a time course with each of a
+% dictionary of time course.
 %
 % data(nRow, nColumn, imageTimePt)
 % similarity(nRow, nColumn)
@@ -21,16 +22,13 @@ end
 %     end
 % end
 
-for data_i = 1 : size(data,1)
-    for data_j = 1 : size(data,2)
-        
-        for i = 1 : size(signalDictionary,1)
-            for j = 1 : size(signalDictionary,2)
-                similarity(i,j) = dot(squeeze(signalDictionary(i,j,:)),squeeze(data(data_i,data_j,:))/(norm(squeeze(signalDictionary(i,j,:)))*norm(data(data_i,data_j,:)))
-            end         
-        end
-       
-    end  
+
+clear similarity
+for i = 1 : size(signalDictionary)
+    for j = 1 : numel(dictionaryParams(2,:))
+        similarity(i,j) = dot(squeeze(signalDictionary(i,j,:)),y')/(norm(squeeze(signalDictionary(i,j,:)))*norm(y'))
+    end
+    
 end
 
 
@@ -41,7 +39,7 @@ for n = 1:plotNumCompartments
     normStdBG = (std(background(:)))/y(n,1);
     y(n,:) = y(n,:)/y(n,1);
     % residuals = y(n,:) - ySim;
-    %     plot(y(n,1:(size(FPimages,4)/2)),'*')
+%     plot(y(n,1:(size(FPimages,4)/2)),'*')
     
     errorbar(y(n,:),repmat(normStdBG,1,24),'*' );
 end

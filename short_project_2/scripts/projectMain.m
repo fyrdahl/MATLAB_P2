@@ -37,7 +37,7 @@ run('visualiseImages.m')
 
 %% fit curves to calculate T1 and T2
 
-[compartmentT1s, compartmentT2s, fittedCurve, goodness, output] = fitEvolutionCurves(TEimages, TIimages, TE(2:end)', TI(2:end)', 'compartments', compartmentCenters);
+[compartmentT1s, compartmentT2s, T2curves, T1curves, fittedCurve, goodness, output] = fitEvolutionCurves(TEimages, TIimages, TE(2:end)', TI(2:end)', 'compartments', compartmentCenters);
 
 % run('calcT1T2withMeans.m')
 
@@ -63,9 +63,9 @@ figure;
 imagesc(TEimages(:,:,TE(1)))
 hold on
 compartmentLabels = ['1', '2','3','4','5','6'];
-for i = 1:plotNumCompartments
-plot(compartmentCenters(i,1,1),compartmentCenters(i,2,1),'*')
-text(compartmentCenters(i,1,1),compartmentCenters(i,2,1), compartmentLabels(i) )
+for i = 1 :plotNumCompartments
+    plot(compartmentCenters(i,1,1),compartmentCenters(i,2,1),'*')
+    text(compartmentCenters(i,1,1),compartmentCenters(i,2,1), compartmentLabels(i) )
 end
 
 figure;
@@ -73,8 +73,8 @@ imagesc(TIimages(:,:,TI(1)))
 hold on
 compartmentLabels = ['1', '2','3','4','5','6'];
 for i = 1:plotNumCompartments
-plot(compartmentCenters(i,1,2),compartmentCenters(i,2,2),'*')
-text(compartmentCenters(i,1,2),compartmentCenters(i,2,2), compartmentLabels(i) )
+    plot(compartmentCenters(i,1,2),compartmentCenters(i,2,2),'*')
+    text(compartmentCenters(i,1,2),compartmentCenters(i,2,2), compartmentLabels(i) )
 end
 
 figure;
@@ -82,8 +82,8 @@ imagesc(FPimages(:,:,1))
 hold on
 compartmentLabels = ['1', '2','3','4','5','6'];
 for i = 1:plotNumCompartments
-plot(compartmentCenters(i,1,3),compartmentCenters(i,2,3),'*')
-text(compartmentCenters(i,1,3),compartmentCenters(i,2,3), compartmentLabels(i) )
+    plot(compartmentCenters(i,1,3),compartmentCenters(i,2,3),'*')
+    text(compartmentCenters(i,1,3),compartmentCenters(i,2,3), compartmentLabels(i) )
 end
 %% plot simulated image signal with data
 compartmentCentersList = 1;
@@ -93,8 +93,8 @@ imagesc(FPimages(:,:,1))
 hold on
 compartmentLabels = ['1', '2','3','4','5','6'];
 for i = 1:plotNumCompartments
-plot(compartmentCenters(i,1,compartmentCentersList),compartmentCenters(i,2,compartmentCentersList),'*')
-text(compartmentCenters(i,1,compartmentCentersList),compartmentCenters(i,2,compartmentCentersList), compartmentLabels(i) )
+    plot(compartmentCenters(i,1,compartmentCentersList),compartmentCenters(i,2,compartmentCentersList),'*')
+    text(compartmentCenters(i,1,compartmentCentersList),compartmentCenters(i,2,compartmentCentersList), compartmentLabels(i) )
 end
 run('plotSim.m')
 

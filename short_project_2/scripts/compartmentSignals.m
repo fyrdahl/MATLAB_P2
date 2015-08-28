@@ -10,7 +10,7 @@ switch phantomName
         compartmentCenters(5,1:2,1) = [38 34];
         compartmentCenters(6,1:2,1) = [31 39];
         
-        %TR
+        %TI
         compartmentCenters(1,1:2,2) = [compartmentCenters(1,1:2,1) + 3];
         compartmentCenters(2,1:2,2) = [compartmentCenters(2,1:2,1) + 3];
         compartmentCenters(3,1:2,2) = [compartmentCenters(3,1:2,1) + 3];
@@ -40,21 +40,20 @@ switch phantomName
     
 end
 
-TE = TE
+
 figure
 for i = 1:6
     hold on
-    plot(TE(2:end),squeeze(TEimages(compartmentCenters(i,1),compartmentCenters(i,2),TE(2:end))),'-*')
+    plot(TE(2:end),squeeze(TEimages(compartmentCenters(i,1,1),compartmentCenters(i,2,1),TE(2:end))),'-*')
     
 end
 
-TI = TI
+
 figure
 for i = 1:6
     hold on
-    compartmentTIimages(i,:) = TIimages(compartmentCenters(i,1),compartmentCenters(i,2),TI(2:11))
-    plot(TI(2:11),compartmentTIimages(i,:),'-*')
-    
+    plot(TI, squeeze(TIimages(compartmentCenters(i,1,2),compartmentCenters(i,2,2),TI)),'-*')
+  
 end
 
 

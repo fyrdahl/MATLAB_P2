@@ -9,7 +9,7 @@
 figure
 for i = TE
     i
-    colormap gray
+%     colormap gray
 imagesc(TEimages(:,:,i))
 pause
 end

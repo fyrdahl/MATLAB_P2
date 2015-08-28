@@ -1,4 +1,4 @@
-function[compartmentT1s, compartmentT2s, fittedCurve, goodness, output] = fitEvolutionCurves(TEimages, TIimages, T2_x, T1_x, region, varargin)
+function[compartmentT1s, compartmentT2s, T2curves, T1curves, fittedCurve, goodness, output] = fitEvolutionCurves(TEimages, TIimages, T2_x, T1_x, region, varargin)
 
 % Models to fit to the data
 % T2model = @(a,T2,c, x) a*exp(-x*(1/T2)) + c
@@ -14,14 +14,14 @@ switch region
         for n = 1:6
             compartmentCenters = varargin{1} ;
             %subtract noise
-            curve2 = log( squeeze(TEimages(compartmentCenters(n,1,1),compartmentCenters(n,2,1),T2_x)))
+            T2curves(:,n) = log( squeeze(TEimages(compartmentCenters(n,1,1),compartmentCenters(n,2,1),T2_x)))
             %curve = squeeze(mean(mean(images(23:47,22:43,x))));
             
-            [fittedCurve, goodness, output] = fit(T2_x,curve2,T2model,'Upper',[5000 4000 500],'Lower',[0 0 -100],'StartPoint',[0.5 200 100])
+            [fittedCurve, goodness, output] = fit(T2_x,T2curves(:,n),T2model,'Upper',[5000 4000 500],'Lower',[0 0 -100],'StartPoint',[0.5 200 100])
             
             compartmentT2s(n) = fittedCurve.T2
             
-            figure; plot(T2_x, curve2,'.')
+            figure; plot(T2_x, T2curves(:,n),'.')
             hold on
             plot(fittedCurve)
         end
@@ -29,17 +29,19 @@ switch region
         %% Fit T1 decay
         for n = 1:6
             compartmentCenters = varargin{1} ;
-            curve1 = squeeze(TIimages(compartmentCenters(n,1,2),compartmentCenters(n,2,2),T1_x));
+            T1curves(:,n) = squeeze(TIimages(compartmentCenters(n,1,2),compartmentCenters(n,2,2),T1_x));
             %curve = [compartmentTIimages(n,:)]'
             %                 [fittedCurve, goodness, output] = fit(x,curve,T1model,'Upper',[2000 2000 1 5000],'Lower',[0 -5000 0.9 0],'StartPoint',[1000 100 0.5 100]);
             %                 compartmentT1s(n) = fittedCurve.T1
             
+            data(n,:) = T1curves(:,n);
             fittedCurve = 0;
             goodness = 0;
             output = 0;
-            [pd r1 eff res] = shurleyT1fit(curve1', 'compartments', 1, T1_x);
+            [pd, r1, eff, res] = shurleyT1fit(data(n,:), 'compartments', 1, T1_x);
             disp(['fit number: ',num2str(n)])
-            compartmentT1s(n) = (1/r1)*1000
+            (1/r1)*1000
+          compartmentT1s(n) = 0 % (1/r1)*1000
             
             %                 figure; plot(x, curve,'.')
             %                 hold on
