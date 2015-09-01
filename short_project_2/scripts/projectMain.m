@@ -22,7 +22,7 @@ phantomName = 'sphereD170';
 % 6: TR offset = 1500, TE offset = 20, FA1 = 90
 % 7: TR offset = 1500, TE offset = 20
 % 8: TR offset = 15000
-offsetListNum = 3;
+offsetListNum = 6;
 
 [TEImageInfo, TIImageInfo, FPImageInfo, TEimages, TIimages, FPimages, TE, TI] = readData(phantomName, offsetListNum);
 
@@ -56,7 +56,7 @@ nSlices = 2;
 
 %
 plotNumCompartments = 6
-%%
+%% Show the positions of the sampled compartment centers, with respect to the images
 figure;
 imagesc(TEimages(:,:,TE(1)))
 hold on
@@ -101,25 +101,28 @@ run('plotSim.m')
 % normalise dictionary entries to have the same sum squared magnitude
 % select one dictionary entry for each pixel, using the complex data for simulation and pixel
 % calculate proton density (M0) as the scaling factor between the measured
-% signal and the simulated (Ma2013)
+% signal and the simulated (see Ma2013).
 
 %% create dictionary
 clear dictionaryParams
 dictionaryParams(1,:) = 200:10:300 ; % T1
 dictionaryParams(2,:) = 200:10:300 ; % T2
+dictionaryParams(3,:) = -0.01:0.002:0.01 ; % flip angle 1 (FA1)
+dictionaryParams(3,:) = 0 ; % flip angle 1 (FA1) deviation
 
-nTimeCoursePts = numel(Mxy);
+data = FPimages(compartmentCenters(1,1),compartmentCenters(1,2),:,:);
+
+nTimeCoursePts = size(data , 4);
 
 
-for List = 2:8
-[signalDictionary(:,:,:,List)] = compileDictionary(fingerprintLists, List, dictionaryParams, nTimeCoursePts, freqOffset, nSlices);
+for offsetListNum = 2:8
+[signalDictionary(:,:,:,:,offsetListNum)] = compileDictionary(fingerprintLists, offsetListNum, dictionaryParams, nTimeCoursePts, freqOffset, nSlices);
 % !!! must normalise dictionary entries to have the same sum squared
 % magnitude (use sumsqr() )
 end
 %% check similarity and use dictionary to measure T1 and T2
-data = FPimages(compartmentCenters(1,1),compartmentCenters(1,2),:,1:24);
-
-[matchedT1(offsetListNum,:), matchedT2(offsetListNum,:), bestT1ind(offsetListNum,:), bestT2ind(offsetListNum,:), M0] = calcSimilarity(data, signalDictionary(:,:,:,offsetListNum), sliceNumber, dictionaryParams, Mxy);
+sliceNumber = 1
+[matchedT1(offsetListNum,:), matchedT2(offsetListNum,:), matchedFA1devInd(offsetListNum,:), bestT1ind(offsetListNum,:), bestT2ind(offsetListNum,:), M0] = calcSimilarity(data, signalDictionary(:,:,:,:,offsetListNum), sliceNumber, dictionaryParams);
 
 %%visualise spread of matched T1s and T2s
 figure; hist(squeeze(matchedT1(offsetListNum,:)))

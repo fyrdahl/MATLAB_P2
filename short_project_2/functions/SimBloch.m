@@ -1,8 +1,7 @@
-function [Mtransverse, simImageMtransverse, M,Mxy,flipAngles, t0s] = SimBloch(T1, T2, fingerprintOffsetList, plotFlag,freqOffset, nSlices)
+function [Mtransverse, simImageMtransverse, M, Mxy,flipAngles, t0s] = SimBloch(T1, T2, fingerprintOffsetList, plotFlag,freqOffset, nSlices)
 % Jack Allen
 
 % magnetisation evolution equations in this function are from 'Handbook of MRI pulse sequences - section 3.3'
-
 
 clear simImageMtransverse
 clear M

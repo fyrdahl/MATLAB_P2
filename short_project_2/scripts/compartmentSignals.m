@@ -35,6 +35,12 @@ switch phantomName
         compartmentCenters(5,1:2,1) = [32 32];
         compartmentCenters(6,1:2,1) = [39 42];
         
+        compartmentCenters(1,1:2,2) = [21 21];
+        compartmentCenters(2,1:2,2) = [22 22];
+        compartmentCenters(3,1:2,2) = [24 24];
+        compartmentCenters(4,1:2,2) = [27 27];
+        compartmentCenters(5,1:2,2) = [32 32];
+        compartmentCenters(6,1:2,2) = [39 42];
       
         
     
@@ -52,7 +58,7 @@ end
 figure
 for i = 1:6
     hold on
-    plot(TI, squeeze(TIimages(compartmentCenters(i,1,2),compartmentCenters(i,2,2),TI)),'-*')
+    plot(TI(2:end), squeeze(TIimages(compartmentCenters(i,1,2),compartmentCenters(i,2,2),TI(2:end))),'-*')
   
 end
 

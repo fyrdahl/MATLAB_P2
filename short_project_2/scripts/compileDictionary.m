@@ -1,26 +1,30 @@
 function [signalDictionary] = compileDictionary(fingerprintLists, offsetListNum, dictionaryParams, nTimeCoursePts, freqOffset, nSlices)
 
 %% DICTIONARY
+originalFAs = fingerprintLists(:,3,offsetListNum);
 
-nTimeCoursePts = 24;
-
-freqOffset = 0;
-
-nSlices = 2;
-
-signalDictionary = zeros(size(dictionaryParams(1,:),2), size(dictionaryParams(2,:),2), nTimeCoursePts);
+signalDictionary = zeros(size(dictionaryParams(1,:),2), size(dictionaryParams(2,:),2), size(dictionaryParams(3,:),2) , nTimeCoursePts);
 
 tic 
 for i = 1:numel(dictionaryParams(1,:))
     
+    %vary T1
     T1 = dictionaryParams(1,i);
       
     for j = 1:numel(dictionaryParams(2,:))
         
+        % vary T2
         T2 = dictionaryParams(2,j);
         
-        [~, ~, ~,  signalDictionary(i,j,:), ~, ~] = SimBloch(T1, T2, fingerprintLists(:,:,offsetListNum), 'dontPlot', freqOffset, nSlices);
-         
+        for k = 1:numel(dictionaryParams(3,:))
+            
+         % vary flip angle 1
+        fingerprintLists(:,3,offsetListNum) = originalFAs + originalFAs.*dictionaryParams(3,k);
+              
+%         [~, ~, ~,  signalDictionary(i,j,k,:), ~, ~] =
+        a = SimBloch(T1, T2, fingerprintLists(:,:,offsetListNum), 'dontPlot', freqOffset, nSlices);
+        
+        end
     end
     
     disp(['compiling dictionary for list ', num2str(offsetListNum),': ',num2str( (i/numel(dictionaryParams(1,:)))*100) , ' percent complete'])
