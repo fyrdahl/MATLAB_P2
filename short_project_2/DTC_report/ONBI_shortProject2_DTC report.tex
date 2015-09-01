@@ -41,72 +41,83 @@
 
 \begin{frontmatter}
 
-\title{Magnetic Resonance Fingerprinting}
-\tnotetext[mytitlenote]{Fully documented templates are available in the elsarticle package on \href{http://www.ctan.org/tex-archive/macros/latex/contrib/elsarticle}{CTAN}.}
+\title{Application of Magnetic Resonance Fingerprinting for the Assessment of Stroke damage}
+%\tnotetext[mytitlenote]{Fully documented templates are available in the elsarticle package on \href{http://www.ctan.org/tex-archive/macros/latex/contrib/elsarticle}{CTAN}.}
 
 %% Group authors per affiliation:
 %\author{Elsevier\fnref{myfootnote}}
 \author{Jack Allen}
-\author{Supervisor: Peter Jezzard}
+\author{Supervisors: Peter Jezzard \& James Kennedy}
 \address{University of Oxford, Oxford, UK.}
-%\fntext[myfootnote]{Since 1880.}
+\fntext[myfootnote]{Since 1880.}
 
 %% or include affiliations in footnotes:
-\author[mymainaddress,mysecondaryaddress]{Elsevier Inc}
-\ead[url]{www.elsevier.com}
+%\author[mymainaddress,mysecondaryaddress]{Elsevier Inc}
+%\ead[url]{www.elsevier.com}
 
-\author[mysecondaryaddress]{Global Customer Service\corref{mycorrespondingauthor}}
-\cortext[mycorrespondingauthor]{Corresponding author}
-\ead{support@elsevier.com}
+%\author[mysecondaryaddress]{Global Customer Service\corref{mycorrespondingauthor}}
+%\cortext[mycorrespondingauthor]{Corresponding author}
+%\ead{support@elsevier.com}
 
-\address[mymainaddress]{1600 John F Kennedy Boulevard, Philadelphia}
-\address[mysecondaryaddress]{360 Park Avenue South, New York}
+%\address[mymainaddress]{1600 John F Kennedy Boulevard, Philadelphia}
+%\address[mysecondaryaddress]{360 Park Avenue South, New York}
+
 
 \begin{abstract}
 
-
+% 'Graphical abstract' as well?
 \end{abstract}
 
+% 'Research highlights' section as well?
+
 \begin{keyword}
-\texttt{elsarticle.cls}\sep \LaTeX\sep Elsevier \sep template
-\MSC[2010] 00-01\sep  99-00
+Magnetic Resonance Imaging, Fingerprinting, Stroke
 \end{keyword}
 
 \end{frontmatter}
 
-\linenumbers
+%\linenumbers
 
 \section{Introduction}
 
-\paragraph{Installation} If the document class \emph{elsarticle} is not available on your computer, you can download and install the system package \emph{texlive-publishers} (Linux) or install the \LaTeX\ package \emph{elsarticle} using the package manager of your \TeX\ installation, which is typically \TeX\ Live or Mik\TeX.
+% Brief Introduction to MRI and what it's used for
+Magnetic resonance imaging (MRI) has become an established tool for diagnosis and disease monitoring in clinical environments. As with the phenomenon of nuclear magnetic resonance (NMR), MRI makes use of the behaviour of nuclei spins in magnetic fields. However MRI has crucial difference that it allows the acquistion of images from the behaviour of nuclei spins.  A strong, static, magnetic field is used to align the spins of a portion of the nuclei in a sample, with Bsubscript0 (longitudinal magnetisation). Radio frequency (RF) pulses are applied to tip the net magnetisation of a particular species of nuclei, away from the static field. This produces components of magnetisation that are orthogonal to the static field (transverse magnetisation). The tipped spins then precess around the axis of the static field. During the precession, the transverse and longitudinal magnetisation decays and recovers, according to exponential terms. The transverse components decay to zero, accord to **equation** and the longitudinal component grows according to **equation**. Given sufficient time, the longitudinal component will recover to its initial value, before any application of a RF pulse. 
 
-\paragraph{Usage} Once the package is properly installed, you can use the document class \emph{elsarticle} to create a manuscript. Please make sure that your manuscript follows the guidelines in the Guide for Authors of the relevant journal. It is not necessary to typeset your manuscript in exactly the same way as an article, unless you are submitting to a camera-ready copy (CRC) journal.
+The precession induces current in receiver radio frequency coils, decays as the magnetisation realigns with the static field. By observing the induced current, the parameters that govern the rate of change in longitudinal and transverse magnetisation (T1 and T2), can be extracted. Linear field gradients are applied to select specific areas of the sample. 
 
-\paragraph{Functionality} The Elsevier article class is based on the standard article class and supports almost all of the functionality of that class. In addition, it features commands and options to format the
-\begin{itemize}
-\item document style
-\item baselineskip
-\item front matter
-\item keywords and MSC codes
-\item theorems, definitions and proofs
-\item lables of enumerations
-\item citation style and labeling.
-\end{itemize}
 
-\section{Front matter}
+A large portion of MRI research has been directed towards acheiving accurate, efficient and reliable images of the human brain.  The magnetisation properties of different tissue types can makes it possible to acheive contrast between areas of different tissue types.
 
-The author names and affiliations could be formatted in two ways:
-\begin{enumerate}[(1)]
-\item Group the authors per affiliation.
-\item Use footnotes to indicate the affiliations.
-\end{enumerate}
-See the front matter of this document for examples. You are recommended to conform your choice to the journal you are submitting to.
+% Limitations of convention parameter estimation
+Currently used sequences for measuring T1 and T2, such as *insert sequence name*, require a significant period of time, usually around *insert taken time for sequence*.  *explain why T1 and T2 measurements take a long time* 
 
-\section{Bibliography styles}
+% Application to AVIC and stroke patient brain analysis
+Within the setting of emergency medicine, fast response and diagnosis is cruicial for giving the patient the best chance of a positive outcome. Specifically, acute stroke patients *correct phrase to describe them?* benefit from fast treatment. Over factors, such as pH change, are observed, as they can be good indicators of the extend of damage.
 
-There are various bibliography styles available. You can select the style of your choice in the preamble of this document. These styles are Elsevier styles based on standard styles like Harvard and Vancouver. Please use Bib\TeX\ to generate your bibliography and include DOIs whenever available.
+% Introduce Magnetic resonance fingerprinting and it's potential advantages
+Recently, a new approach known as magnetic resonance fingerprinting (MRF) *cite ma2013* has been developed and applied, which has been used to acquire parameters, such as T1 and T2, in a fraction of the time normally needed *quote some numbers*. During a fingerprinting experiment, a a pesudo-random seqeunce is played out. This can be achieved by varying factors such the time in between subsequent RF pulses and any flip angles used.
 
-Here are two sample references: \cite{Feynman1963118,Dirac1953888}.
+% Dictionary
+Once a series of images have been acquired via the fingerprinting sequence, the pixel-wise signal variation over the experiment is compared to a previously built dictionary of time courses, in order to find the closest match. The dictionary is built by simulating the signal expected from the experiment, for variety of difficult combinations of parameters (such as T1 and T2). 
+
+
+\section{Materials and Method}
+
+% Images with varying TE and TI, in order to extract T2 and T1
+\subsection{Image aqcuistion}
+All images for this report were acquired at the acute vascular imaging centre (AVIC) at the John Radcliffe Hospital in Oxford.
+*mention the scanner and coil hardware used (3T, model, brand, etc)*
+*mention the type of sequence*
+
+% MATLAB simulation of signal
+Using MATLAB *cite MATLAB as Ma 2013 did*, a dictionary was composed for *mention T1 and T2 values used*
+
+% Production of a phantom with a range of T1 of T2 values
+In order to test the method for a range of T1 and T2 values *if I manage to make another phantom, mention here that the values are similar to those expected in the brain and cite it *
+
+\section{Results and Discussion}
+
+\section{Conclusions}
 
 \section*{References}
 
