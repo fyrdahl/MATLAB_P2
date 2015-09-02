@@ -1,0 +1,46 @@
+This is BibTeX, Version 0.99d (TeX Live 2013)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: ONBI_shortProject2_DTC report.aux
+The style file: elsarticle-num.bst
+Database file #1: ONBI_shortproject2_refs.bib
+You've used 1 entry,
+            2937 wiz_defined-function locations,
+            672 strings with 5317 characters,
+and the built_in function-call counts, 250 in all, are:
+= -- 15
+> -- 13
+< -- 0
++ -- 5
+- -- 4
+* -- 11
+:= -- 57
+add.period$ -- 1
+call.type$ -- 1
+change.case$ -- 1
+chr.to.int$ -- 0
+cite$ -- 1
+duplicate$ -- 6
+empty$ -- 21
+format.name$ -- 5
+if$ -- 53
+int.to.chr$ -- 0
+int.to.str$ -- 1
+missing$ -- 1
+newline$ -- 11
+num.names$ -- 1
+pop$ -- 7
+preamble$ -- 1
+purify$ -- 0
+quote$ -- 0
+skip$ -- 17
+stack$ -- 0
+substring$ -- 0
+swap$ -- 0
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 0
+warning$ -- 0
+while$ -- 1
+width$ -- 2
+write$ -- 14

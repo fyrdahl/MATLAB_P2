@@ -1,6 +1,7 @@
 \documentclass[review]{elsarticle}
 
 \usepackage{lineno,hyperref}
+\usepackage{amsmath}
 \modulolinenumbers[5]
 
 % \journal{Journal of \LaTeX\ Templates}
@@ -81,15 +82,30 @@ Magnetic Resonance Imaging, Fingerprinting, Stroke
 \section{Introduction}
 
 % Brief Introduction to MRI and what it's used for
-Magnetic resonance imaging (MRI) has become an established tool for diagnosis and disease monitoring in clinical environments. As with the phenomenon of nuclear magnetic resonance (NMR), MRI makes use of the behaviour of nuclei spins in magnetic fields. However MRI has crucial difference that it allows the acquistion of images from the behaviour of nuclei spins.  A strong, static, magnetic field is used to align the spins of a portion of the nuclei in a sample, with Bsubscript0 (longitudinal magnetisation). Radio frequency (RF) pulses are applied to tip the net magnetisation of a particular species of nuclei, away from the static field. This produces components of magnetisation that are orthogonal to the static field (transverse magnetisation). The tipped spins then precess around the axis of the static field. During the precession, the transverse and longitudinal magnetisation decays and recovers, according to exponential terms. The transverse components decay to zero, accord to **equation** and the longitudinal component grows according to **equation**. Given sufficient time, the longitudinal component will recover to its initial value, before any application of a RF pulse. 
+Magnetic resonance imaging (MRI) has become an established tool for diagnosis and disease monitoring in clinical environments. As with the phenomenon of nuclear magnetic resonance (NMR), MRI makes use of the behaviour of nuclear spins in a magnetic field. However MRI has crucial difference that it allows the acquistion of images from the behaviour of nucleic spins.  When a strong, static, magnetic field $B_0$ is applied to a sample, there is a net alignment of the spins to $B_0 $, producing net magnetisation along the longitudinal axis of $B_0$. Radio frequency (RF) excitation pulses can be applied to tip the net magnetisation of a particular species of nuclei so that it is no longer aligned with $B_0$. This produces components of magnetisation that are orthogonal to the static field (transverse magnetisation) and results in reduced longitudinal magnetisation. The tipped spins then precess around the axis of the static field. Over time and during the precession, the transverse and longitudinal components decay and recover, respectively. This evolution is occurs according to exponential terms.
 
-The precession induces current in receiver radio frequency coils, decays as the magnetisation realigns with the static field. By observing the induced current, the parameters that govern the rate of change in longitudinal and transverse magnetisation (T1 and T2), can be extracted. Linear field gradients are applied to select specific areas of the sample. 
+The transverse components decay towards zero, according to Eq. \eqref{eq:transverse_decay}, where t is the time elapsed. The constant $T^{*}_{2}$, described in Eq. \eqref{eq:T2star}, determines the rate of decay and can be reduced by spatial inhomogeneities in the static field. These inhomogeneities cause variations in the strength of the static field experienced by different spins. The frequency of precession is proportional to the static field strength, therefore static field inhomogeneities will cause spins in different locations will precess at slightly different rates. The effect of the inhomogenities is represented by $T^{'}_{2}$ and so in an ideal situation, the magnetisation in Eq. \eqref{eq:transverse_decay} would decay according to soley the spin dephasing and could be described by $T_{2}$.
 
+\begin{equation} \label{eq:transverse_decay}
+M_{xy} (t) = M_{xy}(0)\exp^{-\frac{t}{T^{*}_{2}}}
+\end{equation}
+
+\begin{equation} \label{eq:T2star}
+ \frac{1}{T^{*}_{2}} = \frac{1}{T_{2}} + \frac{1}{T^{'}_2}
+\end{equation}
+
+Equation \eqref{eq:longitudinal_recovery} describes the behaviour of the longitudinal magnetisiation, where $ t $ is the elapsed time, $M_{z}(0)$ is the initial longitudinal magnetisation and $M_{z,eq}$ is the equilibrium magnetisation that would occur, given $B_0$, but in the absence of excitation pulses. The constant $T_1$
+
+\begin{equation} \label{eq:longitudinal_recovery}
+M_{z} (t) = M_{z,eq}(1 - e^{-\frac{t}{T_1}} ) + M_{z}(0)e^{-\frac{t}{T_1} } 
+\end{equation}
+
+The precessing magnetisation induces current in receiver radio frequency coils, which decays as the magnetisation realigns with the static field. By observing the induced current, the relaxation parameters $T1_1$ and $T_2$ can be measured on a pixel-wise basis. Field gradients are applied to produce controlled differences in spin frequency and phase, which can be used to enable the spatial origin of a signal to be determined \cite{haackemagnetic}.
 
 A large portion of MRI research has been directed towards acheiving accurate, efficient and reliable images of the human brain.  The magnetisation properties of different tissue types can makes it possible to acheive contrast between areas of different tissue types.
 
-% Limitations of convention parameter estimation
-Currently used sequences for measuring T1 and T2, such as *insert sequence name*, require a significant period of time, usually around *insert taken time for sequence*.  *explain why T1 and T2 measurements take a long time* 
+% Limitations of convention multi-parameter estimation
+Commonly used approaches for measuring T1 and T2, such as inversion recovery (IR) and spin echo (SE) require a significant period of time. * mention the fastest times?*  *explain why T1 and T2 measurements take a long time* 
 
 % Application to AVIC and stroke patient brain analysis
 Within the setting of emergency medicine, fast response and diagnosis is cruicial for giving the patient the best chance of a positive outcome. Specifically, acute stroke patients *correct phrase to describe them?* benefit from fast treatment. Over factors, such as pH change, are observed, as they can be good indicators of the extend of damage.
@@ -121,6 +137,6 @@ In order to test the method for a range of T1 and T2 values *if I manage to make
 
 \section*{References}
 
-\bibliography{mybibfile}
+\bibliography{ONBI_shortproject2_refs}
 
 \end{document}

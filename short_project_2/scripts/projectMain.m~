@@ -108,7 +108,7 @@ clear dictionaryParams
 dictionaryParams(1,:) = 200:10:300 ; % T1
 dictionaryParams(2,:) = 200:10:300 ; % T2
 dictionaryParams(3,:) = -0.01:0.002:0.01 ; % flip angle 1 (FA1) deviation
-dictionaryParams(4,:) = -0.01:0.002:0.01 ; % flip angle 2 (FA1) deviation
+dictionaryParams(4,:) = -0.01:0.002:0.01 ; % flip angle 1 (FA1) deviation
 
 nTimeCoursePts = size(data , 4)/2;
 
@@ -129,7 +129,7 @@ data = FPimages(compartmentCenters(1:5,1),compartmentCenters(1:5,2),:,:);
 
 [similarity, matchedT1(offsetListNum,:), matchedT2(offsetListNum,:), matchedFA1devInd(offsetListNum,:), bestT1ind(offsetListNum,:), bestT2ind(offsetListNum,:), M0] = calcSimilarity(data, signalDictionary(:,:,:,:,offsetListNum), sliceNumber, dictionaryParams);
 
-[similarity, matchedT1, matchedT2, matchedFA1devInd] = calcSimilarity(data, signalDictionary(:,:,:,:,offsetListNum), sliceNumber, dictionaryParams);
+[similarity, matchedT1(:), matchedT2(:), matchedFA1devInd(:)] = calcSimilarity(data, signalDictionary(:,:,:,:,offsetListNum), sliceNumber, dictionaryParams);
 
 %%visualise spread of matched T1s and T2s
 figure; hist(squeeze(matchedT1(offsetListNum,:)))

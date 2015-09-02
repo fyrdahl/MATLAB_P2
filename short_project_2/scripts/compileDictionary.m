@@ -1,7 +1,7 @@
 function [signalDictionary] = compileDictionary(fingerprintLists, offsetListNum, dictionaryParams, nTimeCoursePts, freqOffset, nSlices)
 
 %% DICTIONARY
-originalFAs = fingerprintLists(:,3,offsetListNum);
+originalFA1s = fingerprintLists(:,3,offsetListNum);
 
 signalDictionary = zeros(size(dictionaryParams(1,:),2), size(dictionaryParams(2,:),2), size(dictionaryParams(3,:),2) , nTimeCoursePts);
 
@@ -19,10 +19,9 @@ for i = 1:numel(dictionaryParams(1,:))
         for k = 1:numel(dictionaryParams(3,:))
             
          % vary flip angle 1
-        fingerprintLists(:,3,offsetListNum) = originalFAs + originalFAs.*dictionaryParams(3,k);
+        fingerprintLists(:,3,offsetListNum) = originalFA1s + originalFA1s.*dictionaryParams(3,k);
               
-%         [~, ~, ~,  signalDictionary(i,j,k,:), ~, ~] =
-        a = SimBloch(T1, T2, fingerprintLists(:,:,offsetListNum), 'dontPlot', freqOffset, nSlices);
+       [~, ~, ~,  signalDictionary(i,j,k,:), ~, ~] = SimBloch(T1, T2, fingerprintLists(:,:,offsetListNum), 'dontPlot', freqOffset, nSlices);
         
         end
     end
