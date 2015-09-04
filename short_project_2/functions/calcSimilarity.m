@@ -1,4 +1,4 @@
-function [similarity, matchedT1, matchedT2, matchedFA1devInd, bestT1ind, bestT2ind, M0] = calcSimilarity(data, signalDictionary, sliceNumber, dictionaryParams)
+function [similarity, matchedT1, matchedT2, matchedFAdevInd, bestMatch, ind1, ind2, M0] = calcSimilarity(data, signalDictionary, sliceNumber, dictionaryParams)
 % Jack Allen.
 % University of Oxford.
 % jack.allen@jesus.ox.ac.uk
@@ -15,51 +15,61 @@ maxSimilarityScore = zeros(size(data,1), size(data,2));
 tic
 for data_i = 1 : size(data,1)
     for data_j = 1 : size(data,2)
-        
+        data_i;
+        data_j;
         for i = 1 : size(signalDictionary,1) % T1
             for j = 1 : size(signalDictionary,2)% T2
                 
                 for k = 1 : size(signalDictionary,3) % flip angle variations due to field inhomogeneities
-          
+                    
                     s = squeeze(signalDictionary(i,j,k,:));
                     d = squeeze(data(data_i,data_j, sliceNumber, 1:numel(s) ));
                     
-                    similarity(data_i,data_j,i,j,k) = dot(s,d);
-%                similarity(data_i,data_j,i,j,k) = dot(s,d)/(norm(s)*norm(d)) ;
-              
+%                     similarity(data_i,data_j,i,j,k) = dot(s,d);
+                    similarity(data_i,data_j,i,j,k) = dot(s,d)/(norm(s)*norm(d)) ;
+                    
                 end
+                
             end
+            
         end
         
-        maxSimilarityScore(data_i,data_j) = max(max(max(squeeze(similarity(data_i,data_j,:,:,:)))));
-        s = squeeze(similarity(data_i,data_j,:,:,:));
-        [bestT1ind, b] = find(s == maxSimilarityScore(data_i,data_j));
+                maxSimilarityScore(data_i,data_j) = max(max(max(squeeze(similarity(data_i,data_j,:,:,:)))));
+                s = squeeze(similarity(data_i,data_j,:,:,:));
+%                 [ind1, ind2, ind3] = find(s == maxSimilarityScore(data_i,data_j))
+                inds = find(s == maxSimilarityScore(data_i,data_j));
+               [bestT1ind bestT2ind bestFAdevInd] = ind2sub(size(s),inds)
+          
         
-        if mod(b, size(signalDictionary,3)) == 0
-            bestT2ind = 11;
-        else
-            bestT2ind = mod(b, size(signalDictionary,3));
-        end
+%                 if mod(ind2, size(signalDictionary,3)) == 0
+%                     bestT2ind = 11;
+%                 else
+%                     bestT2ind = mod(ind2, size(signalDictionary,3));
+%                 end
+%                 
+%                 if ( ind3 / size(signalDictionary,3) )  < 1
+%                     bestFA1devInd = 1;
+%                 else
+%                     bestFA1devInd = ceil(ind3./size(signalDictionary,3) );
+%                 end
         
-        
-                if ( b / size(signalDictionary,3) )  < 1
-                bestFA1devInd = 1;
-                else
-                bestFA1devInd = ceil(b./size(signalDictionary,3) );
-                end
+        %         matchedT1 = zeros(size(data,1), size(data,2), size(bestT1ind,1));
+        %         matchedT2 = zeros(size(data,1), size(data,2), size(bestT2ind,1));
+        %         matchedFA1devInd = zeros(size(data,1), size(data,2), size(bestFA1devInd,1));
+        %         bestMatch = zeros(numel(bestT1ind), numel(bestT2ind), size(signalDictionary,4));
         
                 matchedT1(data_i,data_j,:) = dictionaryParams(1, bestT1ind);
                 matchedT2(data_i,data_j,:) = dictionaryParams(2, bestT2ind);
-                matchedFA1devInd(data_i,data_j,:) = dictionaryParams(3, bestFA1devInd);
+                matchedFAdevInd(data_i,data_j,:) = dictionaryParams(3, bestFAdevInd);
         
-                for nbestT1ind = 1 : numel(bestT1ind)
-                    for nbestT2ind = 1 : numel(bestT2ind)
-                        for nbestFA1devInd = 1 : numel(bestFA1devInd);
-                            bestMatch(data_i, data_j, :, nbestT1ind, nbestT2ind, nbestFA1devInd) = squeeze(signalDictionary(bestT1ind(nbestT1ind), bestT2ind(nbestT2ind), bestFA1devInd(nbestFA1devInd) , :))  ;
-                        end
-                    end
-                end
-                M0(data_i, data_j,:) =  squeeze(bestMatch(data_i, data_j, :, nbestT1ind, nbestT2ind, nbestFA1devInd));
+               
+                bestMatch(data_i, data_j, :) = squeeze(signalDictionary(bestT1ind, bestT2ind, bestFAdevInd , :))  ;
+        
+        %         M0(data_i, data_j,:) =  squeeze(bestMatch(data_i, data_j, :, nbestT1ind, nbestT2ind, nbestFA1devInd));
+  
+   
+    disp(['j percentage progress: ', num2str((data_j/size(data,2))*100)])
+   
     end
     
     disp(['calculating similarity: ',num2str( (data_i/size(data,1))*100) , ' percent complete'])

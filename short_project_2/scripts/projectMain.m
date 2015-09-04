@@ -22,7 +22,7 @@ phantomName = 'sphereD170';
 % 6: TR offset = 1500, TE offset = 20, FA1 = 90
 % 7: TR offset = 1500, TE offset = 20
 % 8: TR offset = 15000
-offsetListNum = 6;
+offsetListNum = 7;
 
 [TEImageInfo, TIImageInfo, FPImageInfo, TEimages, TIimages, FPimages, TE, TI] = readData(phantomName, offsetListNum);
 
@@ -52,10 +52,10 @@ T2 = 214.1;
 
 freqOffset = 0;
 nSlices = 2;
-[simMtransverse, simImageMtransverse, M, Mxy,flipAngles, t0s] = SimBloch(T1, T2, fingerprintLists(:,:,offsetListNum), 'showPlot', freqOffset, nSlices);
+[M, Mxy,flipAngles, t0s] = SimBloch(T1, T2, fingerprintLists(:,:,offsetListNum), 'showPlot', freqOffset, nSlices);
 
 %
-plotNumCompartments = 6
+plotNumCompartments = 6;
 %% Show the positions of the sampled compartment centers, with respect to the images
 figure;
 imagesc(TEimages(:,:,TE(1)))
@@ -83,7 +83,7 @@ for i = 1:plotNumCompartments
     plot(compartmentCenters(i,1,3),compartmentCenters(i,2,3),'*')
     text(compartmentCenters(i,1,3),compartmentCenters(i,2,3), compartmentLabels(i) )
 end
-%% plot simulated image signal with data
+%% plot positions of sample pixels
 compartmentCentersList = 1;
 
 figure;
@@ -94,6 +94,7 @@ for i = 1:plotNumCompartments
     plot(compartmentCenters(i,1,compartmentCentersList),compartmentCenters(i,2,compartmentCentersList),'*')
     text(compartmentCenters(i,1,compartmentCentersList),compartmentCenters(i,2,compartmentCentersList), compartmentLabels(i) )
 end
+%% plot comparison of simulation with sampled pixels
 run('plotSim.m')
 
 %%
@@ -107,30 +108,36 @@ run('plotSim.m')
 clear dictionaryParams
 dictionaryParams(1,:) = 200:10:300 ; % T1
 dictionaryParams(2,:) = 200:10:300 ; % T2
-dictionaryParams(3,:) = -0.01:0.002:0.01 ; % flip angle 1 (FA1) deviation
-dictionaryParams(4,:) = -0.01:0.002:0.01 ; % flip angle 2 (FA1) deviation
+dictionaryParams(3,:) = 0.8:0.04:1.2 ; % B1 fraction
 
 nTimeCoursePts = size(data , 4)/2;
 
 signalDictionary = zeros(size(dictionaryParams(1,:),2), size(dictionaryParams(2,:),2), size(dictionaryParams(3,:),2), nTimeCoursePts);
 
 for offsetListNum = 2:8
-[signalDictionary(:,:,:,:,offsetListNum)] = compileDictionary(fingerprintLists, offsetListNum, dictionaryParams, nTimeCoursePts, freqOffset, nSlices);
+[signalDictionary(:,:,:,:,offsetListNum)] = compileDictionary(fingerprintLists, offsetListNum, dictionaryParams, nTimeCoursePts, freqOffset, nSlices, background);
 % !!! must normalise dictionary entries to have the same sum squared
 % magnitude (use sumsqr() )
 end
 
 %% check similarity and use dictionary to measure T1 and T2
 sliceNumber = 1 % slice to be analysed
+clear data
 
-data = FPimages(compartmentCenters(1,1),compartmentCenters(1,2),:,:);
+% data = FPimages(compartmentCenters(1,1),compartmentCenters(1,2),:,:);
 
-data = FPimages(compartmentCenters(1:5,1),compartmentCenters(1:5,2),:,:);
+for r = 1:size(compartmentCenters,1)
+data(r,1,sliceNumber,:) = FPimages(compartmentCenters(r,1),compartmentCenters(r,2),sliceNumber,:);
+end
 
-[similarity, matchedT1(offsetListNum,:), matchedT2(offsetListNum,:), matchedFA1devInd(offsetListNum,:), bestT1ind(offsetListNum,:), bestT2ind(offsetListNum,:), M0] = calcSimilarity(data, signalDictionary(:,:,:,:,offsetListNum), sliceNumber, dictionaryParams);
+% for r = 1 : size(FPimages,1)
+%     for c = 1 : size(FPimages,2)
+% data(r,c,sliceNumber,:) = FPimages(r,c,sliceNumber,:);
+%     end
+% end
 
-[similarity, matchedT1, matchedT2, matchedFA1devInd] = calcSimilarity(data, signalDictionary(:,:,:,:,offsetListNum), sliceNumber, dictionaryParams);
-
+[similarity, matchedT1, matchedT2, matchedFAdevInd, bestMatch] = calcSimilarity(data, signalDictionary(:,:,:,:,offsetListNum), sliceNumber, dictionaryParams);
+%%
 %%visualise spread of matched T1s and T2s
 figure; hist(squeeze(matchedT1(offsetListNum,:)))
 figure;

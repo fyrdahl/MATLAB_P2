@@ -33,10 +33,9 @@ for n = 1:plotNumCompartments
 %     plot(y(n,1:(size(FPimages,4)/2)),'*')
     
     errorbar(y(n,:),repmat(normStdBG,1,24),'*' );
-   
 end
-legend ('Simulated Signal', '1','2','3','4','5','6' )
+legend ('Simulated Signal', str2num(plotNumCompartments)
 xlabel 'TE indices'
 ylabel 'signal (normalised to first measurement)'
-savefig(['/Users/jallen/Documents/MATLAB/short_project_2/figures/compareSimwithData_Phantom_',phantomName,'__Offset_list_',num2str(offsetListNum),'_compartmentcentercoordslist:',num2str(compartmentCentersList),'.fig'])
+
 %% figure; plot(residuals,'+')
