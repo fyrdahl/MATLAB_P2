@@ -1,6 +1,8 @@
-function [signalDictionary] = compileDictionary(fingerprintLists, offsetListNum, dictionaryParams, nTimeCoursePts, freqOffset, nSlices, background)
+function [signalDictionary] = compileDictionary(fingerprintLists, offsetListNums, dictionaryParams, nTimeCoursePts, freqOffset, nSlices, background)
 
 %% DICTIONARY
+
+for offsetListNum = offsetListNums;
 originalFA1s = fingerprintLists(:,3,offsetListNum);
 originalFA2s = fingerprintLists(:,4,offsetListNum);
 
@@ -23,14 +25,16 @@ for i = 1:numel(dictionaryParams(1,:))
             fingerprintLists(:,3,offsetListNum) = originalFA1s*(dictionaryParams(3,k));
             fingerprintLists(:,4,offsetListNum) = originalFA2s*(dictionaryParams(3,k));
             
-            [~, signalDictionary(i,j,k,:), ~, ~] = SimBloch(T1, T2, fingerprintLists(:,:,offsetListNum), 'dontPlot', freqOffset, nSlices);
+            
+                
+            [~, signalDictionary(i,j,k,:,offsetListNum), ~, ~] = SimBloch(T1, T2, fingerprintLists(:,:,offsetListNum), 'dontPlot', freqOffset, nSlices);
             
             %% add noise to the simulated signals
            
-            SNR = 0.655*squeeze(signalDictionary(i,j,k,:))/std(background(:));
-            for tPt = 1:size(signalDictionary,4)
-                signalDictionary(i,j,k,tPt) =  awgn(signalDictionary(i,j,k,tPt),SNR(tPt));
-            end
+%             SNR = 0.655*squeeze(signalDictionary(i,j,k,:))/std(background(:));
+%             for tPt = 1:size(signalDictionary,4)
+%                 signalDictionary(i,j,k,tPt) =  awgn(signalDictionary(i,j,k,tPt),SNR(tPt));
+%             end
             
         end
     end
@@ -47,5 +51,7 @@ toc
 % plot(squeeze(signalDictionary(i,j,:)),'-^')
 %     end
 % end
+
+end
 
 end

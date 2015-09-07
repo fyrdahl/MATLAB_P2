@@ -65,11 +65,17 @@ for n = 1:numel(fingerprintOffsetList(:,1))
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     % evolution from after pulse 2, until the newly calculated TR
     % disp('decay 2')
+    
     for t = (tau+1) : t0 + TRmin + (nSlices*TEoffsets(n)) + TRoffsets(n)
         
         M(:,t) = [exp(-(t-tau + 1)/T2)*( M(1,tau + 1)*cos(freqOffset*(t-tau)) + M(2,tau + 1)*sin(freqOffset*(t-tau)) );
             exp(-(t-tau + 1)/T2)*( -M(1,tau + 1)*sin(freqOffset*(t-tau + 1)) + M(2,tau + 1)*cos(freqOffset*(t-tau)) );
             Mzeq*(1 - exp(-(t-tau + 1)/T1)) + M(3,tau + 1)*exp(-(t-tau + 1)/T1)] ;
+        
+             M(:,t) = [exp(-(t-tau + 1)/T2)*( M(1,tau + 1)*cos(freqOffset*(t-tau)) + M(2,tau + 1)*sin(freqOffset*(t-tau)) );
+            exp(-(t-tau + 1)/T2)*( -M(1,tau + 1)*sin(freqOffset*(t-tau + 1)) + M(2,tau + 1)*cos(freqOffset*(t-tau)) );
+            Mzeq*(1 - exp(-(t-tau + 1)/T1)) + M(3,tau + 1)*exp(-(t-tau + 1)/T1)] ;
+        
         
 %         Mtransverse(t) = complex(M(1,t), M(2,t))  ;
         

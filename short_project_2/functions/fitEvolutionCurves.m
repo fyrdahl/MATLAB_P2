@@ -14,11 +14,11 @@ switch region
         for n = 1:6
             compartmentCenters = varargin{1} ;
             
-            T2curves(:,n) = log( squeeze(TEimages(compartmentCenters(n,1),compartmentCenters(n,2),T2_x)))
+            T2curves(:,n) = log( squeeze(TEimages(compartmentCenters(n,1),compartmentCenters(n,2),T2_x)));
             
             [fittedCurve, goodness, output] = fit(T2_x,T2curves(:,n),T2model,'Upper',[5000 4000 500],'Lower',[0 0 -100],'StartPoint',[0.5 200 100])
             
-            compartmentT2s(n) = fittedCurve.T2
+            compartmentT2s(n) = fittedCurve.T2;
             
             figure; plot(T2_x, T2curves(:,n),'.')
             hold on
