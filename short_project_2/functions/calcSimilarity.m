@@ -9,19 +9,24 @@ function [similarity, matchedT1, matchedT2, matchedFAdev, bestMatch, ind1, ind2,
 % similarity(1:nDataRow, 1:nDataColumn, 1:nSignalDictionaryRow, 1:nSignalDictionaryColumn)
 
 %% simularity measure
+load('/Users/jallen/Documents/MATLAB/short_project_2/mask.mat')
+
 disp('calculating similarity: started')
     
 similarity = zeros(size(data,1), size(data,2), size(signalDictionary,1), size(signalDictionary,2), size(signalDictionary,3));
 maxSimilarityScore = zeros(size(data,1), size(data,2));
 
 tic
+
 for data_i = 1 : size(data,1)
     for data_j = 1 : size(data,2)
         data_i;
         data_j;
+        
+        if mask(data_i,data_j) == 1
+            
         for i = 1 : size(signalDictionary,1) % T1
             for j = 1 : size(signalDictionary,2)% T2
-                
                 for k = 1 : size(signalDictionary,3) % flip angle variations due to field inhomogeneities
                     
                     s = squeeze(signalDictionary(i,j,k,:));
@@ -52,6 +57,7 @@ for data_i = 1 : size(data,1)
    
 %     disp(['j percentage progress: ', num2str((data_j/size(data,2))*100)])
    
+        end
     end
     
     disp(['calculating similarity: ',num2str( (data_i/size(data,1))*100) , ' percent complete'])

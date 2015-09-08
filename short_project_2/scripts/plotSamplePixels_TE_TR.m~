@@ -1,5 +1,5 @@
 figure;
-imagesc(TEimages(:,:,TE(2)))
+imagesc(TEimages(:,:,TE(2),offsetListNum))
 hold on
 compartmentLabels = ['1', '2','3','4','5','6'];
 for i = 1 :plotNumCompartments
@@ -8,10 +8,10 @@ for i = 1 :plotNumCompartments
 end
 
 figure;
-imagesc(TIimages(:,:,TI(2)))
+imagesc(TIimages(:,:,TI(2),offsetListNum))
 hold on
 compartmentLabels = ['1', '2','3','4','5','6'];
 for i = 1:plotNumCompartments
-    plot(compartmentCenters(i,1,2),'*')
-    text(compartmentCenters(i,1,2),compartmentCenters(i,2,2), compartmentLabels(i) )
+    plot(compartmentCenters(i,2,2),compartmentCenters(i,1,2),'*')
+    text(compartmentCenters(i,2,2),compartmentCenters(i,1,2), compartmentLabels(i) )
 end

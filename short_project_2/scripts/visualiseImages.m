@@ -1,5 +1,5 @@
 % mask including whole phantom
-% load('/Users/jallen/Documents/MATLAB/short_project_2/mask.mat')
+load('/Users/jallen/Documents/MATLAB/short_project_2/mask.mat')
 
 %% normalise pixel values
 % TEimages(:,:,TE) = TEimages(:,:,TE)/max(max(max(TEimages(:,:,:))));
@@ -27,14 +27,14 @@ end
 figure
 for i = 1:size(FPimages,4)
 %  colormap gray
-imagesc(FPimages(:,:,1,i));
+imagesc(FPimages(:,:,1,i,offsetListNum));
 i
 pause
 end
 
 n = 1
 for i = 1:size(FPimages,4)/2
-y(i) = squeeze(FPimages(compartmentCenters(n,1),compartmentCenters(n,2),1,i));
+y(i) = squeeze(FPimages(compartmentCenters(n,1),compartmentCenters(n,2),1,i,offsetListNum));
 end
 y(1:end) = y(1:end)./y(1)
 figure; plot(y,'*')

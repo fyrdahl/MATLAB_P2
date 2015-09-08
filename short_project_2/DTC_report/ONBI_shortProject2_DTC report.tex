@@ -42,7 +42,7 @@
 
 \begin{frontmatter}
 
-\title{Application of Magnetic Resonance Fingerprinting for the Assessment of Stroke damage}
+\title{Application of Magnetic Resonance Fingerprinting to measure brain oedema}
 %\tnotetext[mytitlenote]{Fully documented templates are available in the elsarticle package on \href{http://www.ctan.org/tex-archive/macros/latex/contrib/elsarticle}{CTAN}.}
 
 %% Group authors per affiliation:
@@ -82,12 +82,12 @@ Magnetic Resonance Imaging, Fingerprinting, Stroke
 \section{Introduction}
 
 % Brief Introduction to MRI and what it's used for
-Magnetic resonance imaging (MRI) has become an established tool for diagnosis and disease monitoring in clinical environments. As with the phenomenon of nuclear magnetic resonance (NMR), MRI makes use of the behaviour of nuclear spins in a magnetic field. However MRI has crucial difference that it allows the acquistion of images from the behaviour of nucleic spins.  When a strong, static, magnetic field $B_0$ is applied to a sample, there is a net alignment of the spins to $B_0 $, producing net magnetisation along the longitudinal axis of $B_0$. Radio frequency (RF) excitation pulses can be applied to tip the net magnetisation of a particular species of nuclei so that it is no longer aligned with $B_0$. This produces components of magnetisation that are orthogonal to the static field (transverse magnetisation) and results in reduced longitudinal magnetisation. The tipped spins then precess around the axis of the static field. Over time and during the precession, the transverse and longitudinal components decay and recover, respectively. This evolution is occurs according to exponential terms.
+Magnetic resonance imaging (MRI) has become an established tool for diagnosis and disease monitoring in clinical environments. As with the phenomenon of nuclear magnetic resonance (NMR), MRI makes use of the behaviour of nuclear spins in a magnetic field. However MRI has the crucial difference that it allows the acquistion of images from the behaviour of nucleic spins.  When a strong, static, magnetic field $B_0$ is applied to a sample, there is a net alignment of the spins to $B_0 $, producing net magnetisation along the longitudinal axis of $B_0$. Radio frequency (RF) excitation pulses can be applied to tip the net magnetisation of a particular species of nuclei so that it is no longer aligned with $B_0$. This produces components of magnetisation that are orthogonal to the static field (transverse magnetisation) and results in reduced longitudinal magnetisation. With the removal of $B_1$, the tipped spins will precess around the axis of the static field. Over time and during the precession, the transverse and longitudinal components decay and recover, respectively. The evolution of these two components occurs according to exponential terms, as described below. Ideally, the transverse component decays towards zero, according to Eq. \eqref{eq:transverse_decay}, where $t$ is the time elapsed, $M_xy(t)$ is the transverse magnetisation at $t$ and $T_2$ controls the rate of decay. In this case, the decay is due to the dephasing of spins, due to interaction between different spins. However, in practice, the constant $T^{*}_{2}$ determines the rate of decay, because of spatial inhomogeneities in the static field. 
 
-The transverse components decay towards zero, according to Eq. \eqref{eq:transverse_decay}, where t is the time elapsed. The constant $T^{*}_{2}$, described in Eq. \eqref{eq:T2star}, determines the rate of decay and can be reduced by spatial inhomogeneities in the static field. These inhomogeneities cause variations in the strength of the static field experienced by different spins. The frequency of precession is proportional to the static field strength, therefore static field inhomogeneities will cause spins in different locations will precess at slightly different rates. The effect of the inhomogenities is represented by $T^{'}_{2}$ and so in an ideal situation, the magnetisation in Eq. \eqref{eq:transverse_decay} would decay according to soley the spin dephasing and could be described by $T_{2}$.
+Equation \eqref{eq:T2star} describes the influence that the relaxation due to $B_0$ inhomogenties has on the total transverse relaxation, where the effect of the inhomogenities is represented by $T^{'}_{2}$. The inhomogeneities cause variations in the strength of the static field experienced by different spins. The frequency of precession is proportional to the static field strength and therefore static field inhomogeneities will cause spins in different locations will precess at slightly different rates. 
 
 \begin{equation} \label{eq:transverse_decay}
-M_{xy} (t) = M_{xy}(0)\exp^{-\frac{t}{T^{*}_{2}}}
+M_{xy} (t) = M_{xy}(0)\exp^{-\frac{t}{T_{2}}}
 \end{equation}
 
 \begin{equation} \label{eq:T2star}
@@ -105,13 +105,15 @@ The precessing magnetisation induces current in receiver radio frequency coils, 
 A large portion of MRI research has been directed towards acheiving accurate, efficient and reliable images of the human brain.  The magnetisation properties of different tissue types can makes it possible to acheive contrast between areas of different tissue types.
 
 % Limitations of convention multi-parameter estimation
-Commonly used approaches for measuring T1 and T2, such as inversion recovery (IR) and spin echo (SE) require a significant period of time. * mention the fastest times?*  *explain why T1 and T2 measurements take a long time* 
+Commonly used approaches for measuring T1 and T2, such as inversion recovery (IR) and spin echo (SE) require a significant period of time. * mention the fastest times?*  %explain why T1 and T2 measurements take a long time* 
+%describe a spin echo sequence*
+%describe an IR sequence*
 
 % Application to AVIC and stroke patient brain analysis
-Within the setting of emergency medicine, fast response and diagnosis is cruicial for giving the patient the best chance of a positive outcome. Specifically, acute stroke patients *correct phrase to describe them?* benefit from fast treatment. Over factors, such as pH change, are observed, as they can be good indicators of the extend of damage.
+Within the setting of emergency medicine, fast response and diagnosis is cruicial for giving the patient the best chance of a positive outcome. Specifically, patients suffering from acute stroke benefit will benefit from fast assessment and treatment. A stroke is the loss of blood supply to a section of the brain. Commonly, strokes are the result of blockages in the surrounding blood vessels (ischemia), but bleeding, in or around the brain tissue, can alsombe a cause. Temporary strokes can occur when surronding blood vessels are temporarily blocked (transient ischemia). There is a danger that the affected region of the brain will experiecne damage and cell death, due to the lack of oxygen and nutrients. This damage is often exhibited as extracellular water build up (Oedema) or a change in pH. In order to guide subsequent treatment, it is important to be able to measure these the markers accurately and precisly. There is also a need for a fast assessment, in order to allow a patient to be treated soon after the onset of the stroke.
 
 % Introduce Magnetic resonance fingerprinting and it's potential advantages
-Recently, a new approach known as magnetic resonance fingerprinting (MRF) *cite ma2013* has been developed and applied, which has been used to acquire parameters, such as T1 and T2, in a fraction of the time normally needed *quote some numbers*. During a fingerprinting experiment, a a pesudo-random seqeunce is played out. This can be achieved by varying factors such the time in between subsequent RF pulses and any flip angles used.
+Recently, a new approach known as magnetic resonance fingerprinting (MRF) has been developed and applied, which has been used to acquire multiple parameters, such as T1 and T2, with a reduction in scan time \cite{ma2013magnetic} . During a fingerprinting experiment, a a pesudo-random seqeunce is used to manipulate the spins in the sample. This can be achieved by varying factors such the time in between subsequent RF pulses and any flip angles used.
 
 % Dictionary
 Once a series of images have been acquired via the fingerprinting sequence, the pixel-wise signal variation over the experiment is compared to a previously built dictionary of time courses, in order to find the closest match. The dictionary is built by simulating the signal expected from the experiment, for variety of difficult combinations of parameters (such as T1 and T2). 
@@ -121,15 +123,16 @@ Once a series of images have been acquired via the fingerprinting sequence, the 
 
 % Images with varying TE and TI, in order to extract T2 and T1
 \subsection{Image aqcuistion}
-All images for this report were acquired at the acute vascular imaging centre (AVIC) at the John Radcliffe Hospital in Oxford.
-*mention the scanner and coil hardware used (3T, model, brand, etc)*
-*mention the type of sequence*
+The image data for this report were acquired at the acute vascular imaging centre (AVIC) at the John Radcliffe Hospital in Oxford, using a 3T strength Siemens Verio magnet and a 12 channel Siemens head coil. A spin echo sequence was used, to acquire 48 images, via  48 repetitions. The TE, TR, and flip angles for each repetition were varyied, using a pre-written, pesudo-random, list.
+%*How was the 'random' list chosen?*
 
 % MATLAB simulation of signal
-Using MATLAB *cite MATLAB as Ma 2013 did*, a dictionary was composed for *mention T1 and T2 values used*
+Using MATLAB (The
+MathWorks, Natick, MA), a dictionary was composed for *mention T1 and T2 values used*. In order to account for some variations in the $B_1$ field,  deviations in the flip angle of $\pm$30\% (%flipangle deviation increments?
+)were also used in the creation of the dictionary.
 
 % Production of a phantom with a range of T1 of T2 values
-In order to test the method for a range of T1 and T2 values *if I manage to make another phantom, mention here that the values are similar to those expected in the brain and cite it *
+In order to test the performance of the method with a sample containing various properties we created a phantom with a range of T1 and T2 values. %*if I manage to make another phantom, mention here that the values are similar to those expected in the brain and cite it * To
 
 \section{Results and Discussion}
 

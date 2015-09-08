@@ -22,10 +22,10 @@ phantomName = 'Jack';
 % 6: TR offset = 1500, TE offset = 20, FA1 = 90
 % 7: TR offset = 1500, TE offset = 20
 % 8: TR offset = 15000
-offsetListNum = 3;
 
-[TEImageInfo, TIImageInfo, FPImageInfo, TEimages, TIimages, FPimages, TE, TI] = readData(phantomName, offsetListNum);
-
+for offsetListNum = 2:8
+[TEImageInfo, TIImageInfo, FPImageInfo(:,offsetListNum), TEimages, TIimages, FPimages(:,:,:,:,offsetListNum), TE, TI] = readData(phantomName, offsetListNum);
+end
 %% 3. Select a ROI and a sample of the background, to calculate SNR
 [SNR signal background] = calcSNR(TEimages,TE,'showFigure');
 
@@ -44,7 +44,6 @@ run('visualiseImages.m')
 
 %% 6. read in the list of timing offsets used for acquisition
 run('readFingerprintOffsetList.m')
-fingerprintLists(:,:,offsetListNum)
 
 %% 7. simulate magnetisation evolution
 %check bloch simulation by using properties of the phantom
@@ -57,7 +56,7 @@ freqOffset = 0;
 nSlices = 2;
 [M, Mxy,flipAngles, t0s] = SimBloch(T1, T2, fingerprintLists(:,:,offsetListNum), 'showPlot', freqOffset, nSlices);
 
-%% 8. plot positions of sample pixels for fingerprint images
+%% 8. check signal simulation by plotting positions of sample pixels for the fingerprinting images
 compartmentCentersList = 3;
 run('plotSamplePixels.m')
 
@@ -65,8 +64,24 @@ run('plotSamplePixels.m')
 run('plotSim.m')
 
 %% 9. create dictionary
+
 offsetListNums = offsetListNum
 run('dictionary.m')
 
 %% 10. check similarity and use dictionary to measure T1 and T2
 run('matching.m')
+
+%% plot and save the T1, T2 and FA deviation maps
+for offsetListNum = 2:8
+FA_fig = figure; imagesc(squeeze(matchedFAdevInd(:,:,offsetListNum)))
+saveas(FA_fig, ['/Users/jallen/Documents/MATLAB/short_project_2/figures/matchedFAdevInd_offsetList',num2str(offsetListNum),'_phantomName_',phantomName])
+matlab2tikz(['/Users/jallen/Documents/MATLAB/short_project_2/figures/matchedFAdevInd_offsetList',num2str(offsetListNum),'_phantomName_',phantomName])
+
+matchedT1_fig = figure; imagesc(matchedT1(:,:,offsetListNum))
+saveas(matchedT1_fig, ['/Users/jallen/Documents/MATLAB/short_project_2/figures/matchedT1_offsetList',num2str(offsetListNum),'_phantomName_',phantomName])
+matlab2tikz(['/Users/jallen/Documents/MATLAB/short_project_2/figures/matchedT1_offsetList',num2str(offsetListNum),'_phantomName_',phantomName])
+
+matchedT2_fig = figure; imagesc(matchedT2(:,:,offsetListNum))
+saveas(matchedT2_fig, ['/Users/jallen/Documents/MATLAB/short_project_2/figures/matchedT2_offsetList',num2str(offsetListNum),'_phantomName_',phantomName])
+matlab2tikz(['/Users/jallen/Documents/MATLAB/short_project_2/figures/matchedT2_offsetlist',num2str(offsetListNum),'_phantomName_',phantomName])
+end

@@ -1,4 +1,4 @@
-function [TEImageInfo, TIImageInfo, FPImageInfo, TEimages, TIimages, FPimages, TE, TI] = readData(phantomName, offsetListnum)
+function [TEImageInfo, TIImageInfo, FPImageInfo, TEimages, TIimages, FPimages, TE, TI] = readData(phantomName, offsetListNum)
 
 switch phantomName
     
@@ -7,29 +7,29 @@ switch phantomName
          TEImageInfo = dir('/Users/jallen/Documents/MATLAB/short_project_2/nifti_data/20150714_100527ep2dseTE*');
          TIImageInfo = dir('/Users/jallen/Documents/MATLAB/short_project_2/nifti_data/20150714_100527IRep2dseTI*');
            
-        if offsetListnum == 1
+        if offsetListNum == 1
             FPImageInfo = dir('/Users/jallen/Documents/MATLAB/short_project_2/nifti_data/20150714_100527pjep2dsefpList1burstoffs031a1001.nii.gz');
         end
-        if offsetListnum == 2            
+        if offsetListNum == 2            
 %             FPImageInfo = dir('/Users/jallen/Documents/MATLAB/short_project_2/nifti_data/20150714_100527pjep2dsefpList2burstoffs033a1001.nii.gz');        
              FPImageInfo = dir(['/Users/jallen/Documents/MATLAB/short_project_2/nifti_data/20150819/fp/20150819_133056pjep2dsefpList2s003a1001.nii.gz']);                      
         end
-         if offsetListnum == 3            
+         if offsetListNum == 3            
              FPImageInfo = dir(['/Users/jallen/Documents/MATLAB/short_project_2/nifti_data/20150819/fp/20150819_133056pjep2dsefpList3s004a1001.nii.gz']);                      
          end
-          if offsetListnum == 4            
+          if offsetListNum == 4            
              FPImageInfo = dir(['/Users/jallen/Documents/MATLAB/short_project_2/nifti_data/20150819/fp/20150819_133056pjep2dsefpList4s005a1001.nii.gz']);                      
          end
-          if offsetListnum == 5            
+          if offsetListNum == 5            
              FPImageInfo = dir(['/Users/jallen/Documents/MATLAB/short_project_2/nifti_data/20150819/fp/20150819_133056pjep2dsefpList5s006a1001.nii.gz']);                      
           end
-         if offsetListnum == 6            
+         if offsetListNum == 6            
              FPImageInfo = dir(['/Users/jallen/Documents/MATLAB/short_project_2/nifti_data/20150819/fp/20150819_133056pjep2dsefpList6s007a1001.nii.gz']);                      
          end
-          if offsetListnum == 7            
+          if offsetListNum == 7            
              FPImageInfo = dir(['/Users/jallen/Documents/MATLAB/short_project_2/nifti_data/20150819/fp/20150819_133056pjep2dsefpList7s008a1001.nii.gz']);                      
           end
-         if offsetListnum == 8            
+         if offsetListNum == 8            
              FPImageInfo = dir(['/Users/jallen/Documents/MATLAB/short_project_2/nifti_data/20150819/fp/20150819_133056pjep2dsefpList8s009a1001.nii.gz']);                      
          end
          
@@ -86,16 +86,16 @@ switch phantomName
             else
                 tmpTE(i,1:3) = name(1,26:28);
             end
-            str2num(tmpTE(i,:))
-            i
-            TE(i) = str2num(tmpTE(i,:))
+            str2num(tmpTE(i,:));
+            i;
+            TE(i) = str2num(tmpTE(i,:));
             
         end
         TE = unique(sort(TE));
         
         for i = 1:numel(TIImageInfo)
             name = TIImageInfo(i).name;
-            i
+            i;
             if name(1,28)==['m']
                 tmpTI(i,1:2) = name(1,26:27);
             end
@@ -106,7 +106,7 @@ switch phantomName
                 tmpTI(i,1:4) = name(1,26:29);
             end
             
-            TI(i) = str2num(tmpTI(i,:))
+            TI(i) = str2num(tmpTI(i,:));
         end
         
         TI = unique(sort(TI));
@@ -152,6 +152,6 @@ switch phantomName
 end
 
 
-disp('readData: complete')
+disp(['readData: complete for offsetList ',num2str(offsetListNum)])
 end
 

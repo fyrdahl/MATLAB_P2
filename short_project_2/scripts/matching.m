@@ -1,3 +1,4 @@
+
 sliceNumber = 1 % slice to be analysed
 clear data
 
@@ -9,11 +10,11 @@ clear data
 
 for r = 1 : size(FPimages,1)
     for c = 1 : size(FPimages,2)
-data(r,c,sliceNumber,:) = FPimages(r,c,sliceNumber,:);
+data(r,c,sliceNumber,:) = FPimages(r,c,sliceNumber,:,offsetListNum);
     end
 end
 
-[similarity, matchedT1, matchedT2, matchedFAdevInd] = calcSimilarity(data, signalDictionary(:,:,:,:,offsetListNum), sliceNumber, dictionaryParams);
+[similarity(:,:,offsetListNum), matchedT1(:,:,offsetListNum), matchedT2(:,:,offsetListNum), matchedFAdevInd(:,:,offsetListNum)] = calcSimilarity(data, signalDictionary(:,:,:,:,offsetListNum), sliceNumber, dictionaryParams);
 %
 %% visualise spread of matched T1s and T2s
 % figure; hist(squeeze(matchedT1(offsetListNum,:)))

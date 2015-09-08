@@ -2,24 +2,25 @@ function [signalDictionary] = compileDictionary(fingerprintLists, offsetListNums
 
 %% DICTIONARY
 
+signalDictionary = zeros(numel(dictionaryParams(1,:)), numel(dictionaryParams(2,:)), numel(dictionaryParams(3,:)) , nTimeCoursePts, numel(offsetListNums));
+
 for offsetListNum = offsetListNums;
 originalFA1s = fingerprintLists(:,3,offsetListNum);
 originalFA2s = fingerprintLists(:,4,offsetListNum);
 
-signalDictionary = zeros(size(dictionaryParams(1,:),2), size(dictionaryParams(2,:),2), size(dictionaryParams(3,:),2) , nTimeCoursePts);
 
 tic
-for i = 1:numel(dictionaryParams(1,:))
+for i = 1:sum(dictionaryParams(1,:)>0)
     
     %vary T1
     T1 = dictionaryParams(1,i);
     
-    for j = 1:numel(dictionaryParams(2,:))
+    for j = 1:sum(dictionaryParams(2,:)>0)
         
         % vary T2
         T2 = dictionaryParams(2,j);
         
-        for k = 1:numel(dictionaryParams(3,:))
+        for k = 1:sum(dictionaryParams(3,:)>0)
             
             % apply B1 variation range
             fingerprintLists(:,3,offsetListNum) = originalFA1s*(dictionaryParams(3,k));
@@ -27,7 +28,7 @@ for i = 1:numel(dictionaryParams(1,:))
             
             
                 
-            [~, signalDictionary(i,j,k,:,offsetListNum), ~, ~] = SimBloch(T1, T2, fingerprintLists(:,:,offsetListNum), 'dontPlot', freqOffset, nSlices);
+ [~, signalDictionary(i,j,k,:,offsetListNum), ~, ~] =  SimBloch(T1, T2, fingerprintLists(:,:,offsetListNum), 'dontPlot', freqOffset, nSlices);
             
             %% add noise to the simulated signals
            
