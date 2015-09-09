@@ -2,7 +2,7 @@ function [signalDictionary] = compileDictionary(fingerprintLists, offsetListNums
 
 %% DICTIONARY
 
-signalDictionary = zeros(numel(dictionaryParams(1,:)), numel(dictionaryParams(2,:)), numel(dictionaryParams(3,:)) , nTimeCoursePts, numel(offsetListNums));
+signalDictionary = zeros(sum(dictionaryParams(1,:)>0), sum(dictionaryParams(2,:)>0), sum(dictionaryParams(3,:)>0) , nTimeCoursePts, max(offsetListNums));
 
 for offsetListNum = offsetListNums;
 originalFA1s = fingerprintLists(:,3,offsetListNum);
@@ -28,7 +28,7 @@ for i = 1:sum(dictionaryParams(1,:)>0)
             
             
                 
- [~, signalDictionary(i,j,k,:,offsetListNum), ~, ~] =  SimBloch(T1, T2, fingerprintLists(:,:,offsetListNum), 'dontPlot', freqOffset, nSlices);
+ [~, signalDictionary(i,j,k,:,offsetListNum), ~, ~] = SimBloch(T1, T2, fingerprintLists(:,:,offsetListNum), 'dontPlot', freqOffset, nSlices);
             
             %% add noise to the simulated signals
            

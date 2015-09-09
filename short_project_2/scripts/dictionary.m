@@ -33,7 +33,7 @@ switch phantomName
         
         disp('Phantom: Jack')
         clear dictionaryParams
-        T1s = [30:20:260, 3050:20:31500];
+        T1s = [30:20:260, 3050:20:3150];
         T2s = [10:10:120, 1770:10:1820];
         FAdevs = 0.7:0.05:1.3;
         
@@ -42,7 +42,7 @@ switch phantomName
         dictionaryParams(3,1:numel(FAdevs)) = FAdevs;
         
 end
-nTimeCoursePts = size(data , 4)/2;
+nTimeCoursePts = 24;
 
 
 [signalDictionary] = compileDictionary(fingerprintLists, offsetListNums, dictionaryParams, nTimeCoursePts, freqOffset, nSlices, background);
