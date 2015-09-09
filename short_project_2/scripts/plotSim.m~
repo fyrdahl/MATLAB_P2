@@ -38,5 +38,5 @@ end
 legend ('Simulated Signal', '1','2','3','4','5','6' )
 xlabel 'TE indices'
 ylabel 'signal (normalised to first measurement)'
-savefig([workingdir,'/figures/compareSimwithData_Phantom_',phantomName,'__Offset_list_',num2str(offsetListNum),'_compartmentcentercoordslist:',num2str(compartmentCentersList),'.fig'])
+savefig([[workingdir,'/figures/compareSimwithData_Phantom_',phantomName,'__Offset_list_',num2str(offsetListNum),'_compartmentcentercoordslist:',num2str(compartmentCentersList)],'.fig'])
 %% figure; plot(residuals,'+')

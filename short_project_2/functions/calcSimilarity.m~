@@ -32,15 +32,21 @@ for data_i = 1 : size(data,1)
                 for k = 1 : size(signalDictionary,3) % flip angle variations due to field inhomogeneities
                     
               
-                    sd = reshape(signalDictionary, [size(signalDictionary,1)*size(signalDictionary,2)*size(signalDictionary,3), size(signalDictionary,4)]);
-                    tc = reshape(data,[size(data,1)*size(data,2), size(data,4)]);
+%                     sd = reshape(signalDictionary, [size(signalDictionary,1)*size(signalDictionary,2)*size(signalDictionary,3), size(signalDictionary,4)]);
+%                     tc = reshape(data,[size(data,1)*size(data,2), size(data,4)]);                   
+%                    
+%                     
+%                    for d = 1:size(sd,1)
+%                        (d/size(sd,1))*100
+%                        for n = 1:size(tc,1)
+%                         similarity = dot(sd(1,:),tc(n,1:24)')/(norm(sd)*norm(tc));
+%                        end
+%                    end
                     
-                    similarity = dot(sd(1:end,:),tc(1:end,:))/(norm(sd)*norm(tc));
-                    
+                   
 %                     s = squeeze(signalDictionary(i,j,k,:));
-                    d = squeeze(data(data_i,data_j, sliceNumber, 1:numel(s) ));
-                    
-                    similarity(data_i,data_j,i,j,k) = dot(s,d)/(norm(s)*norm(d)) ;
+%                     d = squeeze(data(data_i,data_j, sliceNumber, 1:numel(s) ));                     
+%                     similarity(data_i,data_j,i,j,k) = dot(s,d)/(norm(s)*norm(d)) ;
                  
                 end
                 

@@ -1,5 +1,5 @@
 % mask including whole phantom
-load('/Users/jallen/Documents/MATLAB/short_project_2/mask.mat')
+load([workingdir,'/mask.mat'])
 
 %% normalise pixel values
 % TEimages(:,:,TE) = TEimages(:,:,TE)/max(max(max(TEimages(:,:,:))));

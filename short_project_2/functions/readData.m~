@@ -54,7 +54,7 @@ switch phantomName
                 
                 if strfind(TIImageInfo(i).name(1,:),['TI',num2str(TI(TI_ind))]) > 0
                     TI_filename = [workingdir,'/nifti_data/', TIImageInfo(i).name(1,:)];
-                    TIimages(:,:,TI(TI_ind)) = read_avw(TI_filename);
+                    TIimages(:,:,TI(TI_ind)) = read_avw(T['/Users/jallen/Documents/MATLAB/short_project_2I_filename);
                 end
             end
         end

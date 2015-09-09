@@ -4,9 +4,9 @@ clear data
 
 % data = FPimages(compartmentCenters(1,1),compartmentCenters(1,2),:,:);
 
-for r = 1:size(compartmentCenters,1)
-data(r,1,sliceNumber,:) = FPimages(compartmentCenters(r,1),compartmentCenters(r,2),sliceNumber,:);
-end
+% for r = 1:size(compartmentCenters,1)
+% data(r,1,sliceNumber,:) = FPimages(compartmentCenters(r,1),compartmentCenters(r,2),sliceNumber,:);
+% end
 
 for r = 1 : size(FPimages,1)
     for c = 1 : size(FPimages,2)
