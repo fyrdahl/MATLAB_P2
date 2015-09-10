@@ -133,7 +133,7 @@ for offsetListNum = 2:8
 FA_fig = figure; imagesc(squeeze(matchedFAdevInd(:,:,offsetListNum)))
 saveas(FA_fig, [workingdir,'/figures/',phantomName,'matchedFAdevInd_offsetList',num2str(offsetListNum),'_phantomName_',phantomName])
 saveas(matchedT2_fig, [workingdir,'/figures/',phantomName,'matchedT2_offsetList',num2str(offsetListNum),'_phantomName_',phantomName,'.png'])
-matlab2tikz([workingdir,'/Users/jallen/Documents/MATLAB/short_project_2/figures/matchedFAdevInd_offsetList',num2str(offsetListNum),'_phantomName_',phantomName])
+matlab2tikz([workingdir,'/figures/matchedFAdevInd_offsetList',num2str(offsetListNum),'_phantomName_',phantomName])
 
 matchedT1_fig = figure; imagesc(matchedT1(:,:,offsetListNum))
 saveas(matchedT1_fig, [workingdir,'/figures/',phantomName,'matchedT1_offsetList',num2str(offsetListNum),'_phantomName_',phantomName])
