@@ -1,10 +1,12 @@
-function [signalDictionary] = compileDictionary(fingerprintLists, offsetListNums, dictionaryParams, nTimeCoursePts, freqOffset, nSlices, background)
+function [sd] = compileDictionary(fingerprintLists, offsetListNum, dictionaryParams, nTimeCoursePts, freqOffset, nSlices, phantomName, workingdir, background)
 
 %% DICTIONARY
 
-signalDictionary = zeros(sum(dictionaryParams(1,:)>0), sum(dictionaryParams(2,:)>0), sum(dictionaryParams(3,:)>0) , nTimeCoursePts, max(offsetListNums));
 
-for offsetListNum = offsetListNums;
+
+sd = zeros(sum(dictionaryParams(1,:)>0), sum(dictionaryParams(2,:)>0), sum(dictionaryParams(3,:)>0) , nTimeCoursePts, max(offsetListNum));
+
+
 originalFA1s = fingerprintLists(:,3,offsetListNum);
 originalFA2s = fingerprintLists(:,4,offsetListNum);
 
@@ -28,7 +30,7 @@ for i = 1:sum(dictionaryParams(1,:)>0)
             
             
                 
- [~, signalDictionary(i,j,k,:,offsetListNum), ~, ~] = SimBloch(T1, T2, fingerprintLists(:,:,offsetListNum), 'dontPlot', freqOffset, nSlices);
+ [~, sd(i,j,k,:,offsetListNum), ~, ~] = SimBloch(T1, T2, fingerprintLists(:,:,offsetListNum), 'dontPlot', freqOffset, nSlices);
             
             %% add noise to the simulated signals
            
@@ -55,4 +57,4 @@ toc
 
 end
 
-end
+
