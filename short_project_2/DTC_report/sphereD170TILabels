@@ -1,0 +1,67 @@
+% This file was created by matlab2tikz.
+%
+%The latest updates can be retrieved from
+%  http://www.mathworks.com/matlabcentral/fileexchange/22022-matlab2tikz-matlab2tikz
+%where you can also make suggestions and rate matlab2tikz.
+%
+\definecolor{mycolor1}{rgb}{0.00000,0.44700,0.74100}%
+\definecolor{mycolor2}{rgb}{0.85000,0.32500,0.09800}%
+\definecolor{mycolor3}{rgb}{0.92900,0.69400,0.12500}%
+\definecolor{mycolor4}{rgb}{0.49400,0.18400,0.55600}%
+\definecolor{mycolor5}{rgb}{0.46600,0.67400,0.18800}%
+\definecolor{mycolor6}{rgb}{0.30100,0.74500,0.93300}%
+%
+\begin{tikzpicture}
+
+\begin{axis}[%
+width=0.951\figurewidth,
+height=\figureheight,
+at={(0\figurewidth,0\figureheight)},
+scale only axis,
+axis on top,
+xmin=0.5,
+xmax=64.5,
+y dir=reverse,
+ymin=0.5,
+ymax=64.5,
+hide axis
+]
+\addplot [forget plot] graphics [xmin=0.5,xmax=64.5,ymin=0.5,ymax=64.5] {sphereD170TILabels-1.png};
+\addplot [color=mycolor1,only marks,mark=asterisk,mark options={solid},forget plot]
+  table[row sep=crcr]{%
+21	21\\
+};
+\node[right, align=left, text=black]
+at (axis cs:21,21) {1};
+\addplot [color=mycolor2,only marks,mark=asterisk,mark options={solid},forget plot]
+  table[row sep=crcr]{%
+22	22\\
+};
+\node[right, align=left, text=black]
+at (axis cs:22,22) {2};
+\addplot [color=mycolor3,only marks,mark=asterisk,mark options={solid},forget plot]
+  table[row sep=crcr]{%
+24	24\\
+};
+\node[right, align=left, text=black]
+at (axis cs:24,24) {3};
+\addplot [color=mycolor4,only marks,mark=asterisk,mark options={solid},forget plot]
+  table[row sep=crcr]{%
+27	27\\
+};
+\node[right, align=left, text=black]
+at (axis cs:27,27) {4};
+\addplot [color=mycolor5,only marks,mark=asterisk,mark options={solid},forget plot]
+  table[row sep=crcr]{%
+32	32\\
+};
+\node[right, align=left, text=black]
+at (axis cs:32,32) {5};
+\addplot [color=mycolor6,only marks,mark=asterisk,mark options={solid},forget plot]
+  table[row sep=crcr]{%
+42	39\\
+};
+\node[right, align=left, text=black]
+at (axis cs:42,39) {6};
+\end{axis}
+\end{tikzpicture}%

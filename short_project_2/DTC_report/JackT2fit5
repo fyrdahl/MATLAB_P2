@@ -1,0 +1,92 @@
+% This file was created by matlab2tikz.
+%
+%The latest updates can be retrieved from
+%  http://www.mathworks.com/matlabcentral/fileexchange/22022-matlab2tikz-matlab2tikz
+%where you can also make suggestions and rate matlab2tikz.
+%
+\definecolor{mycolor1}{rgb}{0.00000,0.44700,0.74100}%
+\definecolor{mycolor2}{rgb}{0.85000,0.32500,0.09800}%
+\definecolor{mycolor3}{rgb}{0.92900,0.69400,0.12500}%
+\definecolor{mycolor4}{rgb}{0.49400,0.18400,0.55600}%
+\definecolor{mycolor5}{rgb}{0.46600,0.67400,0.18800}%
+%
+\begin{tikzpicture}
+
+\begin{axis}[%
+width=0.951\figurewidth,
+height=\figureheight,
+at={(0\figurewidth,0\figureheight)},
+scale only axis,
+xmin=40,
+xmax=160,
+ymin=0,
+ymax=2000,
+axis background/.style={fill=white}
+]
+\addplot [color=mycolor1,only marks,mark=*,mark options={solid},forget plot]
+  table[row sep=crcr]{%
+40	977\\
+50	841\\
+60	751\\
+70	631\\
+80	567\\
+90	472\\
+100	438\\
+120	303\\
+140	252\\
+160	174\\
+};
+\addplot [color=mycolor2,only marks,mark=*,mark options={solid},forget plot]
+  table[row sep=crcr]{%
+40	1289\\
+50	1181\\
+60	1063\\
+70	967\\
+80	871\\
+90	792\\
+100	713\\
+120	600\\
+140	489\\
+160	410\\
+};
+\addplot [color=mycolor3,only marks,mark=*,mark options={solid},forget plot]
+  table[row sep=crcr]{%
+40	1909\\
+50	1908\\
+60	1878\\
+70	1898\\
+80	1869\\
+90	1880\\
+100	1845\\
+120	1860\\
+140	1824\\
+160	1816\\
+};
+\addplot [color=mycolor4,only marks,mark=*,mark options={solid},forget plot]
+  table[row sep=crcr]{%
+40	355\\
+50	252\\
+60	173\\
+70	136\\
+80	104\\
+90	92\\
+100	83\\
+120	81\\
+140	84\\
+160	84\\
+};
+\addplot [color=mycolor5,only marks,mark=*,mark options={solid},forget plot]
+  table[row sep=crcr]{%
+40	600\\
+50	478\\
+60	385\\
+70	301\\
+80	244\\
+90	192\\
+100	158\\
+120	103\\
+140	76\\
+160	56\\
+};
+\end{axis}
+\end{tikzpicture}%

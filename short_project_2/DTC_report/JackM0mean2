@@ -1,0 +1,29 @@
+% This file was created by matlab2tikz.
+%
+%The latest updates can be retrieved from
+%  http://www.mathworks.com/matlabcentral/fileexchange/22022-matlab2tikz-matlab2tikz
+%where you can also make suggestions and rate matlab2tikz.
+%
+\begin{tikzpicture}
+
+\begin{axis}[%
+width=0.864\figurewidth,
+height=\figureheight,
+at={(0\figurewidth,0\figureheight)},
+scale only axis,
+point meta min=1987.02148659577,
+point meta max=694078255621.329,
+axis on top,
+xmin=0.5,
+xmax=50.5,
+y dir=reverse,
+ymin=0.5,
+ymax=53.5,
+hide axis,
+colormap/jet,
+colorbar,
+colorbar style={ylabel={M0 (Scaling Factor Mean)}}
+]
+\addplot [forget plot] graphics [xmin=0.5,xmax=50.5,ymin=0.5,ymax=53.5] {JackM0mean2-1.png};
+\end{axis}
+\end{tikzpicture}%

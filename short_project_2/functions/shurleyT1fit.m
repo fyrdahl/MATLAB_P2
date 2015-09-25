@@ -17,8 +17,5 @@ function [pd r1 eff res] = shurleyT1fit(images, plotFlag,TI)
         [pd r1 eff res] = qmap_t1_fit_ir(images, 0.001*TI(2:size(images,2)),opts)
         
 
-
-
-
 end
 

@@ -38,52 +38,52 @@
 % Copyright (c) 2005-2012, The Regents of the University of Wisconsin
 % All rights reserved. Type 'doc qmap' for full license information.
 
-function [pd r1 eff res] = qmap_t1_fit_ir(data, tivals, opts)
+function [pd r1 eff res, F, mz] = qmap_t1_fit_ir(data, tivals, opts)
 
 tic;
 
 %% OO. Optomization settings
-  % Levenburg-Marquardt /w Numerical Jacobian Matrix, Tolerance is 1e-4
-  optim = optimset('Algorithm', 'levenberg-marquardt', 'Jacobian', 'off', 'Tolfun', 1e-4, 'Display', 'off');
+% Levenburg-Marquardt /w Numerical Jacobian Matrix, Tolerance is 1e-4
+optim = optimset('Algorithm', 'levenberg-marquardt', 'Jacobian', 'off', 'Tolfun', 1e-4, 'Display', 'off');
 
 %% O. Check input arguments
 switch nargin
-  case 2
-    opts   = struct();    % Use default options
-  case 3
-    if ~isstruct(opts)
-      error('Opts must be a structure.  Type ''help t1_fit_ir_vnmr'' for more information');
-    end
-  otherwise
-    error('You must supply 2 or 3 input arguments.  Type ''help qmap_t1_fit_ir'' for more information');
+    case 2
+        opts   = struct();    % Use default options
+    case 3
+        if ~isstruct(opts)
+            error('Opts must be a structure.  Type ''help t1_fit_ir_vnmr'' for more information');
+        end
+    otherwise
+        error('You must supply 2 or 3 input arguments.  Type ''help qmap_t1_fit_ir'' for more information');
 end
 
 % Grab Options or Set Defaults
 if isfield(opts, 'points')
-  points = opts.points;
+    points = opts.points;
 end
 
 if isfield(opts, 'usemin')
-  usemin = opts.usemin;
+    usemin = opts.usemin;
 else
-  % Default behavior is to use the null point as well
-  usemin = 1;
+    % Default behavior is to use the null point as well
+    usemin = 1;
 end
 
 if isfield(opts, 'fiteff')
-  fiteff = opts.fiteff;
+    fiteff = opts.fiteff;
 else
-  fiteff = 1;
+    fiteff = 1;
 end
 
 if isfield(opts, 'debug')
-  debug = opts.debug;
-  if debug == 1
-    dbgtime = toc;
-  end
+    debug = opts.debug;
+    if debug == 1
+        dbgtime = toc;
+    end
 else
-  % Default is to turn off debugging
-  debug = 0;
+    % Default is to turn off debugging
+    debug = 0;
 end
 
 % Constants
@@ -96,16 +96,16 @@ disp('==============IR Fit Signa===================')
 
 % Determine which TI points to use
 if ~exist('points', 'var')
-  % If not specified, use all points
-  points = 1:length(tivals);
+    % If not specified, use all points
+    points = 1:length(tivals);
 else
-  % Use specified points
-  if length(points) > length(tivals)
-    error('You specifed more fitting points than avalible TE values');
-  end
-  
-  tivals = tivals(points);
-  disp('NOTE: Subset of TI times used for fitting.');
+    % Use specified points
+    if length(points) > length(tivals)
+        error('You specifed more fitting points than avalible TE values');
+    end
+    
+    tivals = tivals(points);
+    disp('NOTE: Subset of TI times used for fitting.');
 end
 
 disp(['TI Values: ' num2str(tivals,'%01.3f ')]);
@@ -126,68 +126,74 @@ fprintf('T1 IR Fitting:');
 
 %% II. For each point, perform IR fitting
 for ii = find(~(sum(data, 2) == 0))';
-  % Grab voxel data
-  vox_data = data(ii,:);
-  
-  % Update Progress
-  qmap_progressbar(pt/npts);
-  pt = pt + 1;
-  
-  % Initial Guess
-  [v idx]   = min(abs(vox_data)); %#ok<ASGLU>
-  min_ti    = tivals(idx);
-  x         = [max(vox_data(:)) LOG2/min_ti 1];  % TInull = T1/ln(2)
-  
-  % Check if we should use the minimum-singal TI point
-  if usemin == 0
-    % Remove the TI value and corresponding data point
-    ti = tivals;
-    ti(idx) = [];
-    vox_data(idx) = [];
-  else
-    % Use all TI values
-    ti = tivals;
-  end
-  
-  % Minimize /w Levenburg-Marquardt
-  [x residual] = lsqnonlin(@ir_model, x, [], [], optim);
-  
-  % Save results
-  pd(ii)       = x(1);
-  r1(ii)       = x(2);
-  if fiteff == 1
-    eff(ii)    = x(3);
-  else
-    eff(ii)    = 1;
-  end
-  res(ii)      = residual;
-  
-  % Optinal debug plotting
-  if debug == 1 && (toc - dbgtime) > .250
-    % Only re-draw every 1 second
+    % Grab voxel data
+    vox_data = data(ii,:);
     
-    dbgtime = toc;
-
-    % Setup Figure
-    if ~exist('dbfig', 'var')
-      dbfig = figure;
+    % Update Progress
+    qmap_progressbar(pt/npts);
+    pt = pt + 1;
+    
+    % Initial Guess
+    [v idx]   = min(abs(vox_data)); %#ok<ASGLU>
+    min_ti    = tivals(idx);
+    x         = [max(vox_data(:)) LOG2/min_ti 1];  % TInull = T1/ln(2)
+    
+    % Check if we should use the minimum-singal TI point
+    if usemin == 0
+        % Remove the TI value and corresponding data point
+        ti = tivals;
+        ti(idx) = [];
+        vox_data(idx) = [];
+    else
+        % Use all TI values
+        ti = tivals;
     end
- 
-    % Setup vector
-    ti = min(tivals):.01:max(tivals);
-
-    % Plot actual vs fitted data
-    figure(dbfig);
-    plot(tivals, data(ii,:), 'o', ti, ir_model(x,1), '-');
-
-    % Figure captions & Legend
-    title(['T1: ' num2str(1/x(2), '%0.2f') ' s']);
-    legend('MRI Data', 'Fit Curve');
-    xlabel('Inversion Time [s]');
-    ylabel('Signal [a.u.]');
-    drawnow;
-  end
-  
+    
+    % Minimize /w Levenburg-Marquardt
+    [x residual] = lsqnonlin(@ir_model, x, [], [], optim);
+    
+    % Save results
+    pd(ii)       = x(1);
+    r1(ii)       = x(2);
+    if fiteff == 1
+        eff(ii)    = x(3);
+    else
+        eff(ii)    = 1;
+    end
+    
+    res(ii)      = residual;
+    
+    % Optinal debug plotting
+    if debug == 1 %&& (toc - dbgtime) > .250 %edited by JA to force plot
+        % Only re-draw every 1 second
+        
+        dbgtime = toc;
+        
+        % Setup Figure
+        if ~exist('dbfig', 'var')
+            dbfig = figure;
+        end
+        
+        % Setup vector
+      %   ti = min(tivals):.01:max(tivals);
+       ti = tivals; % JA edit
+        
+        % Plot actual vs fitted data
+        figure(dbfig);
+        plot(tivals, data(ii,:), 'o', ti, ir_model(x,1), '-');
+        
+        [F(ii,:) mz(ii,:)] = ir_model(x, 1); % added by JA
+        
+        % Figure captions & Legend
+        title(['T1: ' num2str(1/x(2), '%0.2f') ' s']);
+        legend('MRI Data', 'Fit Curve');
+        xlabel('Inversion Time [s]');
+        ylabel('Signal [a.u.]');
+        drawnow;
+        
+        
+    end
+    
 end
 
 % Done.
@@ -195,37 +201,38 @@ qmap_progressbar(1);
 toc;
 
 %% V. IR Model Function
-  function [F J] = ir_model(x, dbgmode) %#ok<INUSD>
-    % Pull out parameters
-    pd_mod    = x(1);
-    r1_mod    = x(2);
-    
-    if fiteff == 1
-      eff_mod = x(3);
-    else
-      % Don't fit inversion efficiency
-      eff_mod = 1;
+%    function [F J mz] = ir_model(x, dbgmode) %#ok<INUSD>
+ function [F mz] = ir_model(x, dbgmode) %#ok<INUSD> %JA edit
+        % Pull out parameters
+        pd_mod    = x(1);
+        r1_mod    = x(2);
+        
+        if fiteff == 1
+            eff_mod = x(3);
+        else
+            % Don't fit inversion efficiency
+            eff_mod = 1;
+        end
+        
+        % MR Signal Mz (z-magnetization)
+        mz = pd_mod.*(1-2.*eff_mod.*exp(-ti.*r1_mod));
+        
+        % Output vector
+        F = abs(mz);      % Use sign-sensitive signal
+        
+        if ~exist('dbgmode', 'var')
+            F = F - vox_data; % Difference vector
+        end
+        
+        % Jacobian / First Derivatives of Mz
+        if nargout == 2
+            dmz_dm0 = 1 - 2.*eff_mod.*exp(-ti.*r1_mod);
+            dmz_dr1 = 2.*pd_mod.*eff_mod.*ti.*exp(-ti.*r1_mod);
+            dmz_def = -2.*pd_mod.*exp(ti.*r1_mod);
+            
+            % Output jacobian
+            J = [(dmz_dm0)' (dmz_dr1)' (dmz_def)'];
+        end
     end
-    
-    % MR Signal Mz (z-magnetization)
-    mz = pd_mod.*(1-2.*eff_mod.*exp(-ti.*r1_mod));
-    
-    % Output vector
-    F = abs(mz);      % Use sign-sensitive signal
-    
-    if ~exist('dbgmode', 'var')
-      F = F - vox_data; % Difference vector
-    end
-    
-    % Jacobian / First Derivatives of Mz
-    if nargout == 2
-      dmz_dm0 = 1 - 2.*eff_mod.*exp(-ti.*r1_mod);
-      dmz_dr1 = 2.*pd_mod.*eff_mod.*ti.*exp(-ti.*r1_mod);
-      dmz_def = -2.*pd_mod.*exp(ti.*r1_mod);
-      
-      % Output jacobian
-      J = [(dmz_dm0)' (dmz_dr1)' (dmz_def)'];
-    end
-  end
 
 end

@@ -42,6 +42,13 @@ switch phantomName
         compartmentCenters(5,1:2,2) = [32 32];
         compartmentCenters(6,1:2,2) = [39 42];
       
+        compartmentCenters(1,1:2,3) = [21 21];
+        compartmentCenters(2,1:2,3) = [22 22];
+        compartmentCenters(3,1:2,3) = [24 24];
+        compartmentCenters(4,1:2,3) = [27 27];
+        compartmentCenters(5,1:2,3) = [32 32];
+        compartmentCenters(6,1:2,3) = [39 42];
+      
         
     
 end

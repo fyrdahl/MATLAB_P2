@@ -1,9 +1,9 @@
-function[compartmentT1s, compartmentT2s, T2curves, T1curves, fittedCurve, goodness, output] = fitEvolutionCurves(TEimages, TIimages, T2_x, T1_x, region, varargin)
+function[compartmentT1s, compartment_T2s, T2curves, T1curves, fittedCurve, goodness, output,F] = fitEvolutionCurves(phantomName,TEimages, TIimages, T2_x, T1_x, region, varargin)
 
 % Models to fit to the data
-% T2model = @(a,T2,c, x) a*exp(-x*(1/T2)) + c
-T2model = @(a,T2,c, x) a + -x*(1/T2) + c;
-T1model = @(Mzeq,Mz0,B,T1, x) Mzeq - (Mzeq - Mz0)*B*exp(-x*(1/T1));
+T2model = @(a,T2,c, x) a*exp(-x*(1/T2)) + c;
+%T2model = @(a,T2,c, x) a + -x*(1/T2);
+%T1model = @(Mzeq,Mz0,B,T1, x) Mzeq - (Mzeq - Mz0)*B*exp(-x*(1/T1));
 
 switch region
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -11,21 +11,42 @@ switch region
     case 'compartments'
         
         %% Fit T2 decay
+        T2fig = figure;
         for n = 1:6
             compartmentCenters = varargin{1} ;
             
-            T2curves(:,n) = log( squeeze(TEimages(compartmentCenters(n,1),compartmentCenters(n,2),T2_x)));
+            T2curves(:,n) = squeeze(TEimages(compartmentCenters(n,1,1),compartmentCenters(n,2,1),T2_x));
             
-            [fittedCurve, goodness, output] = fit(T2_x,T2curves(:,n),T2model,'Upper',[5000 4000 500],'Lower',[0 0 -100],'StartPoint',[0.5 200 100])
+            [fittedCurve, goodness, output] = fit(T2_x,T2curves(:,n),T2model,'Upper',[5000 4000 500],'Lower',[0 0 -100],'StartPoint',[0.5 200 100]);
             
-            compartmentT2s(n) = fittedCurve.T2;
+            compartment_T2s(n) = fittedCurve.T2;
+            compartment_a(n) = fittedCurve.a;
+            compartment_c(n) = fittedCurve.c;
             
-            figure; plot(T2_x, T2curves(:,n),'.')
+            plot(T2_x, T2curves(:,n),'.')
+            
             hold on
-            plot(fittedCurve)
+            
+            filename = '/Users/jallen/Documents/MATLAB/short_project_2/DTC_report'
+            matlab2tikz('figurehandle',T2fig,'filename',[filename,'/',phantomName,'T2fit',num2str(n)],'height','\figureheight','width','\figurewidth')
         end
         
+        for n = 1:6
+            plot(T2_x, compartment_a(n)*exp(-(T2_x)*(1/compartment_T2s(n))) + compartment_c(n),'k-+')
+            hold on
+            legend off
+        end
+        legend ({'Compartment 1', 'Compartment 2', 'Compartment 3', 'Compartment 4', 'Compartment 5', 'Compartment 6'},'Position',[0.39,0.45,0.25,0.1],'FontSize',8)
+        
+        xlabel 'Echo Time (TE) [ms]'
+        ylabel 'Signal [Arbitrary Units]'
+        
+        matlab2tikz('figurehandle',T2fig,'filename',[filename,'/',phantomName,'T2fitALL'],'height','\figureheight','width','\figurewidth')
+        
+        
+        clear T2fig
         %% Fit T1 decay
+        figure
         for n = 1:6
             
             compartmentCenters = varargin{1} ;
@@ -34,20 +55,47 @@ switch region
             goodness = 0;
             output = 0;
             
-            T1curves(n,:) = squeeze(TIimages(compartmentCenters(n,1),compartmentCenters(n,2),T1_x));
+            T1curves(n,:) = squeeze(TIimages(compartmentCenters(n,1,2),compartmentCenters(n,2,2),T1_x));
             opts = struct('debug',1,'fiteff',1);
             
-            [pd r1 eff res] = qmap_t1_fit_ir(T1curves(n,:), 0.001*T1_x,opts);
+            [pd(n) r1(n) eff res F(n,:) mz(n,:)] = qmap_t1_fit_ir(T1curves(n,:), 0.001*T1_x,opts);
+            
             disp(['fit number: ',num2str(n)])
-            
-            compartmentT1s(n) = (1/r1)*1000
-            
-            
-            
+            compartmentT1s(n) = (1/r1(n))*1000
+            hold on
             
         end
         
+        T1fig = figure;
+        for n = 1:6
+            plot(log10(T1_x), T1curves(n,:) ,'.')
+            hold on
+        end
         
+        for n = 1:6
+            r1(n)
+            pd(n)
+            T1 = (1/r1(n))*1000;
+            x = 1:numel(F(1,:));
+            plot(log10(T1_x), F(n,x) ,'k+' )
+            plot(log10(T1_x), mz(n,x) ,'k-*' )
+            hold on
+        end
+        legend off
+        
+        
+        %%
+        filename = '/Users/jallen/Documents/MATLAB/short_project_2/DTC_report'
+        
+        
+        legend ({'Compartment 1', 'Compartment 2', 'Compartment 3', 'Compartment 4', 'Compartment 5', 'Compartment 6'},'Location','best')
+        
+        xlabel (['Inversion Time (TI) [log_{10}','(ms)]'])
+        ylabel 'Signal [Arbitrary Units]'
+       ylim([ -2000 3500])
+        matlab2tikz('figurehandle',T1fig,'filename',[filename,'/',phantomName,'T1fitALL'],'height','\figureheight','width','\figurewidth')
+        
+        %
         %% Fit full phantom, to produce T1 and T2 maps
         
     case 'fullPhantom'

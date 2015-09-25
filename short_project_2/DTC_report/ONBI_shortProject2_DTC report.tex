@@ -1,14 +1,23 @@
-\documentclass[3p, twocolumn]{elsarticle}
+%\documentclass[]{article}
+%\documentclass[3p, twocolumn]{elsarticle}
+\documentclass[journal]{IEEEtran}
 
 \usepackage{lineno,hyperref}
 \usepackage{amsmath}
-
+ \usepackage{multirow}
+\usepackage[table,xcdraw]{xcolor}
+%\graphicspath{figs}
+\usepackage{multicol}
+\usepackage{tikz}
 \usepackage{pgfplots} 
+\usepackage{graphicx}
 % and optionally (as of Pgfplots 1.3): 
 \pgfplotsset{compat=newest} 
 \pgfplotsset{plot coordinates/math parser=false} 
-%\newlength\figureheight 
-%\newlength\figurewidth
+\newlength\figureheight 
+\newlength\figurewidth
+\newcommand{\abs}[1]{\lvert#1\rvert}
+\newcommand{\norm}[1]{\lVert#1\rVert}
 
 \modulolinenumbers[5]
 
@@ -48,124 +57,321 @@
 
 \begin{document}
 
-\begin{frontmatter}
+\input{DTCreport2titlepage}
 
-\title{Application of Magnetic Resonance Fingerprinting to measure brain oedema}
+
+%\begin{topmatter}
+
+
 %\tnotetext[mytitlenote]{Fully documented templates are available in the elsarticle package on \href{http://www.ctan.org/tex-archive/macros/latex/contrib/elsarticle}{CTAN}.}
 
 %% Group authors per affiliation:
 %\author{Elsevier\fnref{myfootnote}}
-\author{Jack Allen}
-\author{Supervisors: Peter Jezzard \& James Kennedy}
-\address{University of Oxford, Oxford, UK.}
-\fntext[myfootnote]{Since 1880.}
+
+\title{ Application of Magnetic Resonance Fingerprinting to Measure Brain Oedema} 
+
 
 %% or include affiliations in footnotes:
-%\author[mymainaddress,mysecondaryaddress]{Elsevier Inc}
+\author{\textit{Student:} Jack Allen\IEEEauthorrefmark{1} \textit{Supervisors:} James Kennedy\IEEEauthorrefmark{2} \& Peter Jezzard\IEEEauthorrefmark{1} \thanks{\IEEEauthorrefmark{1}FMRIB Centre, Nuffield Department of Clinical Neurosciences, University of Oxford, Oxford, UK.} \thanks{\IEEEauthorrefmark{2}Radcliffe Department of Medicine, University of Oxford, Oxford, UK.}}
 %\ead[url]{www.elsevier.com}
 
-%\author[mysecondaryaddress]{Global Customer Service\corref{mycorrespondingauthor}}
-%\cortext[mycorrespondingauthor]{Corresponding author}
+
+\maketitle
+
 %\ead{support@elsevier.com}
-
-%\address[mymainaddress]{1600 John F Kennedy Boulevard, Philadelphia}
-%\address[mysecondaryaddress]{360 Park Avenue South, New York}
-
+%\address[mymainaddress]{FMRIB centre, Nuffield Department of Clinical Neurosciences, University of Oxford, Oxford, UK}
 
 \begin{abstract}
 
-% 'Graphical abstract' as well?
 \end{abstract}
 
 % 'Research highlights' section as well?
 
-\begin{keyword}
-Magnetic Resonance Imaging, Fingerprinting, Stroke
-\end{keyword}
+\begin{IEEEkeywords}
+Magnetic Resonance Imaging Fingerprinting, Stroke
+\end{IEEEkeywords}
 
-\end{frontmatter}
+%\end{topmatter}
 
 %\linenumbers
+
 
 \section{Introduction}
 
 % Brief Introduction to MRI and what it's used for
-Magnetic resonance imaging (MRI) has become an established and widely used tool for producing images for diagnosis and disease monitoring in clinical environments. Structural and functional information can be obtained, depending on the method used. One of the uses of MRI is to produce quantitative parameter measurements, in order to distinguish between different tissue types within a sample and provide image contrast. Two commonly extracted properties are the terms that describe the rate at which the transverse and longitudinal magnetisation components evolve over time. These are known as T2 and T1, respectively. The transverse component decays towards zero, according to Eq. \eqref{eq:transverse_decay}, where $t$ is the time elapsed, $M_xy(t)$ is the transverse magnetisation at $t$ and $T_2$ determines the rate of decay. However, in practice $T_2$ is replaced with $T^{*}_{2}$, because spatial inhomogeneities in the static field play a role in dephasing the excited spins.
+Magnetic resonance imaging (MRI) has become an established and widely used tool for producing images for diagnosis and disease monitoring in clinical environments. Differences between tissue types are often highlighted qualitatively via image contrast, but efforts are being made to produce more quantitative parameter measurements. Two commonly extracted properties are the terms that describe the rate at which the transverse and longitudinal magnetisation components evolve over time ($T_2$ and $T_1$, respectively). The time constant $T_2$ can be measured by conducting a spin echo (SE) experiment and varying the echo time $TE$ at which the signal is recorded. Equation \ref{eq:transverse_decay} describes how the evolution of the transverse magnetisation $M_{xy}$ depends on $TE$ and $T_2$. The value of $T_2$ can be extracted from a fit of eq. \ref{eq:transverse_decay} to the detected signal evolution.
 
-Equation \eqref{eq:T2star} describes the influence that the relaxation due to $B_0$ inhomogenties has on the total transverse relaxation, where the effect of the inhomogenities is represented by $T^{'}_{2}$.
+\cite{haackemagnetic}. 
 
 \begin{equation} \label{eq:transverse_decay}
-M_{xy} (t) = M_{xy}(0)\exp^{-\frac{t}{T_{2}}}
+M_{xy} (TE) = M_{xy}(0)\exp^{-\frac{TE}{T_{2}}}
 \end{equation}
 
 
-\begin{equation} \label{eq:T2star}
- \frac{1}{T^{*}_{2}} = \frac{1}{T_{2}} + \frac{1}{T^{'}_2}
-\end{equation}
-
-Equation \eqref{eq:longitudinal_recovery} describes the behaviour of the longitudinal magnetisiation, where $ t $ is the elapsed time, $M_{z}(0)$ is the initial longitudinal magnetisation and $M_{z,eq}$ is the equilibrium magnetisation that would occur, given $B_0$, but in the absence of excitation pulses. The constant $T_1$ determines the rate at which the longitudinal magnetisation chnages over time.
+%\begin{equation} \label{eq:T2star}
+ %\frac{1}{T^{*}_{2}} = \frac{1}{T_{2}} + \frac{1}{T^{'}_2}
+%\end{equation}
+Inversion recovery (IR) sequences are often used to measure $T_1$. During an IR experiment, the fully relaxed equilibrium longitudinal magnetisation $M_{0}$ is rotated by $180^{o}$, so that its sign becomes negative. Equation \eqref{eq:longitudinal_recovery} describes the evolution of $M_{z}$ over the time $t$ after the inversion. Given sufficient time, $M_{z}$ will return to $M_{0}$. By varying the inversion time $TI$ at which the signal is detected, the evolution of $M_{z}$ over time can be obtained and $T_1$ can be determined by fitting  \eqref{eq:longitudinal_recovery} to the measured data point.
 
 \begin{equation} \label{eq:longitudinal_recovery}
-M_{z} (t) = M_{z,eq}(1 - e^{-\frac{t}{T_1}} ) + M_{z}(0)e^{-\frac{t}{T_1} } 
+M_{z} (t) = M_{0}(1 - 2e^{-\frac{t}{T_1}} )
 \end{equation}
 
- \cite{haackemagnetic}.
-
-
 % Limitations of convention multi-parameter estimation
-Commonly used approaches for measuring T1 and T2 rely on altering the magnetisation with radiofrequency pulses and measuring the signal at different time points afterwards. For example, spin echo (SE) experiments involve two RF pulses before the acquistion of an image. The pulses allow recovery of the signal that is lost due to the dephasing effect from inhomogeneities in $B_0$. The second pulse causes rephasing (an 'echo') at time TE after the first pulse. Parameter measurements usually requiring a significant amount of time.   %explain why T1 and T2 measurements take a long time* 
-%describe a spin echo sequence*
-%describe an IR sequence*
-
-% Application to AVIC and stroke patient brain analysis
-A large portion of clinical MRI research has been directed towards improving the way that the human brain is imaged.
-Within the setting of emergency medicine, fast response and diagnosis can improve the prognosis of a patient. The information gained from imaging in this environment is cruicial for ensuring accurate diagnosis and influence the decision making progress about subsequent treatment. Specifically, patients suffering from strokes could benefit from these improvements. The localised reduction in blood supply that occurs during a stroke can cause the affected region of cells to become damaged or die. Cell damage can be exhibited as extracellular water build up (Oedema) or by a change in the pH value of the affected tissue. In order to identify affect areas, it is important to be able to measure markers of damage accurately and precisly.
+Implementations of traditional $T_1$ and $T_2$ measurement methods also must deal with factors that can potentially cause measurement errors, such as subject movement and field inhomogeneities. Also, these methods usually require large scan durations, although in recent years simultaneous multi-parameter measurements have been made in only 5 minutes \cite{Warntjes2008}. %explain why T1 and T2 measurements take a long time*   %explain why T1 and T2 measurements take a long time* 
 
 % Introduce Magnetic resonance fingerprinting and it's potential advantages
-Recently, a new approach known as magnetic resonance fingerprinting (MRF) has been developed and applied, which has been used to simultanously measure multiple parameters, such as T1 and T2, with a reduction in scan time \cite{ma2013magnetic} . During a fingerprinting experiment, a pesudo-random seqeunce is used to manipulate the spins in a sample. This can be achieved by varying factors in the seqence, such the time in between subsequent RF pulses, as well the size of any rotations in the magnetisation that may be induced by the RF pulses.
+Recently, a new approach known as magnetic resonance fingerprinting (MRF) has been developed and applied, which has been used to simultanously measure multiple parameters, such as $T_1$ and $T_2$, with a reduction in the scan time needed. The method seems to cope very well with subject movement and it is also claimed that the technique delivers an improvement in efficiency, compared to the previous best approaches \cite{ma2013magnetic, deoni2005high}. During a MRF experiment, a pseudo-random sequence is used to manipulate the spins in a sample and acquire images. This can be achieved by varying factors in the sequence, such the time in between subsequent RF pulses and the size of any rotations in the net magnetisation that may be induced by the RF pulses. Once a series of images have been acquired via a MRF sequence, the signal pattern for each pixel over the whole experiment is compared to a previously built dictionary of simulated signals patterns, in order to find the closest match. The dictionary is built by simulating the signal expected from the particular experiment type, for all combinations of the chosen parameters (such as $T_1$ and $T_2$), over given ranges for each parameter.
+% Application to AVIC and stroke patient brain analysis
 
-% Dictionary
-Once a series of images have been acquired via the fingerprinting sequence, the pixel-wise signal variation over the experiment is compared to a previously built dictionary of time courses, in order to find the closest match. The dictionary is built by simulating the signal expected from the particular experiment type, for variety of difficult combinations of parameters (such as T1 and T2). 
+MRF has been used to provide quantitative measurements in a variety of different imaging scenarios, for a range of different organs. Many of the applications have been in areas of clinical imaging, where the improved speed and repeatability is especially appealing. However, there is scope for MRF to be used within the setting of emergency medicine, where fast diagnosis and treatment is even more important for improving the prognosis of a patient. The knowledge gained from imaging in this environment is crucial for ensuring accurate diagnosis and informing decisions for subsequent treatment.  Qualitative images are widely used, but quantitative measurements would provide more information on physiological changes and would increase the robustness of the classification of tissue. For example, the measured properties of the tissue within each voxel could be compared to an expected range of values for particular pathologies. The consistency of tissue classification across different scans, as well as between medical centres, could be improved. Specifically, acute stroke patients could benefit from the advantages of MRF. Stroke is a major cause of death, but can also have large negative effects on the quality of life of those who survive. The localised reduction in blood supply that occurs during a stroke can cause a region of cells to become damaged or die, but if the patient is treated quickly, the surrounding areas may be salvageable. Treatment is usually given by administering drugs that are designed to break down clots that may be blocking the blood vessels and there is a window of approximately 3 hours within which this treatment will improve the outcome of the patient \cite{alper2015thrombolysis}. MRF can be used to locate the damaged area via the simultaneous measurement of multiple parameters, with the choice of parameters ensuring a range of different perspectives on tissue health. For example, the build up of extracellular water (i.e.\ Oedema) is an indicator of cell damage \cite{harston2015imaging, ayata2002ischaemic}. Quantities of water can be inferred from $M_{0}$ measurements and then co-registered with maps of other properties, such as $T_1$ and $T_2$. 
 
-
+In this work, we used the MRF approach to make measurements of $T_1$, $T_2$, $M_0$ and $B_1$ deviation, for phantoms with a range of $T_1$ and $T_2$ values. We assessed the performance of our algorithm for various sequences and considered its potential to be used to produce quantitative images for the assessment of acute stroke.
 \section{Materials and Method}
 
-
 \subsection{Phantom production}
-% Production of a phantom with a range of T1 of T2 values
-In order to test the performance of the method with a sample containing various properties we created a phantom with a range of T1 and T2 values. %*if I manage to make another phantom, mention here that the values are similar to those expected in the brain and cite it * To
+% Production of my phanto, with a range of T1 of T2 values
+We made a phantom, with the aim of that it would mimic some the variation that is present in brain tissue.
+Our custom phantom contained six different compartments, each designed to have different $T_1$ and $T_2$ values. %*if I manage to make another phantom, mention here that the values are similar to those expected in the brain and cite it * To
+This variation allowed us to explore the ability of MRF to measure a range of properties within one sample. 
+Nickel Chloride and Agar were used to produce a range of $T_1$ and $T_2$ values, as reported in \cite{cochlin2003dependence}. The phantom comprised six conical tubes within a 4L high-density polyethylene (HPDE) container. The conical tubes were secured in the centre of the larger vessel by a plastic 3D printed structure. The liquid that surrounded the small compartments was between 0.9\% and 1.0\% m/v Sodium Chloride in Deionised water. This concentration was chosen to mimic the levels that are generally found in the human body (i.e.\ physiological saline).  Each of the smaller compartments contained different concentrations of the same ingredients, as described in Table \ref{table:phantomConcentrations}.
+Figure \ref{fig:JackTILabels} demonstrates the numbering of the compartments.
 
-\subsection{Dictionary creation}
-% MATLAB simulation of signal
-Using MATLAB (The
-MathWorks, Natick, MA), a dictionary was composed for %*mention T1 and T2 values used*
-In order to account for some variations in the $B_1$ field,  deviations in the flip angle of $\pm$30\% (%flipangle deviation increments?
-)were also used in the creation of the dictionary.
+\begin{table}[]
+\centering
+\
+\begin{tabular}{|l|l|r|l|l|l|l|}
+\cline{2-7}
+\multicolumn{1}{c|} {\multirow{2}{*}{}} & \multicolumn{6}{l|}{\cellcolor[HTML]{EFEFEF} Homogeneous Phantom Sample Pixels} \\ \cline{2-7} 
+\multicolumn{1}{c|}{} & 1 & 2 & 3 & 4 & 5 & 6 \\ \hline
+T1 [ms]& 282 & 282 & 283 & 283 & 282 & 282 \\ \hline
+T2 [ms] &  216& 215 & 214 & 215  & 214 &  215\\ \hline
+\end{tabular}
+\\\
+\caption{Measured properties for the sample pixels in the homogeneous phantom.}
+\label{table:homogeneousPhantomMeasurements}
+\end{table}
 
+\begin{table}[]
+\centering
+\
+\begin{tabular}{|l|l|r|l|l|l|l|}
+\cline{2-7}
+\multicolumn{1}{c|} {\multirow{2}{*}{}} & \multicolumn{6}{l|}{\cellcolor[HTML]{EFEFEF} Custom Phantom Compartments} \\ \cline{2-7} 
+\multicolumn{1}{c|}{} & 1 & 2 & 3 & 4 & 5 & 6 \\ \hline
+\begin{tabular}[c]{@{}l@{}}Deionised\\ Water [ml]\end{tabular} & 50 & 50  & 50 &50  &50  &50  \\ \hline
+Agar [g]& 1.05 &0.76  & 0.00 & 2.00  & 1.64 & 1.31 \\ \hline
+\begin{tabular}[c]{@{}l@{}}Nickel\\ Chloride [g]\end{tabular} & 0.19 & 0.13 &0.00  &  0.65& 0.39 & 0.26  \\ \hline
+T1 [ms]& 190 &253  & 3127 & 60 & 118 & 126 \\ \hline
+T2 [ms] &  73& 98 & 2039 & 19  & 41 &  54\\ \hline
+\end{tabular}
+\\\
+\caption{Concentrations and measured properties for the compartments in the custom phantom.}
+\label{table:phantomConcentrations}
+\end{table}
+
+
+\begin{figure}
+\centering
+\begin{minipage}[c]{\columnwidth}
+\setlength\figureheight{1\columnwidth}
+\setlength\figurewidth{1\columnwidth}
+
+\input{JackTILabels}
+
+    \caption{An example image from the $T_1$ measurements of the custom phantom. The compartments are numbered and the sample pixels are marked as stars. The numbering of the compartments was the same for the $T_1$ and $T_2$.}
+    \label{fig:JackTILabels}
+\end{minipage}
+\end{figure}
+
+\begin{figure}
+\centering
+\begin{minipage}[c]{\columnwidth}
+\setlength\figureheight{1\columnwidth}
+\setlength\figurewidth{1\columnwidth}
+
+\input{sphereD170TILabels}
+
+    \caption{The positioning of the sample pixels for the $T_1$ and $T_2$ measurements of the homogeneous phantom. The six sample pixels are marked as stars.}
+    \label{fig:sphereD170TILabels}
+\end{minipage}
+\end{figure}
 
 
 % Images with varying TE and TI, in order to extract T2 and T1
-\subsection{Image aqcuistion}
+\subsection{Image acquisition}
 
- Images were acquired of both phantoms, at the acute vascular imaging centre (AVIC) at the John Radcliffe Hospital in Oxford, using a 3T strength Siemens Verio magnet and a 12 channel Siemens head coil. 
-To aqcuire images of each phantom that were later used to extract the T1 and T2 values, inversion recovery (IR) and spin echo (SE) experiments were performed.
-To produce the images for fingerprinting, timing lists were using to control a spin echo sequence. The timing lists were pre-written and pesudo-random. The TE, TR, and flip angles for each repetition were varied. For each timing list, 48 images were recorded, via 48 repetitions. 
+ Images were acquired of two phantoms: a homogeneous spherical phantom and our custom phantom. 
+The spherical phantom contained Nickel(II) Sulfate Hexahydrate in distilled water, at a concentration of 0.125\% m/m. The uniformity of the spherical phantom meant that is was useful for initial tests of the algorithm, because if the method is working there should be minimal variation in the assigned $T_1$ and $T_2$ across the phantom.
+
+All images were acquired at the Acute Vascular Imaging Centre (AVIC) at the John Radcliffe Hospital in Oxford, using a 3T Siemens Verio magnet and a 12 channel Siemens head coil. 
+Conventional inversion recovery (IR) and spin echo (SE) experiments were performed, using various values of TI and TE, respectively. The images that were acquire from these experiments were later used to extract "gold standard" T1 and T2 values. 
+
+To produce the MRF images, different lists of timings were using to control a SE experiment. The lists were pseudo-random and controlled the $TE$ and $TR$, as well as the first and second flip angles ($FA_1$ and $FA_2$), for the acquistion of each image.
+
+ The fingerprinting sequence excited two slices of the sample. It also involved a fat saturation pulse before the first proton pulse, as well as crusher gradients at the end of each repetition, designed to remove any residual transverse magnetisation.  For each list, 48 images were recorded, via 48 repetitions. 
+
+\subsection{$T_1$ and $T_2$ extraction}
+%*Describe the fitted process and mention S.Hurley's function**how does SH's code work?* *should I change the T1 fitting plot so it just shows when T1null?*
+Firstly, the IR and SE images of the two phantoms were used to measure $T_1$ and $T_2$, respectively. The curves in eq. \eqref{eq:longitudinal_recovery} and eq. \eqref{eq:transverse_decay} were fitted to the signal timecourse of particular pixels in their corresponding sets of images, using  MATLAB (The
+MathWorks, Natick, MA). For the homogeneous phantom, these sample pixels were spread across the phantom, as shown in Fig. \ref{fig:sphereD170TILabels}. For the custom phantom, the pixels were at fixed coordinates within each of the six compartments. As an example, the sample pixels for the measurement of the $T_1$ of the custom phantom are marked in Fig. \ref{fig:JackTILabels}. 
+
+
+\subsection{Dictionary creation}
 
 %*How was the 'random' list chosen?*
+% include table with details of each list?
 
-\subsection{T1 and T2 extraction}
+%include plot of the simulated signal compared with the data from the six samples
+% MATLAB simulation of signal
+Using MATLAB, dictionaries were composed for each of the sequence timing lists. The simulation code was based on a mathematical description of a refocusing pulse, found in \cite{bernstein2004handbook}. The description was adapted so that it could be used to simulate the signal from a SE experiment within more than one $TR$.
+Several different lists of sequence timings were chosen in order to examine the effect that changing certain parameters had on the ability of the simulation to match the observed data. To test that the simulation was working correctly, comparisons were made between the simulated and observed signal for each list. This was done by using the gold standard $T_1$ and $T_2$ values to calculate the expected values for each image of the homogeneous phantom and plotting them with the signals from the sample pixels.
 
+The values of $T_1$ and $T_2$ used to create the dictionary for the homogeneous phantom were between 200ms and 300ms, in increments of 10ms. The ranges of these parameter values was designed to include values below and above the gold standard measurements. In order to account for variations in the $B_1$ excitation field, a range of deviations from the intended flip angles were also used to produce the dictionary entries. This range was $\pm$30\%, in increments of 0.05 degrees. It was assumed that these deviations at a particular pixel would be constant for each pulse through out the sequence.  As a result of producing signals with each possible combination of these three parameters, each dictionary for the homogeneous phantom contained 2916 entries. The dictionary for the custom used the same increments and $B_1$ values, but the $T_1$ and $T_2$ ranges needed to be extended. The ranges of $T_1$ and $T_2$ were both 10ms to 120ms and 1900ms to 2100ms. The dictionary for the custom phantom comprised 18876 signal patterns.
+%*quote how long it takes to compile the dictionary*
+The time required to produce each dictionary depended on the size of each $TR$ and $TE$ in the list of timings. The fastest dictionary to make took approximately 2.5 minutes, whereas when each $TR$ was set to be 15 seconds, the dictionary took nearly 35 minutes to make. These times are from computations made using a commercial portable computer with a 2.6Hz processor and 4 cores.
 
-\subsection{Signal matching}
+\subsection{Signal matching} 
+For a given pixel within the field of view, each dictionary entry $\vec{D}$  was compared with the signal timecourse $\vec{S}$ at that pixel, to see which dictionary pattern was the most similar. As in the original MRF publication \cite{ma2013magnetic}, we used the dot product of each pair of compared vectors, with an aspect of normalisation, to calculate similarity scores. The specific expression that we used for our similarity calculations is shown in eq. \ref{eq:CosDotProduct}, where the resulting similarity score $\cos(\theta)$ is restricted to values between 0 and 1. An exact match would give a score of 1. By dividing the product of the vector norms, the bias towards vectors with large data values was reduced. The intention for reducing this bias was that high similarity scores would highlight the dictionary entry and timecourse pair with the most similar type of pattern variations. Once the entry that gave the highest similarity score was found, the corresponding parameters $T_1$, $T_2$ and $B_1$ were assigned to that particular pixel. Good performance was defined as a close match between the assigned $T_1$ and $T_2$ and the gold standard values. An indication of the proton density $M_0$ was calculated as the mean of the scaling factors for the pairs of corresponding points in the best matched entry and the signal timecourse. The absolute scaling factor values were used for this calculated, as unfortunately some of the simulated signal points were negative. After a mask had been applied to ignore the pixels outside of the phantoms, the entire matching process was performed for all the pixels that had not been excluded. Our algorithm took approximately 7 and 45 minutes to find the best matches for 53x50 images of the homogeneous and custom phantoms, respectively.
 
-
+\begin{equation} \label{eq:CosDotProduct}
+\frac{\vec{S}\cdot \vec{D}} {\norm{\vec{S}} \norm{\vec{D}}} = \cos{\theta} 
+\end{equation}
 
 \section{Results and Discussion}
+\subsection{Gold standard T1 and T2}
+Figures \ref{fig:JackT1fitALL} and \ref{fig:JackT2fitALL}  show the $T_1$ and $T_2$ fits for the custom phantom signals. The signal curves in Fig. \ref{fig:JackT2fitALL} and Fig. \ref{fig:JackT1fitALL}  all have different initial values, suggesting that the inital longitudinal magnetisation was not at a fully relaxed equilibrium. Also, from Fig. \ref{fig:JackT2fitALL} it is clear that the chosen echo times were not great enough to allow for a significant decay in the signal from the deionised water in compartment 3. These factors could have skewed the gold standard measurements, but the fitting curves seem to closely match the data. 
+
+\begin{figure}
+\centering
+\begin{minipage}[c]{\columnwidth}
+\setlength\figureheight{0.8\columnwidth}
+\setlength\figurewidth{0.8\columnwidth}
+
+\input{JackT2fitALL}
+
+    \caption{T2 decay curve fitted to the measurement data for each compartment in the phantom. The fitted points are represented by plus symbols.}
+    \label{fig:JackT2fitALL}
+\end{minipage}
+\end{figure}
+
+\begin{figure}
+\centering
+\begin{minipage}[c]{\columnwidth}
+\setlength\figureheight{1.1\columnwidth}
+\setlength\figurewidth{0.8\columnwidth}
+
+\input{JackT1fitALL}
+
+    \caption{Sign sensitive T1 recovery curves, for each compartment in the phantom. A log scale for the x-axis is used for clarity. The magnetisation fits are plotted (stars), along with its absolute values (plus marks). }
+    \label{fig:JackT1fitALL}
+\end{minipage}
+\end{figure}
+
+\subsection{Property Maps}
+The signal dictionary that led to the parameter maps that best matched the gold standard measurements was also one of the fastest to compute, taking approximately 5 minutes. This probably due to the relatively short $TR$ values. The similarity calculations for the same list required approximately 10 minutes.
+Figures \ref{fig:sphereD170list3} and \ref{fig:Jacklist3} show the parameter maps from best performing timings list.
+%include comparison of simulation with data (list 3, sphereD170)
+%* include the best timings list (number 3)*
+%*Show the maps (T1, T2, B1dev, M0) from the offset list that performed the best with the spherical phantom*
+%JA 23/09/15: list 3 gives best maps
+%Show the maps for the same offset list for my phantom*
+%show scaling factors for best offsetlist (to show that they not all equal)
+%include plot of normalised simulation and data for the compartments
+%*Comment on which variations in the lists seemed to aid the fingerprinting*
+%*show differences in the data for different pixels? (as time courses)*
+ Ideally, the scaling factors would be identical for all the pairs of corresponding points within the best matched dictionary entry and the data for a given pixel. However, the scaling factors were different for each image. Because of this, the mean scaling factor was chosen to indicate $M_0$. Figure \ref{fig:JackcompartmentScales2} gives an example of the differences in the scaling factors for the same coordinates in different images for the best timings list.
+
+\begin{figure*}
+\centering
+\begin{minipage}[c]{\textwidth}
+\setlength\figureheight{0.4\columnwidth}
+\setlength\figurewidth{0.9\textwidth}
+
+\input{JackcompartmentScales3}
+
+    \caption{Scaling factors for the size compartments in the custom phantom, for each of the acquired MRF images that led to the parameter maps}
+    \label{fig:JackcompartmentScales2}
+\end{minipage}
+\end{figure*}
+
+
+\begin{figure*}
+\centering
+\begin{minipage}[c]{\textwidth}
+
+\setlength\figureheight{0.4\textwidth}
+\setlength\figurewidth{0.9\textwidth}
+
+\input{sphereD170simCom3}
+\caption{Comparison of the simulated and acquired signal, for the homogeneous phantom for each of the six sample coordinates}
+    \label{fig:sphereD170simCom3}
+ 
+\end{minipage}
+\end{figure*}
+
+%*In the future we should remake the Phantom so that it has T1 and T2 that are found in the brain*
+%*comment on further work: improving accuracy of algorithm. apply in vivo, possibly try different sequence styles*
+Once our method has been refined, it is important that it used to apply MRF in vivo, to work towards the goal of implementing the approach at the AVIC. 
+%*things that the original paper did differently to me or I left out?*
+%issues that i had that others also had?*
+Previous MRF studies have used a much larger number of dictionary entries than we have used in this work. This could improve the ability of our implentation to successfully measure the properties of interest.
+The simulation could be rewritten so that it only computes the signal that is nessecary for the simulation. This would reduce the required computation time, which is a factor that would become more significant if the size of the dictionary is increased.
+
+
+%fix simulation (no negative points...)
+%T1 didn't match well, T2 did
+%M0 is not too bad
+
+
+
+\begin{figure}
+\centering
+\begin{minipage}[c]{\columnwidth}
+
+\setlength\figureheight{0.6\columnwidth}
+\setlength\figurewidth{0.6\columnwidth}
+\input{sphereD170T1list3}
+\setlength\figureheight{0.6\columnwidth}
+\setlength\figurewidth{0.6\columnwidth}
+\input{sphereD170T2list3}
+\setlength\figureheight{0.6\columnwidth}
+\setlength\figurewidth{0.6\columnwidth}
+\input{sphereD170FAlist3}
+\setlength\figureheight{0.6\columnwidth}
+\setlength\figurewidth{0.6\columnwidth}
+\input{sphereD170M0mean3}
+    \caption{Parameter maps of the homogeneous phantom}
+    \label{fig:sphereD170list3}
+\end{minipage}
+\end{figure}
+
+\begin{figure}
+\centering
+\begin{minipage}[c]{\columnwidth}
+\setlength\figureheight{0.6\columnwidth}
+\setlength\figurewidth{0.6\columnwidth}
+\input{JackT1list3}
+\setlength\figureheight{0.6\columnwidth}
+\setlength\figurewidth{0.6\columnwidth}
+\input{JackT2list3}
+\setlength\figureheight{0.6\columnwidth}
+\setlength\figurewidth{0.6\columnwidth}
+\input{JackFAlist3}
+\setlength\figureheight{0.6\columnwidth}
+\setlength\figurewidth{0.6\columnwidth}
+\input{JackM0mean3}
+    \caption{Parameter maps of the custom phantom}
+    \label{fig:Jacklist3}
+\end{minipage}
+\end{figure}
 
 \section{Conclusions}
-
-\section*{References}
+%*Comment on the potential for this to be used in AVIC*
+\section{Acknowledgements}
+Robert Brand for providing the design for the phantom. Sam Hurley for his $T_1$ fitting software.
 
 \bibliography{ONBI_shortproject2_refs}
+
 
 \end{document}

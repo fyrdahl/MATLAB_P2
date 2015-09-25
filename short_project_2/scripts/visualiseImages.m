@@ -1,15 +1,16 @@
 % mask including whole phantom
-load([workingdir,'/mask.mat'])
+load([workingdir,'/MAT-files/mask.mat'])
 
 %% normalise pixel values
 % TEimages(:,:,TE) = TEimages(:,:,TE)/max(max(max(TEimages(:,:,:))));
 % TIimages(:,:,TE) = TIimages(:,:,TI)/max(max(max(TIimages(:,:,:))));
 
 %%
-figure
+TEfig = figure
+set(TEfig,'name','TE')
 for i = TE
     i
-%     colormap gray
+ colormap gray
 imagesc(TEimages(:,:,i))
 pause
 end
