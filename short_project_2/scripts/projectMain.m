@@ -44,7 +44,7 @@ run('compartmentSignals.m')
 
 %% 5. plot positions of sample pixels for TE and TR images
 plotNumCompartments = 6;
-sliceNumber = 1;
+sliceNumber = 2;
 run('plotSamplePixels_TE_TR.m')
 %%
 run('visualiseImages.m')
@@ -62,13 +62,21 @@ load('fingerprintLists.mat')
 % sphereD170 properties
 T1 = 282.3;
 T2 = 214.8;
-
+% fingerprintLists(:,1,offsetListNum) = 100;
+% fingerprintLists(:,2,offsetListNum) = 200;
+% fingerprintLists(:,3,offsetListNum) = 90;
+% fingerprintLists(:,4,offsetListNum) = 180;
 freqOffset = 0;
 nSlices = 2;
-[M, Mxy,flipAngles, t0s] = SimBloch(T1, T2, fingerprintLists(:,:,offsetListNum), 'showPlot', freqOffset, nSlices);
+offsetListNum = 3;
+nTimeCoursePts = 24;
+[M, Mxy,flipAngles, t0s] = SimBloch(T1, T2, fingerprintLists(:,:,offsetListNum), 'showPlot', freqOffset, nSlices, nTimeCoursePts);
+%[M, Mxy,flipAngles, t0s] = SimBloch2(T1, T2, fingerprintLists(:,:,offsetListNum), 'showPlot', freqOffset, nSlices);
 
-%% 8. check signal simulation by plotting positions of sample pixels for the fingerprinting images
+% 8. check signal simulation by plotting positions of sample pixels for the fingerprinting images
 compartmentCentersList = 3;
+clear FPimages
+load ([phantomName,'_list',num2str(offsetListNum),'FPimages.mat'])
 run('plotSamplePixels.m')
 
 % plot comparison of simulation with sampled pixels
@@ -76,19 +84,24 @@ run('plotSim.m')
 
 %% 9. create dictionary
 load fingerprintLists.mat
-
-[dictionaryParams, paramList] = setDictionaryParams(phantomName,1);
-
+%
+paramList = 3
+[dictionaryParams, paramList] = setDictionaryParams(phantomName,paramList);
+%
 nTimeCoursePts = 24;
+%%
 for offsetListNum = 2:8;
-    [signalDictionary] = compileDictionary(fingerprintLists, offsetListNum, dictionaryParams, nTimeCoursePts, freqOffset, nSlices, phantomName, background);
+    %%
+    [signalDictionary, sdelT] = compileDictionary(fingerprintLists, offsetListNum, dictionaryParams, nTimeCoursePts, freqOffset, nSlices, phantomName, background);
     save([workingdir,'/MAT-files/dictionaries/',phantomName,'_list',num2str(offsetListNum),'paramList',num2str(paramList),'dictionary.mat'],'signalDictionary')
+    save([workingdir,'/MAT-files/dictionaries/',phantomName,'_list',num2str(offsetListNum),'paramList',num2str(paramList),'signalDictionaryTime.mat'],'sdelT')
+    
     pause(1)
 end
 
 %% 10. check similarity and use dictionary to measure T1 and T2
 
-sliceNumber = 1 ;% slice to be analysed
+sliceNumber = 2 ;% slice to be analysed
 clear data
 
 % data = FPimages(compartmentCenters(1,1),compartmentCenters(1,2),:,:);
@@ -99,6 +112,7 @@ clear data
 %% SIMILARITY
 for offsetListNum = 2:8;
     %%
+    sliceNumber
     clear FPimages
     clear Mzeq
     clear data
@@ -110,18 +124,16 @@ for offsetListNum = 2:8;
     clear matchedT2
     clear matchedFAdevInd
     load([workingdir,'/MAT-files/images/',phantomName,'_list',num2str(offsetListNum),'FPimages.mat'])
-    data = zeros(size(FPimages,1), size(FPimages,2), 1, 24);
-    for r = 1 : size(FPimages,1)
-        for c = 1 : size(FPimages,2)
-            data(r,c,sliceNumber,1:24) = squeeze(FPimages(r,c,sliceNumber,1:24,offsetListNum));
-        end
-    end
+    data = zeros(24, size(FPimages,1)*size(FPimages,2));
+    %   data(r,c,sliceNumber,1:24) = squeeze(FPimages(r,c,sliceNumber,1:24,offsetListNum));
+    data = squeeze(FPimages(:,:,sliceNumber,1:24,offsetListNum));
     
     disp(['offsetList',num2str(offsetListNum),', phantom:',phantomName])
     clear signalDictionary
     l = load([workingdir,'/MAT-files/dictionaries/',phantomName,'_list',num2str(offsetListNum),'paramList',num2str(paramList),'dictionary.mat']);
     signalDictionary = l.signalDictionary;
-    [similarity, matchedT1, matchedT2, matchedFAdevInd, M0_mean, M0_stdPC,M0,  scales, bestMatch] = calcSimilarity(data, signalDictionary(:,:,:,:,offsetListNum), sliceNumber, dictionaryParams, workingdir);
+    [similarity, matchedT1, matchedT2, matchedFAdevInd, M0_mean, M0_stdPC,M0,  scales, bestMatch, matchT] = calcSimilarity(data, signalDictionary(:,:,:,:,offsetListNum), sliceNumber, dictionaryParams, workingdir);
+   
     save([workingdir,'/MAT-files/matches/',phantomName,'list',num2str(offsetListNum),'paramList',num2str(paramList),'matchedT1.mat'],'matchedT1')
     save([workingdir,'/MAT-files/matches/',phantomName,'list',num2str(offsetListNum),'paramList',num2str(paramList),'matchedT2.mat'],'matchedT2')
     save([workingdir,'/MAT-files/matches/',phantomName,'list',num2str(offsetListNum),'paramList',num2str(paramList),'matchedFAdevInd.mat'],'matchedFAdevInd')
@@ -130,6 +142,7 @@ for offsetListNum = 2:8;
     save([workingdir,'/MAT-files/matches/',phantomName,'list',num2str(offsetListNum),'paramList',num2str(paramList),'M0.mat'],'M0')
     save([workingdir,'/MAT-files/matches/',phantomName,'list',num2str(offsetListNum),'paramList',num2str(paramList),'scales.mat'],'scales')
     save([workingdir,'/MAT-files/matches/',phantomName,'list',num2str(offsetListNum),'paramList',num2str(paramList),'bestMatch.mat'],'bestMatch')
+    save([workingdir,'/MAT-files/matches/',phantomName,'list',num2str(offsetListNum),'paramList',num2str(paramList),'compileDictionaryElapsedTime.mat'],'matchT')
     
     pause(1)
     
@@ -180,7 +193,7 @@ for offsetListNum = 2:8
     
     %saveas(FA_fig, [workingdir,'/figures/',phantomName,'matchedFAdevInd_offsetList',num2str(offsetListNum),'_phantomName_',phantomName])
     saveas(FA_fig, [filename,'/',phantomName,'matchedFAdevIndoffsetlist',num2str(offsetListNum),'.png'])
-    matlab2tikz('figurehandle',FA_fig,'filename',[filename,'/',phantomName,'FAlist',num2str(offsetListNum)],'height', '\figureheight', 'width', '\figurewidth')
+    matlab2tikz('figurehandle',FA_fig,'filename',[filename,'/',phantomName,'slice',num2str(sliceNumber),'FAlist',num2str(offsetListNum),'ParamList',num2str(paramList)],'height', '\figureheight', 'width', '\figurewidth')
     
     pause(2)
     matchedT1_fig = figure
@@ -206,7 +219,7 @@ for offsetListNum = 2:8
     
     %saveas(matchedT1_fig, filenameT1 )
     %saveas(matchedT1_fig, [filename,'/',phantomName,'matchedT1offsetlist',num2str(offsetListNum),'-1.png'])
-    matlab2tikz('figurehandle',matchedT1_fig,'filename',[filename,'/',phantomName,'T1list',num2str(offsetListNum)'],'height', '\figureheight', 'width', '\figurewidth')
+    matlab2tikz('figurehandle',matchedT1_fig,'filename',[filename,'/',phantomName,'slice',num2str(sliceNumber),'T1list',num2str(offsetListNum)','ParamList',num2str(paramList)],'height', '\figureheight', 'width', '\figurewidth')
     
     clear temp
     pause(2)
@@ -239,27 +252,27 @@ for offsetListNum = 2:8
     ylabel(cT2,'T2 (ms)')
     %saveas(matchedT2_fig, [workingdir,'/figures/',phantomName,'matchedT2_offsetList',num2str(offsetListNum)])
     saveas(matchedT2_fig, [filename,'/',phantomName,'matchedT2offsetlist',num2str(offsetListNum),'.png'])
-    matlab2tikz('figurehandle',matchedT2_fig,'filename',[filename,'/',phantomName,'T2list',num2str(offsetListNum)],'height', '\figureheight', 'width', '\figurewidth')
+    matlab2tikz('figurehandle',matchedT2_fig,'filename',[filename,'/',phantomName,'slice',num2str(sliceNumber),'T2list',num2str(offsetListNum),'ParamList',num2str(paramList)],'height', '\figureheight', 'width', '\figurewidth')
     pause(2)
     
-            image = log10(abs(M0_mean(:,:)))
-            M0_mean_fig = figure; imagesc(image(:,:))
-            axis off
-            set(M0_mean_fig,'name',[phantomName,', List',num2str(offsetListNum),', M0_mean'])
-            colormap jet
-            cM0_mean = colorbar;
-%             for i = 1:size(compartmentCenters(:,:,3),1)
-%                 temp(i) = image(squeeze(compartmentCenters(i,1,3)),squeeze(compartmentCenters(i,2,3)));
-%                 % tp(i) = squeeze(compartmentCenters(i,:,3));
-%             end
-%             cmin = min(temp)
-%             cmax = max(temp)
-%             %cmax = 120
-%             caxis([cmin,cmax])
-    ylabel(cM0_mean,'M0 (log_{10}(Mean of Absolute Scaling Factors))')
-    %saveas(matchedT2_fig, [workingdir,'/figures/',phantomName,'matchedT2_offsetList',num2str(offsetListNum)])
-    saveas(M0_mean_fig, [filename,'/',phantomName,'matchedM0_mean',num2str(offsetListNum),'.png'])
-    matlab2tikz('figurehandle',M0_mean_fig,'filename',[filename,'/',phantomName,'M0mean',num2str(offsetListNum)],'height', '\figureheight', 'width', '\figurewidth')
+    image = log10(abs(M0_mean(:,:)));
+   M0_mean_fig = figure; imagesc(image(:,:))
+   axis off
+    set(M0_mean_fig,'name',[phantomName,', List',num2str(offsetListNum),', M0_mean'])
+    colormap jet
+    cM0_mean = colorbar;
+             %    for i = 1:size(compartmentCenters(:,:,3),1)
+             %        temp(i) = image(squeeze(compartmentCenters(i,1,3)),squeeze(compartmentCenters(i,2,3)));
+             %         tp(i) = squeeze(compartmentCenters(i,:,3));
+             %   end
+             %   cmin = min(temp)
+             %   cmax = max(temp)
+                %cmax = 120
+             %   caxis([cmin,cmax])
+   ylabel(cM0_mean,'M0 (log_{10}(Mean of Absolute Scaling Factors))')
+    saveas(matchedT2_fig, [workingdir,'/figures/',phantomName,'matchedT2_offsetList',num2str(offsetListNum)])
+   saveas(M0_mean_fig, [filename,'/',phantomName,'matchedM0_mean',num2str(offsetListNum),'.png'])
+   matlab2tikz('figurehandle',M0_mean_fig,'filename',[filename,'/',phantomName,'slice',num2str(sliceNumber),'M0mean',num2str(offsetListNum),'ParamList',num2str(paramList)],'height', '\figureheight', 'width', '\figurewidth')
     
     %     pause(2)
     %     M0fig = figure; imagesc(log10(M0(:,:)))

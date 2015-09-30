@@ -1,4 +1,4 @@
-function [sd] = compileDictionary(fingerprintLists, offsetListNum, dictionaryParams, nTimeCoursePts, freqOffset, nSlices, phantomName, workingdir, background)
+function [sd,el] = compileDictionary(fingerprintLists, offsetListNum, dictionaryParams, nTimeCoursePts, freqOffset, nSlices, phantomName, workingdir, background)
 
 %% DICTIONARY
 
@@ -13,7 +13,7 @@ originalFA2s = fingerprintLists(:,4,offsetListNum);
 
 tic
 for i = 1:sum(dictionaryParams(1,:)>0)
-    
+    i
     %vary T1
     T1 = dictionaryParams(1,i);
     
@@ -28,10 +28,10 @@ for i = 1:sum(dictionaryParams(1,:)>0)
             fingerprintLists(:,3,offsetListNum) = originalFA1s*(dictionaryParams(3,k));
             fingerprintLists(:,4,offsetListNum) = originalFA2s*(dictionaryParams(3,k));
             
-            
+           
                 
- [~, sd(i,j,k,:,offsetListNum), ~, ~] = SimBloch(T1, T2, fingerprintLists(:,:,offsetListNum), 'dontPlot', freqOffset, nSlices);
-            
+ [~, sd(i,j,k,:,offsetListNum), ~, ~] = SimBloch(T1, T2, fingerprintLists(:,:,offsetListNum), 'dontPlot', freqOffset, nSlices, nTimeCoursePts);
+         
             %% add noise to the simulated signals
            
 %             SNR = 0.655*squeeze(signalDictionary(i,j,k,:))/std(background(:));
@@ -42,9 +42,11 @@ for i = 1:sum(dictionaryParams(1,:)>0)
         end
     end
     
-    disp(['compiling dictionary for offset list ', num2str(offsetListNum),': ',num2str( (i/numel(dictionaryParams(1,:)))*100) , ' percent complete'])
+    disp(['compiling dictionary for offset list ', num2str(offsetListNum),': ',num2str( (i/(sum(dictionaryParams(1,:)~=0)) )*100) , ' percent complete'])
 end
 toc
+el = toc
+
 %%
 % figure;
 % hold

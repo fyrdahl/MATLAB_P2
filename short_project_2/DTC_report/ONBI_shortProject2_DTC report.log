@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2014.3.6)  25 SEP 2015 10:24
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2014.3.6)  30 SEP 2015 10:56
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -813,38 +813,78 @@ File: pgflibraryplotmarks.code.tex 2010/10/15 v2.10 (rcs-revision 1.12)
 )))
 \figureheight=\skip53
 \figurewidth=\skip54
- (./ONBI_shortProject2_DTC report.aux)
+
+(/usr/local/texlive/2013/texmf-dist/tex/latex/caption/caption.sty
+Package: caption 2013/05/02 v3.3-89 Customizing captions (AR)
+
+(/usr/local/texlive/2013/texmf-dist/tex/latex/caption/caption3.sty
+Package: caption3 2013/05/02 v1.6-88 caption3 kernel (AR)
+Package caption3 Info: TeX engine: e-TeX on input line 57.
+\captionmargin=\dimen214
+\captionmargin@=\dimen215
+\captionwidth=\dimen216
+\caption@tempdima=\dimen217
+\caption@indent=\dimen218
+\caption@parindent=\dimen219
+\caption@hangindent=\dimen220
+Package caption Info: Unknown document class (or package),
+(caption)             standard defaults will be used.
+)
+
+Package caption Warning: Unsupported document class (or package) detected,
+(caption)                usage of the caption package is not recommended.
+See the caption package documentation for explanation.
+
+Package caption Info: \@makecaption = \long macro:#1#2->\ifx \@captype \@IEEEta
+blestring \footnotesize \bgroup \par \centering \@IEEEtabletopskipstrut {\norma
+lfont \footnotesize #1}\\{\normalfont \footnotesize \scshape #2}\par \addvspace
+ {0.5\baselineskip }\egroup \@IEEEtablecaptionsepspace \else \@IEEEfigurecaptio
+nsepspace \setbox \@tempboxa \hbox {\normalfont \footnotesize {#1.}\nobreakspac
+e \nobreakspace #2}\ifdim \wd \@tempboxa >\hsize \setbox \@tempboxa \hbox {\nor
+malfont \footnotesize {#1.}\nobreakspace \nobreakspace }\parbox [t]{\hsize }{\n
+ormalfont \footnotesize \noindent \unhbox \@tempboxa #2}\else \ifCLASSOPTIONcon
+ference \hbox to\hsize {\normalfont \footnotesize \hfil \box \@tempboxa \hfil }
+\else \hbox to\hsize {\normalfont \footnotesize \box \@tempboxa \hfil }\fi \fi 
+\fi .
+\c@ContinuedFloat=\count163
+Package caption Info: hyperref package is loaded.
+) (/usr/local/texlive/2013/texmf-dist/tex/latex/caption/subcaption.sty
+Package: subcaption 2013/02/03 v1.1-62 Sub-captions (AR)
+\c@subfigure=\count164
+\c@subtable=\count165
+)
+(./ONBI_shortProject2_DTC report.aux)
 \openout1 = `"ONBI_shortProject2_DTC report.aux"'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 58.
-LaTeX Font Info:    ... okay on input line 58.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 58.
-LaTeX Font Info:    ... okay on input line 58.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 58.
-LaTeX Font Info:    ... okay on input line 58.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 58.
-LaTeX Font Info:    ... okay on input line 58.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 58.
-LaTeX Font Info:    ... okay on input line 58.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 58.
-LaTeX Font Info:    ... okay on input line 58.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 58.
-LaTeX Font Info:    ... okay on input line 58.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 59.
+LaTeX Font Info:    ... okay on input line 59.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 59.
+LaTeX Font Info:    ... okay on input line 59.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 59.
+LaTeX Font Info:    ... okay on input line 59.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 59.
+LaTeX Font Info:    ... okay on input line 59.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 59.
+LaTeX Font Info:    ... okay on input line 59.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 59.
+LaTeX Font Info:    ... okay on input line 59.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 59.
+LaTeX Font Info:    ... okay on input line 59.
 
 -- Lines per column: 58 (exact).
 \AtBeginShipoutBox=\box70
-Package hyperref Info: Link coloring OFF on input line 58.
+Package hyperref Info: Link coloring OFF on input line 59.
 (/usr/local/texlive/2013/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2012/10/27 v2.43 Cross-referencing by name of section
 
 (/usr/local/texlive/2013/texmf-dist/tex/generic/oberdiek/gettitlestring.sty
 Package: gettitlestring 2010/12/03 v1.4 Cleanup title references (HO)
 )
-\c@section@level=\count163
+\c@section@level=\count166
 )
-LaTeX Info: Redefining \ref on input line 58.
-LaTeX Info: Redefining \pageref on input line 58.
-LaTeX Info: Redefining \nameref on input line 58.
+LaTeX Info: Redefining \ref on input line 59.
+LaTeX Info: Redefining \pageref on input line 59.
+LaTeX Info: Redefining \nameref on input line 59.
 
 (./ONBI_shortProject2_DTC report.out) (./ONBI_shortProject2_DTC report.out)
 \@outlinefile=\write4
@@ -853,16 +893,16 @@ LaTeX Info: Redefining \nameref on input line 58.
 
 (/usr/local/texlive/2013/texmf-dist/tex/context/base/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count164
-\scratchdimen=\dimen214
+\scratchcounter=\count167
+\scratchdimen=\dimen221
 \scratchbox=\box71
-\nofMPsegments=\count165
-\nofMParguments=\count166
+\nofMPsegments=\count168
+\nofMParguments=\count169
 \everyMPshowfont=\toks40
-\MPscratchCnt=\count167
-\MPscratchDim=\dimen215
-\MPnumerator=\count168
-\makeMPintoPDFobject=\count169
+\MPscratchCnt=\count170
+\MPscratchDim=\dimen222
+\MPnumerator=\count171
+\makeMPintoPDFobject=\count172
 \everyMPtoPDFconversion=\toks41
 ) ABD: EveryShipout initializing macros
 (/usr/local/texlive/2013/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
@@ -883,62 +923,33 @@ e
 Package pgfplots notification 'compat/show suggested version=true': document ha
 s been generated with the most recent feature set (\pgfplotsset{compat=1.8}).
 
+Package caption Info: Begin \AtBeginDocument code.
+Package caption Info: End \AtBeginDocument code.
 (./DTCreport2titlepage.tex [0
 
 
 {/usr/local/texlive/2013/texmf-var/fonts/map/pdftex/updmap/pdftex.map}])
-LaTeX Font Info:    Calculating math sizes for size <11> on input line 80.
-
-
-LaTeX Warning: Citation `haackemagnetic' on page 1 undefined on input line 104.
-
-
-
-LaTeX Warning: Citation `Warntjes2008' on page 1 undefined on input line 121.
-
-
-LaTeX Warning: Citation `ma2013magnetic' on page 1 undefined on input line 124.
-
-
-
-LaTeX Warning: Citation `deoni2005high' on page 1 undefined on input line 124.
-
-
-LaTeX Warning: Citation `alper2015thrombolysis' on page 1 undefined on input li
-ne 127.
-
-
-LaTeX Warning: Citation `harston2015imaging' on page 1 undefined on input line 
-127.
-
-
-LaTeX Warning: Citation `ayata2002ischaemic' on page 1 undefined on input line 
-127.
-
-[1
+LaTeX Font Info:    Calculating math sizes for size <11> on input line 81.
+ [1
 
 
 ]
 
-LaTeX Warning: Citation `cochlin2003dependence' on page 2 undefined on input li
-ne 137.
+LaTeX Warning: No positions in optional float specifier.
+               Default added (so using `tbp') on input line 141.
 
 
 LaTeX Warning: No positions in optional float specifier.
-               Default added (so using `tbp') on input line 140.
+               Default added (so using `tbp') on input line 156.
 
-
-LaTeX Warning: No positions in optional float specifier.
-               Default added (so using `tbp') on input line 155.
-
-(./JackTILabels <JackTILabels-1.png, id=85, 64.24pt x 64.24pt>
+(./JackTILabels <JackTILabels-1.png, id=106, 64.24pt x 64.24pt>
 File: JackTILabels-1.png Graphic file (type png)
 
 <use JackTILabels-1.png>
 Package pdftex.def Info: JackTILabels-1.png used on input line 66.
 (pdftex.def)             Requested size: 239.66823pt x 252.01314pt.
 ) (./sphereD170TILabels
-<sphereD170TILabels-1.png, id=86, 64.24pt x 64.24pt>
+<sphereD170TILabels-1.png, id=107, 64.24pt x 64.24pt>
 File: sphereD170TILabels-1.png Graphic file (type png)
 
 <use sphereD170TILabels-1.png>
@@ -947,35 +958,27 @@ Package pdftex.def Info: sphereD170TILabels-1.png used on input line 66.
 ) [2 <./JackTILabels-1.png> <./sphereD170TILabels-1.png>]
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 214.
+(hyperref)                removing `math shift' on input line 251.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `subscript' on input line 214.
+(hyperref)                removing `subscript' on input line 251.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 214.
+(hyperref)                removing `math shift' on input line 251.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 214.
+(hyperref)                removing `math shift' on input line 251.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `subscript' on input line 214.
+(hyperref)                removing `subscript' on input line 251.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
-(hyperref)                removing `math shift' on input line 214.
-
-
-LaTeX Warning: Citation `bernstein2004handbook' on page 3 undefined on input li
-ne 227.
-
-
-LaTeX Warning: Citation `ma2013magnetic' on page 3 undefined on input line 235.
-
+(hyperref)                removing `math shift' on input line 251.
 
 [3] (./JackT2fitALL
 Missing character: There is no ; in font nullfont!
@@ -991,160 +994,148 @@ Missing character: There is no ; in font nullfont!
 Missing character: There is no ; in font nullfont!
 Missing character: There is no ; in font nullfont!
 Missing character: There is no ; in font nullfont!
+) (./sphereD170simCom3slice1
+Missing character: There is no ; in font nullfont!
+Missing character: There is no ; in font nullfont!
+Missing character: There is no ; in font nullfont!
+Missing character: There is no ; in font nullfont!
+Missing character: There is no ; in font nullfont!
+Missing character: There is no ; in font nullfont!
+Missing character: There is no ; in font nullfont!
 )
+(./sphereD170simCom3slice2
+Missing character: There is no ; in font nullfont!
+Missing character: There is no ; in font nullfont!
+Missing character: There is no ; in font nullfont!
+Missing character: There is no ; in font nullfont!
+Missing character: There is no ; in font nullfont!
+Missing character: There is no ; in font nullfont!
+Missing character: There is no ; in font nullfont!
+) [4] (./sphereD170slice2T1list3ParamList3
+<sphereD170slice2T1list3ParamList3-1.png, id=149, 64.24pt x 64.24pt>
+File: sphereD170slice2T1list3ParamList3-1.png Graphic file (type png)
 
-LaTeX Warning: Reference `fig:sphereD170list3' on page 4 undefined on input lin
-e 273.
-
-
-LaTeX Warning: Reference `fig:Jacklist3' on page 4 undefined on input line 273.
-
-
-(./JackcompartmentScales3
-Missing character: There is no ; in font nullfont!
-Missing character: There is no ; in font nullfont!
-Missing character: There is no ; in font nullfont!
-Missing character: There is no ; in font nullfont!
-Missing character: There is no ; in font nullfont!
-Missing character: There is no ; in font nullfont!
-) (./sphereD170simCom3
-Missing character: There is no ; in font nullfont!
-Missing character: There is no ; in font nullfont!
-Missing character: There is no ; in font nullfont!
-Missing character: There is no ; in font nullfont!
-Missing character: There is no ; in font nullfont!
-Missing character: There is no ; in font nullfont!
-Missing character: There is no ; in font nullfont!
-) (./sphereD170T1list3
-<sphereD170T1list3-1.png, id=117, 64.24pt x 64.24pt>
-File: sphereD170T1list3-1.png Graphic file (type png)
-
-<use sphereD170T1list3-1.png>
-Package pdftex.def Info: sphereD170T1list3-1.png used on input line 28.
-(pdftex.def)             Requested size: 130.94786pt x 151.21396pt.
-) (./sphereD170T2list3
-<sphereD170T2list3-1.png, id=119, 64.24pt x 64.24pt>
-File: sphereD170T2list3-1.png Graphic file (type png)
-
-<use sphereD170T2list3-1.png>
-Package pdftex.def Info: sphereD170T2list3-1.png used on input line 28.
-(pdftex.def)             Requested size: 130.94786pt x 151.21396pt.
-) (./sphereD170FAlist3
-<sphereD170FAlist3-1.png, id=121, 64.24pt x 64.24pt>
-File: sphereD170FAlist3-1.png Graphic file (type png)
-
-<use sphereD170FAlist3-1.png>
-Package pdftex.def Info: sphereD170FAlist3-1.png used on input line 28.
-(pdftex.def)             Requested size: 130.94786pt x 151.21396pt.
-) (./sphereD170M0mean3
-<sphereD170M0mean3-1.png, id=123, 64.24pt x 64.24pt>
-File: sphereD170M0mean3-1.png Graphic file (type png)
-
-<use sphereD170M0mean3-1.png>
-Package pdftex.def Info: sphereD170M0mean3-1.png used on input line 28.
-(pdftex.def)             Requested size: 130.94786pt x 151.21396pt.
+<use sphereD170slice2T1list3ParamList3-1.png>
+Package pdftex.def Info: sphereD170slice2T1list3ParamList3-1.png used on input 
+line 28.
+(pdftex.def)             Requested size: 134.064pt x 154.80745pt.
 )
-Underfull \hbox (badness 10000) in paragraph at lines 29--344
-[][]
- []
+(./sphereD170slice2T2list3ParamList3
+<sphereD170slice2T2list3ParamList3-1.png, id=151, 64.24pt x 64.24pt>
+File: sphereD170slice2T2list3ParamList3-1.png Graphic file (type png)
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 29--344
-[]
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 29--344
-[]
- []
-
-
-LaTeX Warning: Float too large for page by 5.70322pt on input line 347.
-
-(./JackT1list3 <JackT1list3-1.png, id=125, 64.24pt x 64.24pt>
-File: JackT1list3-1.png Graphic file (type png)
-
-<use JackT1list3-1.png>
-Package pdftex.def Info: JackT1list3-1.png used on input line 28.
-(pdftex.def)             Requested size: 130.94786pt x 151.21396pt.
-) (./JackT2list3
-<JackT2list3-1.png, id=127, 64.24pt x 64.24pt>
-File: JackT2list3-1.png Graphic file (type png)
- <use JackT2list3-1.png>
-Package pdftex.def Info: JackT2list3-1.png used on input line 28.
-(pdftex.def)             Requested size: 130.94786pt x 151.21396pt.
+<use sphereD170slice2T2list3ParamList3-1.png>
+Package pdftex.def Info: sphereD170slice2T2list3ParamList3-1.png used on input 
+line 28.
+(pdftex.def)             Requested size: 134.064pt x 154.80745pt.
 )
-(./JackFAlist3 <JackFAlist3-1.png, id=129, 64.24pt x 64.24pt>
-File: JackFAlist3-1.png Graphic file (type png)
+(./sphereD170slice2FAlist3ParamList3
+<sphereD170slice2FAlist3ParamList3-1.png, id=153, 64.24pt x 64.24pt>
+File: sphereD170slice2FAlist3ParamList3-1.png Graphic file (type png)
 
-<use JackFAlist3-1.png>
-Package pdftex.def Info: JackFAlist3-1.png used on input line 28.
-(pdftex.def)             Requested size: 130.94786pt x 151.21396pt.
-) (./JackM0mean3
-<JackM0mean3-1.png, id=131, 64.24pt x 64.24pt>
-File: JackM0mean3-1.png Graphic file (type png)
- <use JackM0mean3-1.png>
-Package pdftex.def Info: JackM0mean3-1.png used on input line 28.
-(pdftex.def)             Requested size: 130.94786pt x 151.21396pt.
+<use sphereD170slice2FAlist3ParamList3-1.png>
+Package pdftex.def Info: sphereD170slice2FAlist3ParamList3-1.png used on input 
+line 28.
+(pdftex.def)             Requested size: 134.064pt x 154.80745pt.
 )
-Underfull \hbox (badness 10000) in paragraph at lines 29--364
-[][]
+(./sphereD170slice2M0mean3ParamList3
+<sphereD170slice2M0mean3ParamList3-1.png, id=155, 64.24pt x 64.24pt>
+File: sphereD170slice2M0mean3ParamList3-1.png Graphic file (type png)
+
+<use sphereD170slice2M0mean3ParamList3-1.png>
+Package pdftex.def Info: sphereD170slice2M0mean3ParamList3-1.png used on input 
+line 28.
+(pdftex.def)             Requested size: 134.064pt x 154.80745pt.
+) (./Jackslice2T1list3ParamList3
+<Jackslice2T1list3ParamList3-1.png, id=157, 64.24pt x 64.24pt>
+File: Jackslice2T1list3ParamList3-1.png Graphic file (type png)
+
+<use Jackslice2T1list3ParamList3-1.png>
+Package pdftex.def Info: Jackslice2T1list3ParamList3-1.png used on input line 2
+8.
+(pdftex.def)             Requested size: 134.064pt x 154.80745pt.
+) (./Jackslice2T2list3ParamList3
+<Jackslice2T2list3ParamList3-1.png, id=159, 64.24pt x 64.24pt>
+File: Jackslice2T2list3ParamList3-1.png Graphic file (type png)
+
+<use Jackslice2T2list3ParamList3-1.png>
+Package pdftex.def Info: Jackslice2T2list3ParamList3-1.png used on input line 2
+8.
+(pdftex.def)             Requested size: 134.064pt x 154.80745pt.
+) (./Jackslice2FAlist3ParamList3
+<Jackslice2FAlist3ParamList3-1.png, id=161, 64.24pt x 64.24pt>
+File: Jackslice2FAlist3ParamList3-1.png Graphic file (type png)
+
+<use Jackslice2FAlist3ParamList3-1.png>
+Package pdftex.def Info: Jackslice2FAlist3ParamList3-1.png used on input line 2
+8.
+(pdftex.def)             Requested size: 134.064pt x 154.80745pt.
+) (./Jackslice2M0mean3ParamList3
+<Jackslice2M0mean3ParamList3-1.png, id=163, 64.24pt x 64.24pt>
+File: Jackslice2M0mean3ParamList3-1.png Graphic file (type png)
+
+<use Jackslice2M0mean3ParamList3-1.png>
+Package pdftex.def Info: Jackslice2M0mean3ParamList3-1.png used on input line 2
+8.
+(pdftex.def)             Requested size: 134.064pt x 154.80745pt.
+)
+Overfull \hbox (2.29996pt too wide) in paragraph at lines 380--409
+[][] [] 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 29--364
-[]
- []
+LaTeX Warning: Float too large for page by 30.75497pt on input line 411.
 
+(./ONBI_shortProject2_DTC report.bbl
+LaTeX Font Info:    Try loading font information for OT1+pcr on input line 18.
 
-Underfull \hbox (badness 10000) in paragraph at lines 29--364
-[]
- []
+(/usr/local/texlive/2013/texmf-dist/tex/latex/psnfss/ot1pcr.fd
+File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
+) [5] [6 <./sphereD170slice2T1list3ParamList3-1.png> <./sphereD170slice2T2list3
+ParamList3-1.png> <./sphereD170slice2FAlist3ParamList3-1.png> <./sphereD170slic
+e2M0mean3ParamList3-1.png> <./Jackslice2T1list3ParamList3-1.png> <./Jackslice2T
+2list3ParamList3-1.png> <./Jackslice2FAlist3ParamList3-1.png> <./Jackslice2M0me
+an3ParamList3-1.png>])
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 426.
+ [7
 
-No file "ONBI_shortProject2_DTC report".bbl.
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 377.
-[4] [5]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 377.
+]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 426.
  (./ONBI_shortProject2_DTC report.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 377.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 377.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 426.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 426.
 Package rerunfilecheck Info: File `"ONBI_shortProject2_DTC report".out' has not
  changed.
-(rerunfilecheck)             Checksum: D219335DB5BF7FBFA02E093B85F72384;727.
-
-
-LaTeX Warning: There were undefined references.
-
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 377.
+(rerunfilecheck)             Checksum: 6E4757DBE0931D2B1DEED5BBAA7D915D;843.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 426.
  ) 
 Here is how much of TeX's memory you used:
- 23181 strings out of 493315
- 542605 string characters out of 6137905
- 958909 words of memory out of 5000000
- 26156 multiletter control sequences out of 15000+600000
- 43387 words of font info for 85 fonts, out of 8000000 for 9000
+ 24297 strings out of 493315
+ 564093 string characters out of 6137905
+ 934319 words of memory out of 5000000
+ 27243 multiletter control sequences out of 15000+600000
+ 43256 words of font info for 86 fonts, out of 8000000 for 9000
  957 hyphenation exceptions out of 8191
- 56i,21n,92p,2262b,2272s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 56i,24n,92p,2262b,2414s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2013/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/t
 exlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/te
 xlive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/local/texl
 ive/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/texliv
-e/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/
-2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/20
-13/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb></usr/local/texlive/2013/
-texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texlive/2013/tex
-mf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2013/texmf-
-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2013/texmf-d
-ist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/2013/texmf-dis
-t/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2013/texmf-dist/
-fonts/type1/urw/times/utmb8a.pfb></usr/local/texlive/2013/texmf-dist/fonts/type
-1/urw/times/utmbi8a.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/urw/tim
-es/utmr8a.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/urw/times/utmri8a
-.pfb>
-Output written on "ONBI_shortProject2_DTC report.pdf" (6 pages, 218543 bytes).
+e/2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/
+2013/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb></usr/local/texlive/201
+3/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2013/t
+exmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2013/te
+xmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/2013/texm
+f-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2013/texmf-
+dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/local/texlive/2013/texmf-dist/fon
+ts/type1/urw/times/utmb8a.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/u
+rw/times/utmbi8a.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/urw/times/
+utmr8a.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/urw/times/utmri8a.pf
+b>
+Output written on "ONBI_shortProject2_DTC report.pdf" (8 pages, 228935 bytes).
 PDF statistics:
- 200 PDF objects out of 1000 (max. 8388607)
- 155 compressed objects within 2 object streams
- 30 named destinations out of 1000 (max. 500000)
- 207 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 262 PDF objects out of 1000 (max. 8388607)
+ 207 compressed objects within 3 object streams
+ 44 named destinations out of 1000 (max. 500000)
+ 223 words of extra memory for PDF output out of 10000 (max. 10000000)
 

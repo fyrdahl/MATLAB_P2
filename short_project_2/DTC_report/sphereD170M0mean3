@@ -11,8 +11,8 @@ width=0.866\figurewidth,
 height=\figureheight,
 at={(0\figurewidth,0\figureheight)},
 scale only axis,
-point meta min=2.3396588163197,
-point meta max=3.81557820114587,
+point meta min=2.03436737803719,
+point meta max=3.69980428379531,
 axis on top,
 xmin=0.5,
 xmax=64.5,
@@ -22,7 +22,7 @@ ymax=64.5,
 hide axis,
 colormap/jet,
 colorbar,
-colorbar style={ylabel={$\text{M0 (log}_{\text{10}}\text{(Mean of Absolute Scaling Factors))}$}}
+colorbar style={ylabel={$\text{M0 (log}_{\text{10}}\text{(Mean of Scaling Factors))}$}}
 ]
 \addplot [forget plot] graphics [xmin=0.5,xmax=64.5,ymin=0.5,ymax=64.5] {sphereD170M0mean3-1.png};
 \end{axis}

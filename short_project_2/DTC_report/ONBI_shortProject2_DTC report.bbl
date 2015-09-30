@@ -1,0 +1,55 @@
+\begin{thebibliography}{1}
+\expandafter\ifx\csname url\endcsname\relax
+  \def\url#1{\texttt{#1}}\fi
+\expandafter\ifx\csname urlprefix\endcsname\relax\def\urlprefix{URL }\fi
+\expandafter\ifx\csname href\endcsname\relax
+  \def\href#1#2{#2} \def\path#1{#1}\fi
+
+\bibitem{haackemagnetic}
+E.~M. Haacke, R.~Brown, M.~Thompson, R.~Venkatesan, Magnetic resonance imaging:
+  physical principles and sequence design., New York: A John Wiley and Sons.
+
+\bibitem{Warntjes2008}
+J.~Warntjes, O.~D. Leinhard, J.~West, P.~Lundberg,
+  \href{http://dx.doi.org/10.1002/mrm.21635}{Rapid magnetic resonance
+  quantification on the brain: Optimization for clinical usage}, Magnetic
+  Resonance in Medicine 60~(2) (2008) 320--329.
+\newblock \href {http://dx.doi.org/10.1002/mrm.21635}
+  {\path{doi:10.1002/mrm.21635}}.
+\newline\urlprefix\url{http://dx.doi.org/10.1002/mrm.21635}
+
+\bibitem{ma2013magnetic}
+D.~Ma, V.~Gulani, N.~Seiberlich, K.~Liu, J.~L. Sunshine, J.~L. Duerk, M.~A.
+  Griswold, Magnetic resonance fingerprinting, Nature 495~(7440) (2013)
+  187--192.
+
+\bibitem{deoni2005high}
+S.~C. Deoni, T.~M. Peters, B.~K. Rutt, High-resolution t1 and t2 mapping of the
+  brain in a clinically acceptable time with despot1 and despot2, Magnetic
+  resonance in medicine 53~(1) (2005) 237--241.
+
+\bibitem{alper2015thrombolysis}
+B.~S. Alper, M.~Malone-Moses, J.~S. McLellan, K.~Prasad, E.~Manheimer,
+  Thrombolysis in acute ischaemic stroke: time for a rethink?, BMJ 350 (2015)
+  h1075.
+
+\bibitem{harston2015imaging}
+G.~Harston, N.~Rane, G.~Shaya, S.~Thandeswaran, M.~Cellerini, F.~Sheerin,
+  J.~Kennedy, Imaging biomarkers in acute ischemic stroke trials: a systematic
+  review, American Journal of Neuroradiology 36~(5) (2015) 839--843.
+
+\bibitem{ayata2002ischaemic}
+C.~Ayata, A.~H. Ropper, Ischaemic brain oedema, Journal of Clinical
+  Neuroscience 9~(2) (2002) 113--124.
+
+\bibitem{cochlin2003dependence}
+L.~Cochlin, A.~Blamire, P.~Styles, Dependence of t1 and t2 on high field
+  strengths in doped agarose gels; facilitating selection of composition for
+  specific t1/t2 at relevant field., in: Proc. Intl. Soc. Mag. Reson. Med, Vol.
+  263, 2003, p. 266.
+
+\bibitem{bernstein2004handbook}
+M.~A. Bernstein, K.~F. King, X.~J. Zhou, Handbook of MRI pulse sequences,
+  Elsevier, 2004.
+
+\end{thebibliography}

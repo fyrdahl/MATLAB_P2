@@ -18,7 +18,8 @@
 \newlength\figurewidth
 \newcommand{\abs}[1]{\lvert#1\rvert}
 \newcommand{\norm}[1]{\lVert#1\rVert}
-
+\usepackage{caption}
+\usepackage{subcaption}
 \modulolinenumbers[5]
 
 % \journal{Journal of \LaTeX\ Templates}
@@ -132,7 +133,7 @@ In this work, we used the MRF approach to make measurements of $T_1$, $T_2$, $M_
 \subsection{Phantom production}
 % Production of my phanto, with a range of T1 of T2 values
 We made a phantom, with the aim of that it would mimic some the variation that is present in brain tissue.
-Our custom phantom contained six different compartments, each designed to have different $T_1$ and $T_2$ values. %*if I manage to make another phantom, mention here that the values are similar to those expected in the brain and cite it * To
+Our custom phantom contained six different compartments, each designed to have different $T_1$ and $T_2$ values.
 This variation allowed us to explore the ability of MRF to measure a range of properties within one sample. 
 Nickel Chloride and Agar were used to produce a range of $T_1$ and $T_2$ values, as reported in \cite{cochlin2003dependence}. The phantom comprised six conical tubes within a 4L high-density polyethylene (HPDE) container. The conical tubes were secured in the centre of the larger vessel by a plastic 3D printed structure. The liquid that surrounded the small compartments was between 0.9\% and 1.0\% m/v Sodium Chloride in Deionised water. This concentration was chosen to mimic the levels that are generally found in the human body (i.e.\ physiological saline).  Each of the smaller compartments contained different concentrations of the same ingredients, as described in Table \ref{table:phantomConcentrations}.
 Figure \ref{fig:JackTILabels} demonstrates the numbering of the compartments.
@@ -207,16 +208,52 @@ The spherical phantom contained Nickel(II) Sulfate Hexahydrate in distilled wate
 All images were acquired at the Acute Vascular Imaging Centre (AVIC) at the John Radcliffe Hospital in Oxford, using a 3T Siemens Verio magnet and a 12 channel Siemens head coil. 
 Conventional inversion recovery (IR) and spin echo (SE) experiments were performed, using various values of TI and TE, respectively. The images that were acquire from these experiments were later used to extract "gold standard" T1 and T2 values. 
 
-To produce the MRF images, different lists of timings were using to control a SE experiment. The lists were pseudo-random and controlled the $TE$ and $TR$, as well as the first and second flip angles ($FA_1$ and $FA_2$), for the acquistion of each image.
+To produce the MRF images, a list of timings was used to control a SE experiment. The list was pseudo-random and controlled the $TE$ and $TR$, as well as the first and second flip angles ($FA_1$ and $FA_2$), for the acquistion of each image.
 
- The fingerprinting sequence excited two slices of the sample. It also involved a fat saturation pulse before the first proton pulse, as well as crusher gradients at the end of each repetition, designed to remove any residual transverse magnetisation.  For each list, 48 images were recorded, via 48 repetitions. 
+ The fingerprinting sequence excited two slices of the sample. It also involved a fat saturation pulse before the first proton pulse, as well as crusher gradients at the end of each repetition, designed to remove any residual transverse magnetisation.  The experiment involved the aqcuisition of 48 images, via 48 repetitions. 
 
+\begin{table}[ht]
+\caption{Sequence Control List}
+\centering
+\begin{tabular}{c c c c c}
+\hline\hline
+Image Index & TE [ms] & TR [ms] & FA1 [degrees] & FA2 [degrees] \\ [0.5ex] % inserts table %heading
+\hline
+
+1   &    10000      &     0     &     90   &      180\\
+  2    &    220     &    240    &      90   &      180\\
+   3   &     20     &    800  &        90    &     160\\
+   4   &     60     &    620  &        90    &     180\\
+  5    &    360    &     160 &         50   &      180\\
+   6   &     80    &     560  &        90    &     180\\
+    7  &    100     &    500 &         90   &      180\\
+ 8     &    120    &     440 &         30   &       40\\
+  9    &    160   &      360 &         90   &      180\\
+ 10   &      180   &      320 &         90   &      180\\
+    11 &     700   &       40  &        90    &     180\\
+  12  &      200   &      280 &         90   &      180\\
+ 13   &      140   &      400 &         60   &      130\\
+  14  &      240   &      220 &         90   &      180\\
+   15 &      280   &      200 &         90   &      180\\
+  16  &      320   &      180 &         90   &      150\\
+   17 &      400   &      140 &         90   &      180\\
+   18 &      440   &      120 &         20   &      180\\
+   19 &      500   &      100 &         90   &      180\\
+    20  &    560   &       80  &        90    &     180\\
+     21  &    40    &     700  &        90    &     160\\
+   22    &   620   &       60  &        70    &     180\\
+     23  &   800   &       20  &        90    &     180\\
+   24    &   800   &        0   &       90     &    180\\ [1ex]
+\hline
+\end{tabular}
+\label{table:nonlin}
+\end{table}
 \subsection{$T_1$ and $T_2$ extraction}
 %*Describe the fitted process and mention S.Hurley's function**how does SH's code work?* *should I change the T1 fitting plot so it just shows when T1null?*
 Firstly, the IR and SE images of the two phantoms were used to measure $T_1$ and $T_2$, respectively. The curves in eq. \eqref{eq:longitudinal_recovery} and eq. \eqref{eq:transverse_decay} were fitted to the signal timecourse of particular pixels in their corresponding sets of images, using  MATLAB (The
 MathWorks, Natick, MA). For the homogeneous phantom, these sample pixels were spread across the phantom, as shown in Fig. \ref{fig:sphereD170TILabels}. For the custom phantom, the pixels were at fixed coordinates within each of the six compartments. As an example, the sample pixels for the measurement of the $T_1$ of the custom phantom are marked in Fig. \ref{fig:JackTILabels}. 
 
-
+%quote how long the fingerprinting sequence time was (approximately 34 seconds)
 \subsection{Dictionary creation}
 
 %*How was the 'random' list chosen?*
@@ -224,20 +261,26 @@ MathWorks, Natick, MA). For the homogeneous phantom, these sample pixels were sp
 
 %include plot of the simulated signal compared with the data from the six samples
 % MATLAB simulation of signal
-Using MATLAB, dictionaries were composed for each of the sequence timing lists. The simulation code was based on a mathematical description of a refocusing pulse, found in \cite{bernstein2004handbook}. The description was adapted so that it could be used to simulate the signal from a SE experiment within more than one $TR$.
-Several different lists of sequence timings were chosen in order to examine the effect that changing certain parameters had on the ability of the simulation to match the observed data. To test that the simulation was working correctly, comparisons were made between the simulated and observed signal for each list. This was done by using the gold standard $T_1$ and $T_2$ values to calculate the expected values for each image of the homogeneous phantom and plotting them with the signals from the sample pixels.
+Using MATLAB, dictionary entries were simulated with the timings list.The simulation code was based on a mathematical description of a refocusing pulse, found in \cite{bernstein2004handbook}. This description was adapted so that it could be used to simulate the signal from a SE experiment within more than one $TR$.
+%more details about simulation.
+%Several different lists of sequence timings were chosen in order to examine the effect that changing certain parameters had on the ability of the simulation to match the observed data. 
+To test that the simulation was working correctly, comparisons were made between the first 24 simulated and observed signal values. This was done by using the gold standard $T_1$ and $T_2$ values to calculate the expected values for each image of the homogeneous phantom and plotting them with the signals from the sample pixels.
 
-The values of $T_1$ and $T_2$ used to create the dictionary for the homogeneous phantom were between 200ms and 300ms, in increments of 10ms. The ranges of these parameter values was designed to include values below and above the gold standard measurements. In order to account for variations in the $B_1$ excitation field, a range of deviations from the intended flip angles were also used to produce the dictionary entries. This range was $\pm$30\%, in increments of 0.05 degrees. It was assumed that these deviations at a particular pixel would be constant for each pulse through out the sequence.  As a result of producing signals with each possible combination of these three parameters, each dictionary for the homogeneous phantom contained 2916 entries. The dictionary for the custom used the same increments and $B_1$ values, but the $T_1$ and $T_2$ ranges needed to be extended. The ranges of $T_1$ and $T_2$ were both 10ms to 120ms and 1900ms to 2100ms. The dictionary for the custom phantom comprised 18876 signal patterns.
+The values of $T_1$ and $T_2$ used to create the dictionary for the homogeneous phantom were between 200ms and 300ms, in increments of 10ms. The ranges of these parameter values was designed to include values below and above the gold standard measurements. In order to account for variations in the $B_1$ excitation field, a range of deviations from each intended flip angle was also used to produce the dictionary entries. This range was $\pm$30\%, in increments of 1\%. It was assumed that these deviations at a particular pixel would be constant for each pulse through out the sequence.  As a result of producing signals with each possible combination of these three parameters, each dictionary for the homogeneous phantom contained 7381 entries. The dictionary for the custom used the same increments and $B_1$ values, but the $T_1$ and $T_2$ ranges needed to be extended. The ranges of $T_1$ and $T_2$ were both 10ms to 120ms and 1900ms to 2100ms. The dictionary for the custom phantom comprised 19764 signal patterns.
 %*quote how long it takes to compile the dictionary*
-The time required to produce each dictionary depended on the size of each $TR$ and $TE$ in the list of timings. The fastest dictionary to make took approximately 2.5 minutes, whereas when each $TR$ was set to be 15 seconds, the dictionary took nearly 35 minutes to make. These times are from computations made using a commercial portable computer with a 2.6Hz processor and 4 cores.
+The dictionaries for the homogeneous and the custom phantoms took 8 and 21 minutes to compile, respectively. The computations were performed using a commercial portable computer, with a 2.6Hz processor and 4 cores.
+
 
 \subsection{Signal matching} 
-For a given pixel within the field of view, each dictionary entry $\vec{D}$  was compared with the signal timecourse $\vec{S}$ at that pixel, to see which dictionary pattern was the most similar. As in the original MRF publication \cite{ma2013magnetic}, we used the dot product of each pair of compared vectors, with an aspect of normalisation, to calculate similarity scores. The specific expression that we used for our similarity calculations is shown in eq. \ref{eq:CosDotProduct}, where the resulting similarity score $\cos(\theta)$ is restricted to values between 0 and 1. An exact match would give a score of 1. By dividing the product of the vector norms, the bias towards vectors with large data values was reduced. The intention for reducing this bias was that high similarity scores would highlight the dictionary entry and timecourse pair with the most similar type of pattern variations. Once the entry that gave the highest similarity score was found, the corresponding parameters $T_1$, $T_2$ and $B_1$ were assigned to that particular pixel. Good performance was defined as a close match between the assigned $T_1$ and $T_2$ and the gold standard values. An indication of the proton density $M_0$ was calculated as the mean of the scaling factors for the pairs of corresponding points in the best matched entry and the signal timecourse. The absolute scaling factor values were used for this calculated, as unfortunately some of the simulated signal points were negative. After a mask had been applied to ignore the pixels outside of the phantoms, the entire matching process was performed for all the pixels that had not been excluded. Our algorithm took approximately 7 and 45 minutes to find the best matches for 53x50 images of the homogeneous and custom phantoms, respectively.
-
+For a given pixel within the field of view, we compared each dictionary entry $\vec{D}$ with the first 24 points of the signal timecourse $\vec{S}$ at that pixel, to see which dictionary pattern was the most similar. 
+%more detail in description of matching algorithm? 
+As is reported in the original MRF publication \cite{ma2013magnetic}, we used the dot product of each pair of compared vectors, with an aspect of normalisation, to calculate similarity scores. The specific expression that we used for our similarity calculations is shown in eq. \ref{eq:CosDotProduct}, where the resulting similarity score $\cos(\theta)$ is restricted to values between 0 and 1. An exact match would give a score of 1. By dividing the product of the vector norms, the bias towards vectors with large data values was reduced. The intention for reducing this bias was that high similarity scores would highlight the dictionary entry and timecourse pair with the most similar type of pattern variations. Once the entry that gave the highest similarity score was found, the corresponding parameters $T_1$, $T_2$ and $B_1$ were assigned to that particular pixel. Good performance was defined as a close match between the assigned $T_1$ and $T_2$ and the gold standard values. An indication of the proton density $M_0$ was calculated as the mean of the scaling factors for the pairs of corresponding points in the best matched entry and the signal timecourse. The absolute scaling factor values were used for this calculated, as unfortunately some of the simulated signal points were negative. After a circular mask had been applied to the phantoms, the entire matching process was performed for all the pixels that had not been excluded. Our algorithm took approximately 3 and 5 minutes to find the best matches for 1257 pixels in the images of the homogeneous and custom phantoms, respectively.
+%check times are up to date
 \begin{equation} \label{eq:CosDotProduct}
 \frac{\vec{S}\cdot \vec{D}} {\norm{\vec{S}} \norm{\vec{D}}} = \cos{\theta} 
 \end{equation}
 
+%**********************************************************************************
 \section{Results and Discussion}
 \subsection{Gold standard T1 and T2}
 Figures \ref{fig:JackT1fitALL} and \ref{fig:JackT2fitALL}  show the $T_1$ and $T_2$ fits for the custom phantom signals. The signal curves in Fig. \ref{fig:JackT2fitALL} and Fig. \ref{fig:JackT1fitALL}  all have different initial values, suggesting that the inital longitudinal magnetisation was not at a fully relaxed equilibrium. Also, from Fig. \ref{fig:JackT2fitALL} it is clear that the chosen echo times were not great enough to allow for a significant decay in the signal from the deionised water in compartment 3. These factors could have skewed the gold standard measurements, but the fitting curves seem to closely match the data. 
@@ -268,106 +311,112 @@ Figures \ref{fig:JackT1fitALL} and \ref{fig:JackT2fitALL}  show the $T_1$ and $T
 \end{minipage}
 \end{figure}
 
+\subsection{Simulation Testing}
+*Simulation matches slice 2 better than slice 1, in particular, Images 11 and 22*
+*Slice 2 data matches the simulation well*
+*greater variation in signal for images 5, 11, 13, 16, 18, 22. Could be caused by combination of small FA1 compared to FA1?*
+
 \subsection{Property Maps}
-The signal dictionary that led to the parameter maps that best matched the gold standard measurements was also one of the fastest to compute, taking approximately 5 minutes. This probably due to the relatively short $TR$ values. The similarity calculations for the same list required approximately 10 minutes.
-Figures \ref{fig:sphereD170list3} and \ref{fig:Jacklist3} show the parameter maps from best performing timings list.
-%include comparison of simulation with data (list 3, sphereD170)
-%* include the best timings list (number 3)*
-%*Show the maps (T1, T2, B1dev, M0) from the offset list that performed the best with the spherical phantom*
-%JA 23/09/15: list 3 gives best maps
-%Show the maps for the same offset list for my phantom*
-%show scaling factors for best offsetlist (to show that they not all equal)
-%include plot of normalised simulation and data for the compartments
-%*Comment on which variations in the lists seemed to aid the fingerprinting*
-%*show differences in the data for different pixels? (as time courses)*
- Ideally, the scaling factors would be identical for all the pairs of corresponding points within the best matched dictionary entry and the data for a given pixel. However, the scaling factors were different for each image. Because of this, the mean scaling factor was chosen to indicate $M_0$. Figure \ref{fig:JackcompartmentScales2} gives an example of the differences in the scaling factors for the same coordinates in different images for the best timings list.
-
-\begin{figure*}
-\centering
-\begin{minipage}[c]{\textwidth}
-\setlength\figureheight{0.4\columnwidth}
-\setlength\figurewidth{0.9\textwidth}
-
-\input{JackcompartmentScales3}
-
-    \caption{Scaling factors for the size compartments in the custom phantom, for each of the acquired MRF images that led to the parameter maps}
-    \label{fig:JackcompartmentScales2}
-\end{minipage}
-\end{figure*}
-
-
-\begin{figure*}
-\centering
-\begin{minipage}[c]{\textwidth}
-
-\setlength\figureheight{0.4\textwidth}
-\setlength\figurewidth{0.9\textwidth}
-
-\input{sphereD170simCom3}
-\caption{Comparison of the simulated and acquired signal, for the homogeneous phantom for each of the six sample coordinates}
-    \label{fig:sphereD170simCom3}
+The signal dictionary that was used to produce the parameter maps in Figs. \ref{fig:sphereD170list3} and \ref{fig:Jacklist3} took approximately 5 minutes to create. The similarity calculations for the same list required approximately 10 minutes.
  
+%include comparison of simulation with data (list 3, sphereD170) -> done
+%* include the best timings list in a table (number 3) -> done
+%*Show the maps (T1, T2, B1dev, M0) from the offset list that performed the best with the spherical phantom (JA 23/09/15: list 3 gives best maps) -> 
+%Show the maps for the same offset list for my phantom* -> done
+%*show differences in the data for different pixels? (as time courses), where the assigned T1 is vastly different for adjacent pixels.
+ Ideally, the scaling factors would be identical for all the pairs of corresponding points within the best matched dictionary entry and the data for a given pixel. However, the scaling factors were different for each image. Because of this, the mean of the scaling factors was used to indicate $M_0$. 
+
+
+*state how long the scan took*
+\begin{figure*}
+\centering
+\begin{minipage}[b]{1\textwidth}
+
+\begin{subfigure}[b]{1\textwidth}
+\setlength\figureheight{0.3\textwidth}
+\setlength\figurewidth{0.9\textwidth}
+
+
+\input{sphereD170simCom3slice1}
+\caption{Slice 1}
+    \label{fig:sphereD170simCom3slice1}
+ 
+\end{subfigure}
+\begin{subfigure}[b]{1\textwidth}
+
+\setlength\figureheight{0.3\textwidth}
+\setlength\figurewidth{0.9\textwidth}
+
+\input{sphereD170simCom3slice2}
+\caption{Slice 2}
+    \label{fig:sphereD170simCom3slice2}
+ 
+
+\end{subfigure}
+\caption{Comparison of the simulated and acquired signal, for the two slices of the homogeneous phantom, for each of the six sample coordinates}
 \end{minipage}
 \end{figure*}
 
-%*In the future we should remake the Phantom so that it has T1 and T2 that are found in the brain*
-%*comment on further work: improving accuracy of algorithm. apply in vivo, possibly try different sequence styles*
+*In the future we should remake the Phantom so that it has T1 and T2 that are found in the brain*
+*comment on further work: improving accuracy of algorithm. apply in vivo, possibly try different sequence styles*
 Once our method has been refined, it is important that it used to apply MRF in vivo, to work towards the goal of implementing the approach at the AVIC. 
-%*things that the original paper did differently to me or I left out?*
-%issues that i had that others also had?*
-Previous MRF studies have used a much larger number of dictionary entries than we have used in this work. This could improve the ability of our implentation to successfully measure the properties of interest.
+*things that the original paper did differently to me or I left out?*
+*issues that i had that others also had?*
+Previous MRF studies have used a much larger dictionary than we have used in this work. This could improve the ability of our implentation to successfully measure the properties of interest.
 The simulation could be rewritten so that it only computes the signal that is nessecary for the simulation. This would reduce the required computation time, which is a factor that would become more significant if the size of the dictionary is increased.
 
 
-%fix simulation (no negative points...)
-%T1 didn't match well, T2 did
-%M0 is not too bad
+
+*T1 didn't match as well asT2...could be because the TR offset times in the timings list were long compared to the T1 values, so not much difference in Mz at each TE*
+*M0 is not too bad, but need to resolved the problem of negative values...*
+
+%pattern recogn
 
 
+\begin{figure*}
 
-\begin{figure}
+\begin{minipage}[c]{1\textwidth}
+
+\begin{subfigure}[b]{0.5\textwidth}
 \centering
-\begin{minipage}[c]{\columnwidth}
+\setlength\figureheight{0.6\columnwidth}
+\setlength\figurewidth{0.6\columnwidth}
+\input{sphereD170slice2T1list3ParamList3}
 
-\setlength\figureheight{0.6\columnwidth}
-\setlength\figurewidth{0.6\columnwidth}
-\input{sphereD170T1list3}
-\setlength\figureheight{0.6\columnwidth}
-\setlength\figurewidth{0.6\columnwidth}
-\input{sphereD170T2list3}
-\setlength\figureheight{0.6\columnwidth}
-\setlength\figurewidth{0.6\columnwidth}
-\input{sphereD170FAlist3}
-\setlength\figureheight{0.6\columnwidth}
-\setlength\figurewidth{0.6\columnwidth}
-\input{sphereD170M0mean3}
-    \caption{Parameter maps of the homogeneous phantom}
+\input{sphereD170slice2T2list3ParamList3}
+
+\input{sphereD170slice2FAlist3ParamList3}
+
+\input{sphereD170slice2M0mean3ParamList3}
+    \caption{Homogeneous phantom}
     \label{fig:sphereD170list3}
-\end{minipage}
-\end{figure}
 
-\begin{figure}
+\end{subfigure}
+\begin{subfigure}[b]{0.5\textwidth}
 \centering
-\begin{minipage}[c]{\columnwidth}
 \setlength\figureheight{0.6\columnwidth}
 \setlength\figurewidth{0.6\columnwidth}
-\input{JackT1list3}
-\setlength\figureheight{0.6\columnwidth}
-\setlength\figurewidth{0.6\columnwidth}
-\input{JackT2list3}
-\setlength\figureheight{0.6\columnwidth}
-\setlength\figurewidth{0.6\columnwidth}
-\input{JackFAlist3}
-\setlength\figureheight{0.6\columnwidth}
-\setlength\figurewidth{0.6\columnwidth}
-\input{JackM0mean3}
-    \caption{Parameter maps of the custom phantom}
-    \label{fig:Jacklist3}
-\end{minipage}
-\end{figure}
+\input{Jackslice2T1list3ParamList3}
 
+\input{Jackslice2T2list3ParamList3}
+
+\input{Jackslice2FAlist3ParamList3}
+
+\input{Jackslice2M0mean3ParamList3}
+    \caption{Custom phantom}
+    \label{fig:Jacklist3}
+\end{subfigure}
+\caption{Parameter maps for slice 2 of each phantom.}
+\end{minipage}
+\end{figure*}
+
+
+
+*sped up by reducing the range of properties of interest*
+*could speed up matching process by storing simulate signal vectors in a 2D matrix, and using parallel for loop, instead of two nested For loops...*
+%**********************************************************************************
 \section{Conclusions}
-%*Comment on the potential for this to be used in AVIC*
+*Comment on the potential for this to be used in AVIC*
 \section{Acknowledgements}
 Robert Brand for providing the design for the phantom. Sam Hurley for his $T_1$ fitting software.
 

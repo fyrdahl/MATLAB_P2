@@ -1,4 +1,4 @@
-function [M, Mxy,flipAngles, t0s] = SimBloch(T1, T2, fingerprintOffsetList, plotFlag,freqOffset, nSlices)
+function [M, Mxy,flipAngles, t0s] = SimBloch(T1, T2, fingerprintOffsetList, plotFlag,freqOffset, nSlices, nTimeCoursePts)
 % Jack Allen
 
 % magnetisation evolution equations in this function are from 'Handbook of MRI pulse sequences - section 3.3'
@@ -21,7 +21,7 @@ Mxy = zeros(1, numel(fingerprintOffsetList(:,1)));
 
 %% Signal evolution
 
-for n = 1:numel(fingerprintOffsetList(:,1))
+for n = 1:(numel(fingerprintOffsetList(:,1)))
     
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     % Immediately before Pulse 1
@@ -82,13 +82,22 @@ for n = 1:numel(fingerprintOffsetList(:,1))
             if Mxy(n) == 0
                 n;
 %                 Mxy(n) = abs(Mtransverse(t));
+
+   
                 Mxy(n) = M(3,t0)*( sin(flipAngles(n,1))*sin((flipAngles(n,2))/2)*sin((flipAngles(n,2))/2)*exp(-(t - t0)/T2) );
+   
+                if Mxy(n) < 0
+                    disp('NEGATIVE')
+                    pause
+                end
+                
                 imageTimes(n) = t;
                 t0s(n) = t0;
             end
         end      
 
       
+       
 
    end
     
@@ -96,9 +105,10 @@ for n = 1:numel(fingerprintOffsetList(:,1))
     newTRs(n) = TRmin + (nSlices*TEoffsets(n)) + TRoffsets(n);
     
     % update total time that has passed
-    t0 = t0 + newTRs(n);
+    t0 = t0 + newTRs(n)
     
 end
+
 %% plotting the signal evolution
 if plotFlag == 'showPlot'
     
