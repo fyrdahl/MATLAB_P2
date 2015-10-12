@@ -1,14 +1,21 @@
 \BOOKMARK [1][-]{section.1}{Introduction}{}% 1
 \BOOKMARK [1][-]{section.2}{Materials and Method}{}% 2
 \BOOKMARK [2][-]{subsection.2.1}{Phantom production}{section.2}% 3
-\BOOKMARK [2][-]{subsection.2.2}{Image acquisition}{section.2}% 4
-\BOOKMARK [2][-]{subsection.2.3}{T1 and T2 extraction}{section.2}% 5
-\BOOKMARK [2][-]{subsection.2.4}{Dictionary creation}{section.2}% 6
+\BOOKMARK [2][-]{subsection.2.2}{Image Acquisition}{section.2}% 4
+\BOOKMARK [2][-]{subsection.2.3}{Gold Standard T1 and T2 Measurment}{section.2}% 5
+\BOOKMARK [2][-]{subsection.2.4}{Dictionary Creation}{section.2}% 6
 \BOOKMARK [2][-]{subsection.2.5}{Signal matching}{section.2}% 7
 \BOOKMARK [1][-]{section.3}{Results and Discussion}{}% 8
 \BOOKMARK [2][-]{subsection.3.1}{Gold standard T1 and T2}{section.3}% 9
 \BOOKMARK [2][-]{subsection.3.2}{Simulation Testing}{section.3}% 10
-\BOOKMARK [2][-]{subsection.3.3}{Property Maps}{section.3}% 11
+\BOOKMARK [2][-]{subsection.3.3}{MRF Parameter Estimates}{section.3}% 11
 \BOOKMARK [1][-]{section.4}{Conclusions}{}% 12
 \BOOKMARK [1][-]{section.5}{Acknowledgements}{}% 13
-\BOOKMARK [1][-]{section*.10}{References}{}% 14
+\BOOKMARK [1][-]{section*.11}{Appendix: Signal Simulation Equations}{}% 14
+\BOOKMARK [2][-]{subsection.Appendix.A.1}{Initial Parameters}{section*.11}% 15
+\BOOKMARK [2][-]{subsection.Appendix.A.2}{Excitation Pulse 1}{section*.11}% 16
+\BOOKMARK [2][-]{subsection.Appendix.A.3}{Signal Evolution After Pulse 1}{section*.11}% 17
+\BOOKMARK [2][-]{subsection.Appendix.A.4}{Excitation Pulse 2}{section*.11}% 18
+\BOOKMARK [2][-]{subsection.Appendix.A.5}{Signal Evolution After Pulse 2}{section*.11}% 19
+\BOOKMARK [2][-]{subsection.Appendix.A.6}{Signal Measurement at the Echo Time}{section*.11}% 20
+\BOOKMARK [1][-]{section*.12}{References}{}% 21

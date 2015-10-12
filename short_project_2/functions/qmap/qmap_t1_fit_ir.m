@@ -163,6 +163,8 @@ for ii = find(~(sum(data, 2) == 0))';
     
     res(ii)      = residual;
     
+    [F(ii,:) mz(ii,:)] = ir_model(x, 1); % added by JA
+    
     % Optinal debug plotting
     if debug == 1 %&& (toc - dbgtime) > .250 %edited by JA to force plot
         % Only re-draw every 1 second
@@ -182,7 +184,7 @@ for ii = find(~(sum(data, 2) == 0))';
         figure(dbfig);
         plot(tivals, data(ii,:), 'o', ti, ir_model(x,1), '-');
         
-        [F(ii,:) mz(ii,:)] = ir_model(x, 1); % added by JA
+   [F(ii,:) mz(ii,:)] = ir_model(x, 1); % added by JA
         
         % Figure captions & Legend
         title(['T1: ' num2str(1/x(2), '%0.2f') ' s']);
@@ -197,7 +199,7 @@ for ii = find(~(sum(data, 2) == 0))';
 end
 
 % Done.
-qmap_progressbar(1);
+%qmap_progressbar(1);
 toc;
 
 %% V. IR Model Function

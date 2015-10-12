@@ -18,7 +18,7 @@ addpath(genpath(workingdir)); % sometimes causes MATLAB to freeze
 
 %% 2. Read in the images
 %which phantom is the data from? ('sphereD170' or 'Jack'?)
-phantomName = 'sphereD170';
+phantomName = 'Jack';
 
 % Choose the offset list to use. List 2 is the original 'random' list of
 % offsets. Lists 3:8 are variations on List2, as described below.
@@ -50,9 +50,68 @@ run('plotSamplePixels_TE_TR.m')
 run('visualiseImages.m')
 
 %% fit curves to calculate T1 and T2
+ROI = 'fullPhantom';
+[compartmentT1s, compartmentT2s, T2curves, T1curves, fittedCurve, goodness, output, F] = fitEvolutionCurves(phantomName,TEimages, TIimages, TE(2:end)', TI(2:end), ROI, compartmentCenters);
 
-[compartmentT1s, compartmentT2s, T2curves, T1curves, fittedCurve, goodness, output, F] = fitEvolutionCurves(phantomName,TEimages, TIimages, TE(2:end)', TI(2:end), 'compartments', compartmentCenters);
-
+if ROI == 'fullPhantom'
+    goldStdT1maps = reshape(compartmentT1s,[sqrt(size(compartmentT1s,2)), sqrt(size(compartmentT1s,2))]);
+    goldStdT2maps = reshape(compartmentT2s,[sqrt(size(compartmentT2s,2)), sqrt(size(compartmentT2s,2))]);
+    save([workingdir,'/MAT-files/images/',phantomName,'goldStd','T1.mat'],'goldStdT1maps')
+    save([workingdir,'/MAT-files/images/',phantomName,'goldStd','T2.mat'],'goldStdT2maps')
+    
+    clear goldStdT1maps
+    clear goldStdT2maps
+    load([workingdir,'/MAT-files/images/',phantomName,'goldStd','T1.mat'])
+    load([workingdir,'/MAT-files/images/',phantomName,'goldStd','T2.mat'])
+    
+    filename = '/Users/jallen/Documents/MATLAB/short_project_2/DTC_report/';
+    
+    switch phantomName
+        case 'Jack'
+            goldStdT1mapsFig = figure; imagesc(goldStdT1maps)
+            axis off
+            colormap jet
+            cgoldStdT1mapsFig = colorbar;
+            ylabel(cgoldStdT1mapsFig,'T1 [ms]')
+            cmin = 50;
+            cmax = 300;
+            caxis([cmin cmax])
+            cgoldStdT1mapsFig.YTick = [cmin : 50 : cmax];
+            matlab2tikz('figurehandle',goldStdT1mapsFig,'filename',[filename,'/',phantomName,'slice',num2str(sliceNumber),'goldStdT1maps',num2str(offsetListNum),'ParamList',num2str(paramList)],'height', '\figureheight', 'width', '\figurewidth')
+            
+            goldStdT2mapsFig = figure; imagesc(goldStdT2maps)
+            axis off
+            colormap jet
+            cgoldStdT2mapsFig = colorbar;
+            ylabel(cgoldStdT2mapsFig,'T2 [ms]')
+            cmin = 10;
+            cmax = 110;
+            caxis([cmin cmax])
+            cgoldStdT2mapsFig.YTick = [cmin : 20 : cmax];
+            matlab2tikz('figurehandle',goldStdT2mapsFig,'filename',[filename,'/',phantomName,'slice',num2str(sliceNumber),'goldStdT2maps',num2str(offsetListNum),'ParamList',num2str(paramList)],'height', '\figureheight', 'width', '\figurewidth')
+        case 'sphereD170'
+            goldStdT1mapsFig = figure; imagesc(goldStdT1maps) 
+            axis off
+            colormap jet
+            cgoldStdT1mapsFig = colorbar;
+            ylabel(cgoldStdT1mapsFig,'T1 [ms]')
+            cmin = 180;
+            cmax = 300;
+            caxis([cmin cmax])
+            cgoldStdT1mapsFig.YTick = [cmin : 20 : cmax];
+            matlab2tikz('figurehandle',goldStdT1mapsFig,'filename',[filename,'/',phantomName,'slice',num2str(sliceNumber),'goldStdT1maps',num2str(offsetListNum),'ParamList',num2str(paramList)],'height', '\figureheight', 'width', '\figurewidth')
+            
+            goldStdT2mapsFig = figure; imagesc(goldStdT2maps)
+            axis off
+            colormap jet
+            cgoldStdT2mapsFig = colorbar;
+            ylabel(cgoldStdT2mapsFig,'T2 [ms]')
+            caxis([cmin cmax])
+            cgoldStdT2mapsFig.YTick = [cmin : 20 : cmax];
+            matlab2tikz('figurehandle',goldStdT2mapsFig,'filename',[filename,'/',phantomName,'slice',num2str(sliceNumber),'goldStdT2maps',num2str(offsetListNum),'ParamList',num2str(paramList)],'height', '\figureheight', 'width', '\figurewidth')
+    end
+    
+end
 %% 6. read in the list of timing offsets used for acquisition
 run('readFingerprintOffsetList.m')
 save([workingdir,'/MAT-files/fingerprintLists.mat'], 'fingerprintLists')
@@ -70,6 +129,13 @@ freqOffset = 0;
 nSlices = 2;
 offsetListNum = 3;
 nTimeCoursePts = 24;
+
+
+originalFA1s = fingerprintLists(:,3,offsetListNum);
+originalFA2s = fingerprintLists(:,4,offsetListNum);
+fingerprintLists(:,3,offsetListNum) = originalFA1s*(dictionaryParams(3,k));
+fingerprintLists(:,4,offsetListNum) = originalFA2s*(dictionaryParams(3,k));
+
 [M, Mxy,flipAngles, t0s] = SimBloch(T1, T2, fingerprintLists(:,:,offsetListNum), 'showPlot', freqOffset, nSlices, nTimeCoursePts);
 %[M, Mxy,flipAngles, t0s] = SimBloch2(T1, T2, fingerprintLists(:,:,offsetListNum), 'showPlot', freqOffset, nSlices);
 
@@ -124,7 +190,7 @@ for offsetListNum = 2:8;
     clear matchedT2
     clear matchedFAdevInd
     load([workingdir,'/MAT-files/images/',phantomName,'_list',num2str(offsetListNum),'FPimages.mat'])
-    data = zeros(24, size(FPimages,1)*size(FPimages,2));
+    data = zeros(size(FPimages,1),size(FPimages,2), 24);
     %   data(r,c,sliceNumber,1:24) = squeeze(FPimages(r,c,sliceNumber,1:24,offsetListNum));
     data = squeeze(FPimages(:,:,sliceNumber,1:24,offsetListNum));
     
@@ -132,8 +198,8 @@ for offsetListNum = 2:8;
     clear signalDictionary
     l = load([workingdir,'/MAT-files/dictionaries/',phantomName,'_list',num2str(offsetListNum),'paramList',num2str(paramList),'dictionary.mat']);
     signalDictionary = l.signalDictionary;
-    [similarity, matchedT1, matchedT2, matchedFAdevInd, M0_mean, M0_stdPC,M0,  scales, bestMatch, matchT] = calcSimilarity(data, signalDictionary(:,:,:,:,offsetListNum), sliceNumber, dictionaryParams, workingdir);
-   
+    [similarity, matchedT1, matchedT2, matchedFAdevInd, M0_mean, M0_stdPC,M0, M0fit_grad, scales, bestMatch, matchT] = calcSimilarity(data, signalDictionary(:,:,:,:,offsetListNum), sliceNumber, dictionaryParams, workingdir);
+    
     save([workingdir,'/MAT-files/matches/',phantomName,'list',num2str(offsetListNum),'paramList',num2str(paramList),'matchedT1.mat'],'matchedT1')
     save([workingdir,'/MAT-files/matches/',phantomName,'list',num2str(offsetListNum),'paramList',num2str(paramList),'matchedT2.mat'],'matchedT2')
     save([workingdir,'/MAT-files/matches/',phantomName,'list',num2str(offsetListNum),'paramList',num2str(paramList),'matchedFAdevInd.mat'],'matchedFAdevInd')
@@ -143,7 +209,8 @@ for offsetListNum = 2:8;
     save([workingdir,'/MAT-files/matches/',phantomName,'list',num2str(offsetListNum),'paramList',num2str(paramList),'scales.mat'],'scales')
     save([workingdir,'/MAT-files/matches/',phantomName,'list',num2str(offsetListNum),'paramList',num2str(paramList),'bestMatch.mat'],'bestMatch')
     save([workingdir,'/MAT-files/matches/',phantomName,'list',num2str(offsetListNum),'paramList',num2str(paramList),'compileDictionaryElapsedTime.mat'],'matchT')
-    
+    save([workingdir,'/MAT-files/matches/',phantomName,'list',num2str(offsetListNum),'paramList',num2str(paramList),'M0fit_grad.mat'],'M0fit_grad')
+    save([workingdir,'/MAT-files/matches/',phantomName,'list',num2str(offsetListNum),'paramList',num2str(paramList),'M0fit_intercept.mat'],'M0fit_intercept')
     pause(1)
     
 end
@@ -168,11 +235,16 @@ for offsetListNum = 2:8
     clear matchedT2
     clear matchedFAdevInd
     clear M0_mean
+    clear scales
     load([workingdir,'/MAT-files/matches/',phantomName,'list',num2str(offsetListNum),'paramList',num2str(paramList),'matchedT1.mat'])
     load([workingdir,'/MAT-files/matches/',phantomName,'list',num2str(offsetListNum),'paramList',num2str(paramList),'matchedT2.mat'])
     load([workingdir,'/MAT-files/matches/',phantomName,'list',num2str(offsetListNum),'paramList',num2str(paramList),'matchedFAdevInd.mat'])
     load([workingdir,'/MAT-files/matches/',phantomName,'list',num2str(offsetListNum),'paramList',num2str(paramList),'M0_mean.mat'])
     load([workingdir,'/MAT-files/matches/',phantomName,'list',num2str(offsetListNum),'paramList',num2str(paramList),'M0.mat'])
+    load([workingdir,'/MAT-files/matches/',phantomName,'list',num2str(offsetListNum),'paramList',num2str(paramList),'bestMatch.mat'])
+    load([workingdir,'/MAT-files/matches/',phantomName,'list',num2str(offsetListNum),'paramList',num2str(paramList),'scales.mat'])
+    load([workingdir,'/MAT-files/matches/',phantomName,'list',num2str(offsetListNum),'paramList',num2str(paramList),'M0fit_grad.mat'])
+    
     
     filename = '/Users/jallen/Documents/MATLAB/short_project_2/DTC_report/';
     
@@ -209,10 +281,17 @@ for offsetListNum = 2:8
             cmax = max(dictionaryParams(1,1:sum(dictionaryParams(1,:) ~= 0)))
             
         case 'Jack'
-            cmax = compartmentT1s(2)
-            cmin = 50
-            cmax = 260
+            switch ROI
+                case 'compartments'
+                    cmax = compartmentT1s(2)
+                    cmin = 50
+                    cmax = 300
+                case 'fullPhantom'
+                    cmin = 50
+                    cmax = 300
+            end
     end
+    
     cT1.YTick = [cmin : 10 : cmax]
     caxis([cmin,cmax])
     ylabel(cT1,'T1 (ms)')
@@ -256,23 +335,22 @@ for offsetListNum = 2:8
     pause(2)
     
     image = log10(abs(M0_mean(:,:)));
-   M0_mean_fig = figure; imagesc(image(:,:))
-   axis off
+    M0_mean_fig = figure; imagesc(image(:,:))
+    axis off
     set(M0_mean_fig,'name',[phantomName,', List',num2str(offsetListNum),', M0_mean'])
     colormap jet
     cM0_mean = colorbar;
-             %    for i = 1:size(compartmentCenters(:,:,3),1)
-             %        temp(i) = image(squeeze(compartmentCenters(i,1,3)),squeeze(compartmentCenters(i,2,3)));
-             %         tp(i) = squeeze(compartmentCenters(i,:,3));
-             %   end
-             %   cmin = min(temp)
-             %   cmax = max(temp)
-                %cmax = 120
-             %   caxis([cmin,cmax])
-   ylabel(cM0_mean,'M0 (log_{10}(Mean of Absolute Scaling Factors))')
-    saveas(matchedT2_fig, [workingdir,'/figures/',phantomName,'matchedT2_offsetList',num2str(offsetListNum)])
-   saveas(M0_mean_fig, [filename,'/',phantomName,'matchedM0_mean',num2str(offsetListNum),'.png'])
-   matlab2tikz('figurehandle',M0_mean_fig,'filename',[filename,'/',phantomName,'slice',num2str(sliceNumber),'M0mean',num2str(offsetListNum),'ParamList',num2str(paramList)],'height', '\figureheight', 'width', '\figurewidth')
+    %    for i = 1:size(compartmentCenters(:,:,3),1)
+    %        temp(i) = image(squeeze(compartmentCenters(i,1,3)),squeeze(compartmentCenters(i,2,3)));
+    %         tp(i) = squeeze(compartmentCenters(i,:,3));
+    %   end
+    %   cmin = min(temp)
+    %   cmax = max(temp)
+    %cmax = 120
+    %caxis([0,4500])
+    ylabel(cM0_mean,'M0 (log_{10}(Mean of Absolute Scaling Factors))')
+    saveas(M0_mean_fig, [filename,'/',phantomName,'matchedM0_mean',num2str(offsetListNum),'.png'])
+    matlab2tikz('figurehandle',M0_mean_fig,'filename',[filename,'/',phantomName,'slice',num2str(sliceNumber),'M0mean',num2str(offsetListNum),'ParamList',num2str(paramList)],'height', '\figureheight', 'width', '\figurewidth')
     
     %     pause(2)
     %     M0fig = figure; imagesc(log10(M0(:,:)))
@@ -286,6 +364,19 @@ for offsetListNum = 2:8
     %     saveas(M0fig, [filename,'/',phantomName,'matchedM0',num2str(offsetListNum),'.png'])
     %     matlab2tikz('figurehandle',M0fig,'filename',[filename,'/',phantomName,'M0',num2str(offsetListNum)],'height', '\figureheight', 'width', '\figurewidth')
     %
+    
+    
+    data = reshape(data,[64*64, 24]);
+    bestMatch(1001,:);
+    M0fit_grad_fig = figure; imagesc(M0fit_grad(:,:));
+    axis off
+    set(M0fit_grad_fig,'name',[phantomName,', List',num2str(offsetListNum),', M0fit_grad'])
+    colormap jet
+    cM0fit_grad = colorbar;
+    ylabel(cM0fit_grad,'M_{0}R [a.u.]')
+    saveas(M0fit_grad_fig, [filename,'/',phantomName,'M0fit_grad',num2str(offsetListNum),'.png'])
+    matlab2tikz('figurehandle',M0fit_grad_fig,'filename',[filename,'/',phantomName,'slice',num2str(sliceNumber),'M0fit_grad',num2str(offsetListNum),'ParamList',num2str(paramList)],'height', '\figureheight', 'width', '\figurewidth')
+    
 end
 
 %%

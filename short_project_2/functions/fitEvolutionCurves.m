@@ -1,4 +1,4 @@
-function[compartmentT1s, compartment_T2s, T2curves, T1curves, fittedCurve, goodness, output,F] = fitEvolutionCurves(phantomName,TEimages, TIimages, T2_x, T1_x, region, varargin)
+function[fittedT1s, fittedT2s, T2curves, T1curves, fittedCurve, goodness, output,F] = fitEvolutionCurves(phantomName,TEimages, TIimages, T2_x, T1_x, region, varargin)
 
 % Models to fit to the data
 T2model = @(a,T2,c, x) a*exp(-x*(1/T2)) + c;
@@ -19,9 +19,9 @@ switch region
             
             [fittedCurve, goodness, output] = fit(T2_x,T2curves(:,n),T2model,'Upper',[5000 4000 500],'Lower',[0 0 -100],'StartPoint',[0.5 200 100]);
             
-            compartment_T2s(n) = fittedCurve.T2;
-            compartment_a(n) = fittedCurve.a;
-            compartment_c(n) = fittedCurve.c;
+            fittedT2s(n) = fittedCurve.T2;
+            %compartment_a(n) = fittedCurve.a;
+           % compartment_c(n) = fittedCurve.c;
             
             plot(T2_x, T2curves(:,n),'.')
             
@@ -61,7 +61,7 @@ switch region
             [pd(n) r1(n) eff res F(n,:) mz(n,:)] = qmap_t1_fit_ir(T1curves(n,:), 0.001*T1_x,opts);
             
             disp(['fit number: ',num2str(n)])
-            compartmentT1s(n) = (1/r1(n))*1000
+            fittedT1s(n) = (1/r1(n))*1000
             hold on
             
         end
@@ -92,55 +92,73 @@ switch region
         
         xlabel (['Inversion Time (TI) [log_{10}','(ms)]'])
         ylabel 'Signal [Arbitrary Units]'
-       ylim([ -2000 3500])
+        ylim([ -2000 3500])
         matlab2tikz('figurehandle',T1fig,'filename',[filename,'/',phantomName,'T1fitALL'],'height','\figureheight','width','\figurewidth')
         
         %
         %% Fit full phantom, to produce T1 and T2 maps
         
     case 'fullPhantom'
+    
         load('mask.mat')
+        T2curves = 0;
+        T1curves = 0;
         
-        for r = 1:64
+        T2images = reshape(TEimages,[size(TEimages,1)*size(TEimages,2), size(TEimages,3)]);
+        T1images = reshape(TIimages,[size(TIimages,1)*size(TIimages,2), size(TIimages,3)]);
+        mask = reshape(mask,[1,size(mask,1)*size(mask,2)]);
+        fittedT1s = zeros(1,size(T1images,1))
+        fittedT2s = zeros(1,size(T2images,1))
+        fittedBeta = zeros(1,size(T1images,1))
+        tic
+        for r = 1:size(T2images,1)
             disp('calculating T2 map...')
-            disp(['row ',num2str(r),' of 64'])
-            for c = 1:64
-                if mask(r,c) >0
-                    
-                    curve = squeeze(images(r,c,T1_x));
-                    
-                    [fittedCurve, goodness, output] = fit(T1_x',curve,T2model,'Upper',[5000 5000 2500],'Lower',[0 0 0],'StartPoint',[1000 100 100]);
-                    
-                    T2fits(r,c,1) = fittedCurve.a;
-                    T2fits(r,c,2) = fittedCurve.T2;
-                    T2fits(r,c,3) = fittedCurve.c;
-                    T2fitResiduals(r,c,:) = output.residuals;
-                    T2map(r,c) = fittedCurve.T2;
-                    
-                    curve = squeeze(images(r,c,T2_x));
-                    %                     [fittedCurve, goodness, output] = fit(x,curve,T1model,'Upper',[2000 2000 10 5000],'Lower',[-5000 -5000 0 0],'StartPoint',[1000 100 0.5 100])
-                    %                     T1map(r,c) = fittedCurve.T1;
-                    [pd r1 eff res] = shurleyT1fit(curve', 'compartments', 1, TI);
-                    T1map(r,c) = 1./r1;
-                    
-                end
+            disp(['row ',num2str(r),' of ',num2str(size(mask,2)) ])
+            
+            if mask(1,r) > 0
                 
+                %T2
+                [fittedCurve, goodness, output] = fit(T2_x,T2images(r,T2_x)',T2model,'Upper',[5000 5000 2500],'Lower',[0 0 0],'StartPoint',[1000 100 100]);
+                
+               % T2fits(r,1) = fittedCurve.a;
+              % T2fits(r,2) = fittedCurve.T2;
+              %  T2fits(r,3) = fittedCurve.c;
+              %  T2fitResiduals(r,:) = output.residuals;
+                fittedT2s(1,r) = fittedCurve.T2;
+                
+                %T1
+                opts = struct('debug',0,'fiteff',1);
+                [pd(r) r1(r) eff res F(r,:) mz(r,:)] = qmap_t1_fit_ir(T1images(r,T1_x), 0.001*T1_x,opts); 
+                 fittedBeta(1,r) = eff;
+                 fittedT1s(1,r) = (1/r1(r))*1000;
+                
+
             end
-        end
-        disp('finished calculating T2 map')
-        toc
-        
-        if relaxationType == 'T2' && figureFlag == 'showMap'
-            figure; imagesc(T2map(:,:))
-            caxis([0 150])
             
         end
+        toc
+      B1map =  reshape(fittedBeta, [sqrt(size(fittedBeta,2)) , sqrt(size(fittedBeta,2)) ]);
+      T2map =  reshape(fittedT2s, [sqrt(size(fittedT2s,2)) , sqrt(size(fittedT2s,2)) ]);
+       T1map =  reshape(fittedT1s, [sqrt(size(fittedT1s,2)) , sqrt(size(fittedT1s,2)) ]);
+        %  if relaxationType == 'T2' && figureFlag == 'showMap'
+        T2fig = figure; imagesc(T2map(:,:))
+        caxis([180 300])
+     %   ylabel(T2fig,'Gold Standard T2')
         
-        if relaxationType == 'T1' && figureFlag == 'showMap'
-            figure; imagesc(T1map(:,:))
-            caxis([0 350])
-        end
+        %  end
         
+        %  if relaxationType == 'T1' && figureFlag == 'showMap'
+       T1fig = figure; imagesc(T1map(:,:))
+       caxis([180 300])
+ %      ylabel(T1fig,'Gold Standard T1')
+        %  end
+        B1fig = figure; imagesc(B1map(:,:))
+ %      ylabel(B1map,'Gold Standard T1')
+        
+          fittedCurve = 0;
+        goodness = 0;
+        output = 0;
+        F = 0;
 end
 
 end

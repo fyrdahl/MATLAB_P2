@@ -84,12 +84,12 @@ for n = 1:(numel(fingerprintOffsetList(:,1)))
 %                 Mxy(n) = abs(Mtransverse(t));
 
    
-                Mxy(n) = M(3,t0)*( sin(flipAngles(n,1))*sin((flipAngles(n,2))/2)*sin((flipAngles(n,2))/2)*exp(-(t - t0)/T2) );
+                Mxy(n) = abs(M(3,t0)*( sin(flipAngles(n,1))*sin((flipAngles(n,2))/2)*sin((flipAngles(n,2))/2)*exp(-(t - t0)/T2) ));
    
-                if Mxy(n) < 0
-                    disp('NEGATIVE')
-                    pause
-                end
+               % if Mxy(n) < 0
+                %    disp('NEGATIVE')
+                 %   pause
+               % end
                 
                 imageTimes(n) = t;
                 t0s(n) = t0;

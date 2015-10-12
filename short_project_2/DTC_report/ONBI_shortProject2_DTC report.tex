@@ -4,6 +4,7 @@
 
 \usepackage{lineno,hyperref}
 \usepackage{amsmath}
+\usepackage{amsfonts}
  \usepackage{multirow}
 \usepackage[table,xcdraw]{xcolor}
 %\graphicspath{figs}
@@ -21,6 +22,17 @@
 \usepackage{caption}
 \usepackage{subcaption}
 \modulolinenumbers[5]
+
+\usepackage{xcolor}
+\hypersetup{
+    colorlinks,
+    linkcolor={black!50!black},
+    citecolor={black!50!black},
+    urlcolor={black!80!black}
+}
+
+
+
 
 % \journal{Journal of \LaTeX\ Templates}
 
@@ -69,7 +81,7 @@
 %% Group authors per affiliation:
 %\author{Elsevier\fnref{myfootnote}}
 
-\title{ Application of Magnetic Resonance Fingerprinting to Measure Brain Oedema} 
+\title{ Application of Magnetic Resonance Fingerprinting to Measurement of Brain Oedema} 
 
 
 %% or include affiliations in footnotes:
@@ -83,7 +95,7 @@
 %\address[mymainaddress]{FMRIB centre, Nuffield Department of Clinical Neurosciences, University of Oxford, Oxford, UK}
 
 \begin{abstract}
-
+The magnetic resonance fingerprinting (MRF) method has been used to measure $T_1$, $T_2$ and RF excitation field variation, as well give an indication of proton density. Pixel-wise maps of the $T_1$ and $T_2$ assigned via MRF with a spin echo experiment were compared with those obtained via conventional sequences, with $T_2$ being most succesfully assigned. Measurements were made on two phantoms with various properties, one of which was custom concentations of Agar and Nickel Chloride. This report describes preliminary results that will form the basis for using MRF to provide fast quantification of extracellular water build up in cases of acute stroke. 
 \end{abstract}
 
 % 'Research highlights' section as well?
@@ -100,76 +112,44 @@ Magnetic Resonance Imaging Fingerprinting, Stroke
 \section{Introduction}
 
 % Brief Introduction to MRI and what it's used for
-Magnetic resonance imaging (MRI) has become an established and widely used tool for producing images for diagnosis and disease monitoring in clinical environments. Differences between tissue types are often highlighted qualitatively via image contrast, but efforts are being made to produce more quantitative parameter measurements. Two commonly extracted properties are the terms that describe the rate at which the transverse and longitudinal magnetisation components evolve over time ($T_2$ and $T_1$, respectively). The time constant $T_2$ can be measured by conducting a spin echo (SE) experiment and varying the echo time $TE$ at which the signal is recorded. Equation \ref{eq:transverse_decay} describes how the evolution of the transverse magnetisation $M_{xy}$ depends on $TE$ and $T_2$. The value of $T_2$ can be extracted from a fit of eq. \ref{eq:transverse_decay} to the detected signal evolution.
-
-\cite{haackemagnetic}. 
+Magnetic resonance imaging (MRI) has become an established and widely used tool for producing images for diagnosis and disease monitoring in clinical environments. Differences between tissue types are often highlighted qualitatively via image contrast, but efforts are being made to produce more quantitative parameter measurements. Two commonly extracted properties are the terms that describe the time constants by which the transverse and longitudinal magnetisation components evolve over time ($T_2$ and $T_1$, respectively). Conventionally, the time constant $T_2$ can be measured by conducting a spin echo (SE) experiment and varying the echo time $TE$ at which the signal is recorded. Equation \ref{eq:transverse_decay} describes how the evolution of the transverse magnetisation $M_{xy}$ depends on $TE$ and $T_2$. The value of $T_2$ can be extracted from a fit of eq. \ref{eq:transverse_decay} to the detected signal evolution \cite{haackemagnetic}. 
 
 \begin{equation} \label{eq:transverse_decay}
 M_{xy} (TE) = M_{xy}(0)\exp^{-\frac{TE}{T_{2}}}
 \end{equation}
 
-
-%\begin{equation} \label{eq:T2star}
- %\frac{1}{T^{*}_{2}} = \frac{1}{T_{2}} + \frac{1}{T^{'}_2}
-%\end{equation}
-Inversion recovery (IR) sequences are often used to measure $T_1$. During an IR experiment, the fully relaxed equilibrium longitudinal magnetisation $M_{0}$ is rotated by $180^{o}$, so that its sign becomes negative. Equation \eqref{eq:longitudinal_recovery} describes the evolution of $M_{z}$ over the time $t$ after the inversion. Given sufficient time, $M_{z}$ will return to $M_{0}$. By varying the inversion time $TI$ at which the signal is detected, the evolution of $M_{z}$ over time can be obtained and $T_1$ can be determined by fitting  \eqref{eq:longitudinal_recovery} to the measured data point.
+Inversion recovery (IR) sequences are often used to measure $T_1$. During an IR experiment, the fully relaxed equilibrium longitudinal magnetisation $M_{0}$ is rotated by $180^{o}$, so that its sign becomes negative. Equation \eqref{eq:longitudinal_recovery} describes the evolution of $M_{z}$ over the time $t$ after the inversion. Given sufficient time, $M_{z}$ will return to $M_{0}$. By varying the inversion time $TI$ at which the signal is detected, the evolution of $M_{z}$ over time can be obtained and $T_1$ can be determined by fitting  \eqref{eq:longitudinal_recovery} to the measured data point. The constant $\beta$ accounts for any deviation from a perfect $180^{o}$ rotation
 
 \begin{equation} \label{eq:longitudinal_recovery}
-M_{z} (t) = M_{0}(1 - 2e^{-\frac{t}{T_1}} )
+M_{z} (t) = M_{0}(1 - 2\beta e^{-\frac{t}{T_1}} )
 \end{equation}
 
 % Limitations of convention multi-parameter estimation
-Implementations of traditional $T_1$ and $T_2$ measurement methods also must deal with factors that can potentially cause measurement errors, such as subject movement and field inhomogeneities. Also, these methods usually require large scan durations, although in recent years simultaneous multi-parameter measurements have been made in only 5 minutes \cite{Warntjes2008}. %explain why T1 and T2 measurements take a long time*   %explain why T1 and T2 measurements take a long time* 
+Implementations of traditional $T_1$ and $T_2$ measurement methods also must deal with factors that can potentially cause measurement errors, such as subject movement and field inhomogeneities. Also, these methods usually require large scan durations, although in recent years simultaneous multi-parameter measurements have been made in only 5 minutes \cite{warntjes2008rapid}. %explain why T1 and T2 measurements take a long time*   %explain why T1 and T2 measurements take a long time* 
 
 % Introduce Magnetic resonance fingerprinting and it's potential advantages
-Recently, a new approach known as magnetic resonance fingerprinting (MRF) has been developed and applied, which has been used to simultanously measure multiple parameters, such as $T_1$ and $T_2$, with a reduction in the scan time needed. The method seems to cope very well with subject movement and it is also claimed that the technique delivers an improvement in efficiency, compared to the previous best approaches \cite{ma2013magnetic, deoni2005high}. During a MRF experiment, a pseudo-random sequence is used to manipulate the spins in a sample and acquire images. This can be achieved by varying factors in the sequence, such the time in between subsequent RF pulses and the size of any rotations in the net magnetisation that may be induced by the RF pulses. Once a series of images have been acquired via a MRF sequence, the signal pattern for each pixel over the whole experiment is compared to a previously built dictionary of simulated signals patterns, in order to find the closest match. The dictionary is built by simulating the signal expected from the particular experiment type, for all combinations of the chosen parameters (such as $T_1$ and $T_2$), over given ranges for each parameter.
+Recently, a new approach known as magnetic resonance fingerprinting (MRF) has been developed and applied, which has been used to simultanously measure multiple parameters, such as $T_1$ and $T_2$, with a reduction in the scan time needed. The method seems to cope very well with subject movement and it is also claimed that the technique delivers an improvement in efficiency, compared to the previous best approaches \cite{ma2013magnetic, deoni2005high}. During a MRF experiment, a pseudo-random sequence is used to manipulate the spins in a sample and acquire images. This can be achieved by varying factors in the sequence, such the time in between subsequent RF pulses and the size of any rotations in the net magnetisation that may be induced by the RF pulses. Once a series of images has been acquired via a MRF sequence, the signal pattern for each pixel over the whole experiment is compared to a previously built dictionary of simulated signals patterns, in order to find the closest match. The dictionary is built by simulating the signal expected from the particular experiment type, for all combinations of the chosen parameters (such as $T_1$ and $T_2$), over given ranges for each parameter.
 % Application to AVIC and stroke patient brain analysis
 
-MRF has been used to provide quantitative measurements in a variety of different imaging scenarios, for a range of different organs. Many of the applications have been in areas of clinical imaging, where the improved speed and repeatability is especially appealing. However, there is scope for MRF to be used within the setting of emergency medicine, where fast diagnosis and treatment is even more important for improving the prognosis of a patient. The knowledge gained from imaging in this environment is crucial for ensuring accurate diagnosis and informing decisions for subsequent treatment.  Qualitative images are widely used, but quantitative measurements would provide more information on physiological changes and would increase the robustness of the classification of tissue. For example, the measured properties of the tissue within each voxel could be compared to an expected range of values for particular pathologies. The consistency of tissue classification across different scans, as well as between medical centres, could be improved. Specifically, acute stroke patients could benefit from the advantages of MRF. Stroke is a major cause of death, but can also have large negative effects on the quality of life of those who survive. The localised reduction in blood supply that occurs during a stroke can cause a region of cells to become damaged or die, but if the patient is treated quickly, the surrounding areas may be salvageable. Treatment is usually given by administering drugs that are designed to break down clots that may be blocking the blood vessels and there is a window of approximately 3 hours within which this treatment will improve the outcome of the patient \cite{alper2015thrombolysis}. MRF can be used to locate the damaged area via the simultaneous measurement of multiple parameters, with the choice of parameters ensuring a range of different perspectives on tissue health. For example, the build up of extracellular water (i.e.\ Oedema) is an indicator of cell damage \cite{harston2015imaging, ayata2002ischaemic}. Quantities of water can be inferred from $M_{0}$ measurements and then co-registered with maps of other properties, such as $T_1$ and $T_2$. 
+MRF has been used to provide quantitative measurements in a variety of different imaging scenarios, for a range of different organs. Many of the applications have been in areas of clinical imaging, where the improved speed and repeatability is especially appealing. However, there is scope for MRF to be used within the setting of emergency medicine, where fast diagnosis and treatment is even more important for improving the prognosis of a patient.
+The knowledge gained from imaging in this environment is crucial for ensuring accurate diagnosis and informing decisions for subsequent treatment.  
 
-In this work, we used the MRF approach to make measurements of $T_1$, $T_2$, $M_0$ and $B_1$ deviation, for phantoms with a range of $T_1$ and $T_2$ values. We assessed the performance of our algorithm for various sequences and considered its potential to be used to produce quantitative images for the assessment of acute stroke.
+Qualitative images are widely used, but quantitative measurements would provide more information on physiological changes and would increase the robustness of the classification of tissue. For example, the measured properties of the tissue within each voxel could be compared to an expected range of values for particular pathologies. The consistency of tissue classification across different scans, as well as between medical centres, could be improved. Specifically, acute stroke patients could benefit from the advantages of MRF. Stroke is a major cause of death, but can also have large negative effects on the quality of life of those who survive. The localised reduction in blood supply that occurs during a stroke can cause a region of cells to become damaged or die, but if the patient is treated quickly, the surrounding areas may be salvageable. Treatment is usually given by administering drugs that are designed to break down clots that may be blocking the blood vessels and there is a window of approximately 3 hours within which this treatment will improve the outcome of the patient \cite{alper2015thrombolysis}. MRF can be used to locate the damaged area via the simultaneous measurement of multiple parameters, with the choice of parameters ensuring a range of different perspectives on tissue health. For example, the build up of extracellular water (i.e.\ oedema) is an indicator of cell damage \cite{harston2015imaging, ayata2002ischaemic}. Quantities of water can be inferred from $M_{0}$ measurements and then co-registered with maps of other properties, such as $T_1$ and $T_2$. 
+
+In this work, we used the MRF approach to make measurements of $T_{1}$, $T_{2}$, $M_{0}$ and the RF excitation field $B_{1}$ deviation, for phantoms with a range of $T_{1}$ and $T_{2}$ values. We assessed the performance of the algorithm and considered its potential to be used to produce quantitative images for the assessment of acute stroke.
+
+%**********************************************************************************
 \section{Materials and Method}
-
+%**********************************************************************************
+%-------------------------------------------------------------------------------
 \subsection{Phantom production}
+%-------------------------------------------------------------------------------
 % Production of my phanto, with a range of T1 of T2 values
-We made a phantom, with the aim of that it would mimic some the variation that is present in brain tissue.
-Our custom phantom contained six different compartments, each designed to have different $T_1$ and $T_2$ values.
-This variation allowed us to explore the ability of MRF to measure a range of properties within one sample. 
-Nickel Chloride and Agar were used to produce a range of $T_1$ and $T_2$ values, as reported in \cite{cochlin2003dependence}. The phantom comprised six conical tubes within a 4L high-density polyethylene (HPDE) container. The conical tubes were secured in the centre of the larger vessel by a plastic 3D printed structure. The liquid that surrounded the small compartments was between 0.9\% and 1.0\% m/v Sodium Chloride in Deionised water. This concentration was chosen to mimic the levels that are generally found in the human body (i.e.\ physiological saline).  Each of the smaller compartments contained different concentrations of the same ingredients, as described in Table \ref{table:phantomConcentrations}.
+A phantom was made, with the aim of that it would mimic the variation in tissue type within in the brain.
+This custom phantom contained six different compartments, each designed to have different $T_1$ and $T_2$ values.
+The variation is the property values allowed exploration of the ability of MRF to measure a range of properties within one sample. Nickel Chloride (NiCl) and Agar were used to produce the range of $T_1$ and $T_2$ values, as reported in \cite{cochlin2003dependence} and \cite{zhu2005full}. The concentrations of NiCl and Agar used in \cite{zhu2005full} were used to guide the chosen concentrations for the custom phantom. The phantom comprised six cylindrical tubes with conical ends, all secured within a 4L high-density polyethylene (HPDE) container. The tubes were held in the centre of the larger vessel by a plastic 3D printed structure. The liquid that surrounded the small compartments was between 0.9\% and 1.0\% m/v sodium chloride in deionised water. This concentration was chosen to mimic the levels that are generally found in the human body (i.e.\ physiological saline).  Each of the smaller compartments contained different concentrations of the same ingredients, as described in Table \ref{table:phantomConcentrations}.
 Figure \ref{fig:JackTILabels} demonstrates the numbering of the compartments.
 
-\begin{table}[]
-\centering
-\
-\begin{tabular}{|l|l|r|l|l|l|l|}
-\cline{2-7}
-\multicolumn{1}{c|} {\multirow{2}{*}{}} & \multicolumn{6}{l|}{\cellcolor[HTML]{EFEFEF} Homogeneous Phantom Sample Pixels} \\ \cline{2-7} 
-\multicolumn{1}{c|}{} & 1 & 2 & 3 & 4 & 5 & 6 \\ \hline
-T1 [ms]& 282 & 282 & 283 & 283 & 282 & 282 \\ \hline
-T2 [ms] &  216& 215 & 214 & 215  & 214 &  215\\ \hline
-\end{tabular}
-\\\
-\caption{Measured properties for the sample pixels in the homogeneous phantom.}
-\label{table:homogeneousPhantomMeasurements}
-\end{table}
-
-\begin{table}[]
-\centering
-\
-\begin{tabular}{|l|l|r|l|l|l|l|}
-\cline{2-7}
-\multicolumn{1}{c|} {\multirow{2}{*}{}} & \multicolumn{6}{l|}{\cellcolor[HTML]{EFEFEF} Custom Phantom Compartments} \\ \cline{2-7} 
-\multicolumn{1}{c|}{} & 1 & 2 & 3 & 4 & 5 & 6 \\ \hline
-\begin{tabular}[c]{@{}l@{}}Deionised\\ Water [ml]\end{tabular} & 50 & 50  & 50 &50  &50  &50  \\ \hline
-Agar [g]& 1.05 &0.76  & 0.00 & 2.00  & 1.64 & 1.31 \\ \hline
-\begin{tabular}[c]{@{}l@{}}Nickel\\ Chloride [g]\end{tabular} & 0.19 & 0.13 &0.00  &  0.65& 0.39 & 0.26  \\ \hline
-T1 [ms]& 190 &253  & 3127 & 60 & 118 & 126 \\ \hline
-T2 [ms] &  73& 98 & 2039 & 19  & 41 &  54\\ \hline
-\end{tabular}
-\\\
-\caption{Concentrations and measured properties for the compartments in the custom phantom.}
-\label{table:phantomConcentrations}
-\end{table}
 
 
 \begin{figure}
@@ -198,26 +178,101 @@ T2 [ms] &  73& 98 & 2039 & 19  & 41 &  54\\ \hline
 \end{minipage}
 \end{figure}
 
-
+%-------------------------------------------------------------------------------
 % Images with varying TE and TI, in order to extract T2 and T1
-\subsection{Image acquisition}
+\subsection{Image Acquisition}
+%----------------------------------------------------------------------------------
+ Images were acquired of two phantoms: a homogeneous spherical phantom and the custom phantom. 
+The spherical phantom contained Nickel(II) Sulfate Hexahydrate in distilled water, at a concentration of 0.125g per litre. The uniformity of the spherical phantom meant that it was useful for initial tests of the algorithm; a successful algorithm should assign $T_1$ and $T_2$ values with minimal variation across the homogeneous phantom. All images were acquired at the Acute Vascular Imaging Centre (AVIC) at the John Radcliffe Hospital in Oxford, using a 3T Siemens Verio magnet and a 12 channel Siemens head coil. 
+Conventional inversion recovery (IR) and spin echo (SE) experiments were performed, using various values of $TI$ and $TE$, respectively. The images that were acquired from these experiments were later used to extract "gold standard" $T_1$ and $T_2$ values.
 
- Images were acquired of two phantoms: a homogeneous spherical phantom and our custom phantom. 
-The spherical phantom contained Nickel(II) Sulfate Hexahydrate in distilled water, at a concentration of 0.125\% m/m. The uniformity of the spherical phantom meant that is was useful for initial tests of the algorithm, because if the method is working there should be minimal variation in the assigned $T_1$ and $T_2$ across the phantom.
+To produce the MRF images, a list of timings was used to control a repeated SE experiment. This list is represented by Table \ref{table:SequenceControlList}. The timings were pseudo-random and controlled the $TE$ and $TR$, as well as the first and second flip angles ($FA_1$ and $FA_2$), for the acquistion of each image. The $TE$ and $TR$ values in the list indicate offset times that were added to the minimum $TE$ and $TR$, respectively. The minimum $TE$ and $TR$ were 32ms and 130ms, respectively. More details on the timing of the sequence are given in the Appendix. The MRF sequence sequentially excited two slices of the sample. It also involved a fat saturation pulse before the first proton pulse, as well as crusher gradients at the end of each repetition, designed to remove any residual transverse magnetisation. The experiment involved the aqcuisition of 48 images per slice, via 48 repetitions. 
+The entire MRF sequence took approximately 34 seconds to run.
 
-All images were acquired at the Acute Vascular Imaging Centre (AVIC) at the John Radcliffe Hospital in Oxford, using a 3T Siemens Verio magnet and a 12 channel Siemens head coil. 
-Conventional inversion recovery (IR) and spin echo (SE) experiments were performed, using various values of TI and TE, respectively. The images that were acquire from these experiments were later used to extract "gold standard" T1 and T2 values. 
 
-To produce the MRF images, a list of timings was used to control a SE experiment. The list was pseudo-random and controlled the $TE$ and $TR$, as well as the first and second flip angles ($FA_1$ and $FA_2$), for the acquistion of each image.
+%-------------------------------------------------------------------------------
+\subsection{Gold Standard $T_1$ and $T_2$ Measurment}
+%-------------------------------------------------------------------------------
+%*Describe the fitted process and mention S.Hurley's function**how does SH's code work?* *should I change the T1 fitting plot so it just shows when T1null?*
+The IR and SE images of the two phantoms were used to measure "gold standard" $T_1$ and $T_2$, respectively. The curves in eq. \eqref{eq:longitudinal_recovery} and eq. \eqref{eq:transverse_decay} were fitted to the signal timecourses of each pixel in their corresponding sets of images, using  MATLAB (The
+MathWorks, Natick, MA). To help indicate the performance of the $T_1$ and $T_2$ fitting algorithms, the fits for six particular pixels in the custom phantom image were examined and are shown in Fig.  \ref{fig:JackT1fitALL} and \ref{fig:JackT2fitALL}, respectively. The pixels chosen to produce these signal curves were at fixed coordinates within each of the six compartments, as shown in Fig. \ref{fig:JackTILabels}. 
 
- The fingerprinting sequence excited two slices of the sample. It also involved a fat saturation pulse before the first proton pulse, as well as crusher gradients at the end of each repetition, designed to remove any residual transverse magnetisation.  The experiment involved the aqcuisition of 48 images, via 48 repetitions. 
+
+
+%-------------------------------------------------------------------------------
+\subsection{Dictionary Creation} \label{Dictionary Creation}
+%-------------------------------------------------------------------------------
+%*How was the 'random' list chosen?*
+% include table with details of each list?
+
+%include plot of the simulated signal compared with the data from the six samples
+% MATLAB simulation of signal
+Using MATLAB, dictionary entries were simulated with the timings list. The simulation code was based on a mathematical description of a refocusing pulse \cite{bernstein2004handbook}, which is summarised in the Appendix of this report. This description was adapted so that it could be used to simulate the signal from a SE experiment with more than one $TR$ repeat.
+%more details about simulation.
+%Several different lists of sequence timings were chosen in order to examine the effect that changing certain parameters had on the ability of the simulation to match the observed data. 
+As a preliminary test that the simulation was working correctly, comparisons were made between the first 24 simulated and observed signal values. This was done by using the gold standard $T_1$ and $T_2$ values to calculate the expected values for each image of the homogeneous phantom and plotting them with the signals from the sample pixels. Variations in the $B_1$ field across the field of view were not taken into account during the production of the simulation signal values for this comparison. Figures \ref{fig:sphereD170simCom3slice2} and \ref{fig:sphereD170simCom3slice2} in Results section display the data from these comparisons. Once these preliminary tests had been made, a signal dictionary was made using the simulation, but with the addition of deviations in the $B_1$ excitation field.
+
+The values of $T_1$ and $T_2$ used to create the dictionary for the homogeneous phantom were between 200ms and 300ms, in increments of 10ms. The ranges of these parameter values was designed to include values below and above the gold standard measurements. In order to account for variations in the $B_1$ excitation field, a range of deviations from each intended flip angle was also used to produce the dictionary entries. This range was $\pm$30\%, in increments of 1\%. It was assumed that these deviations at a particular pixel would be constant for each pulse through out the sequence.  As a result of producing signals with each possible combination of these three parameters, each dictionary for the homogeneous phantom contained 7381 entries. The dictionary for the custom used the same increments and $B_1$ values, but the $T_1$ and $T_2$ ranges needed to be extended. The values of $T_1$ and $T_2$ used to make the dictionary for the custom phantom were identical and both covered two ranges: 10ms to 120ms and 1900ms to 2100ms, in increments of 10ms. The dictionary for the custom phantom comprised 19764 signal patterns. The dictionaries for the homogeneous and the custom phantoms took 8 and 21 minutes to compile, respectively. The computations were performed using a commercial portable computer, with a 2.6Hz processor and 4 cores. The dictionary only needed to be generated once.
+
+\begin{table}[]
+\centering
+\
+\begin{tabular}{|l|l|r|l|l|l|l|}
+\cline{2-7}
+\multicolumn{1}{c|} {\multirow{2}{*}{}} & \multicolumn{6}{l|}{\cellcolor[HTML]{EFEFEF} Custom Phantom Compartments} \\ \cline{2-7} 
+\multicolumn{1}{c|}{} & 1 & 2 & 3 & 4 & 5 & 6 \\ \hline
+\begin{tabular}[c]{@{}l@{}}Deionised\\ Water [ml]\end{tabular} & 50 & 50  & 50 &50  &50  &50  \\ \hline
+Agar [g]& 1.05 &0.76  & 0.00 & 2.00  & 1.64 & 1.31 \\ \hline
+\begin{tabular}[c]{@{}l@{}}Nickel\\ Chloride [g]\end{tabular} & 0.19 & 0.13 &0.00  &  0.65& 0.39 & 0.26  \\ \hline
+T1 [ms]& 190 &253  & 3127 & 60 & 118 & 126 \\ \hline
+T2 [ms] &  73& 98 & 2039 & 19  & 41 &  54\\ \hline
+\end{tabular}
+\\\
+\caption{Concentrations and measured properties for the compartments in the custom phantom.}
+\label{table:phantomConcentrations}
+\end{table}
+
+\begin{table}[]
+\centering
+\
+\begin{tabular}{|l|l|r|l|l|l|l|}
+\cline{2-7}
+\multicolumn{1}{c|} {\multirow{2}{*}{}} & \multicolumn{6}{l|}{\cellcolor[HTML]{EFEFEF} Homogeneous Phantom Sample Pixels} \\ \cline{2-7} 
+\multicolumn{1}{c|}{} & 1 & 2 & 3 & 4 & 5 & 6 \\ \hline
+T1 [ms]& 282 & 282 & 283 & 283 & 282 & 282 \\ \hline
+T2 [ms] &  216& 215 & 214 & 215  & 214 &  215\\ \hline
+\end{tabular}
+\\\
+\caption{Measured properties for the sample pixels in the homogeneous phantom.}
+\label{table:homogeneousPhantomMeasurements}
+\end{table}
+
+%-------------------------------------------------------------------------------
+\subsection{Signal matching} 
+%-------------------------------------------------------------------------------
+For a given pixel within the field of view, we compared each dictionary entry $\boldsymbol{D}$ with the first 24 points of the signal timecourse $\boldsymbol{S}$ at that pixel, to see which dictionary pattern was the most similar. 
+%more detail in description of matching algorithm? 
+As is reported in the original MRF publication \cite{ma2013magnetic}, we used the dot product of each pair of compared vectors, with an aspect of normalisation, to calculate similarity scores. The specific expression that we used for our similarity calculations is shown in eq. \ref{eq:CosDotProduct}, where the resulting similarity score $\cos(\theta)$ is restricted to values between 0 and 1. An exact match would give a score of 1. 
+
+\begin{equation} \label{eq:CosDotProduct}
+\frac{\boldsymbol{S}\cdot \boldsymbol{D}} {\norm{\boldsymbol{S}} \norm{\boldsymbol{D}}} = \cos{\theta} 
+\end{equation}
+
+By dividing the product of the vector norms, the bias towards vectors with large data values was reduced. The intention for reducing this bias was that high similarity scores would highlight the dictionary entry and timecourse pair with the most similar type of pattern variations. Once the entry that gave the highest similarity score was found, the corresponding parameters $T_1$, $T_2$ and $B_1$ were assigned to that particular pixel. Good performance was defined as a close match between the assigned $T_1$ and $T_2$ and the gold standard values. An indication of the proton density $M_0$ was calculated as the scaling factor between the best matched entry and the acquired signal timecourse. The scaling factor $M_{0}R$ was found by fitting the linear expression in eq. \ref{eq:M0fit} to a plot of the acquired signal against the best match, where the receiver bias factor $R$ accounts for the bias in the recorded signal caused the profile of the receiver coil \cite{volz2012quantitative}.
+\begin{equation} \label{eq:M0fit}
+\boldsymbol{S} = M_{0}R\boldsymbol{D} 
+\end{equation}
+
+After a circular mask had been applied to the phantoms, the entire matching process was performed for all the pixels that had not been excluded. The matching algorithm took approximately 3 and 5 minutes to find the best matches for 1257 pixels in the images of the homogeneous and custom phantoms, respectively.
 
 \begin{table}[ht]
 \caption{Sequence Control List}
 \centering
 \begin{tabular}{c c c c c}
 \hline\hline
-Image Index & TE [ms] & TR [ms] & FA1 [degrees] & FA2 [degrees] \\ [0.5ex] % inserts table %heading
+Image Index &  TE [ms]& TR [ms] & FA1 [degrees] &  FA2 [degrees]\\
+                     &Offset & Offset &                         &  \\% inserts table %heading
+[0.5ex]
 \hline
 
 1   &    10000      &     0     &     90   &      180\\
@@ -246,57 +301,20 @@ Image Index & TE [ms] & TR [ms] & FA1 [degrees] & FA2 [degrees] \\ [0.5ex] % ins
    24    &   800   &        0   &       90     &    180\\ [1ex]
 \hline
 \end{tabular}
-\label{table:nonlin}
+\label{table:SequenceControlList}
 \end{table}
-\subsection{$T_1$ and $T_2$ extraction}
-%*Describe the fitted process and mention S.Hurley's function**how does SH's code work?* *should I change the T1 fitting plot so it just shows when T1null?*
-Firstly, the IR and SE images of the two phantoms were used to measure $T_1$ and $T_2$, respectively. The curves in eq. \eqref{eq:longitudinal_recovery} and eq. \eqref{eq:transverse_decay} were fitted to the signal timecourse of particular pixels in their corresponding sets of images, using  MATLAB (The
-MathWorks, Natick, MA). For the homogeneous phantom, these sample pixels were spread across the phantom, as shown in Fig. \ref{fig:sphereD170TILabels}. For the custom phantom, the pixels were at fixed coordinates within each of the six compartments. As an example, the sample pixels for the measurement of the $T_1$ of the custom phantom are marked in Fig. \ref{fig:JackTILabels}. 
 
-%quote how long the fingerprinting sequence time was (approximately 34 seconds)
-\subsection{Dictionary creation}
-
-%*How was the 'random' list chosen?*
-% include table with details of each list?
-
-%include plot of the simulated signal compared with the data from the six samples
-% MATLAB simulation of signal
-Using MATLAB, dictionary entries were simulated with the timings list.The simulation code was based on a mathematical description of a refocusing pulse, found in \cite{bernstein2004handbook}. This description was adapted so that it could be used to simulate the signal from a SE experiment within more than one $TR$.
-%more details about simulation.
-%Several different lists of sequence timings were chosen in order to examine the effect that changing certain parameters had on the ability of the simulation to match the observed data. 
-To test that the simulation was working correctly, comparisons were made between the first 24 simulated and observed signal values. This was done by using the gold standard $T_1$ and $T_2$ values to calculate the expected values for each image of the homogeneous phantom and plotting them with the signals from the sample pixels.
-
-The values of $T_1$ and $T_2$ used to create the dictionary for the homogeneous phantom were between 200ms and 300ms, in increments of 10ms. The ranges of these parameter values was designed to include values below and above the gold standard measurements. In order to account for variations in the $B_1$ excitation field, a range of deviations from each intended flip angle was also used to produce the dictionary entries. This range was $\pm$30\%, in increments of 1\%. It was assumed that these deviations at a particular pixel would be constant for each pulse through out the sequence.  As a result of producing signals with each possible combination of these three parameters, each dictionary for the homogeneous phantom contained 7381 entries. The dictionary for the custom used the same increments and $B_1$ values, but the $T_1$ and $T_2$ ranges needed to be extended. The ranges of $T_1$ and $T_2$ were both 10ms to 120ms and 1900ms to 2100ms. The dictionary for the custom phantom comprised 19764 signal patterns.
-%*quote how long it takes to compile the dictionary*
-The dictionaries for the homogeneous and the custom phantoms took 8 and 21 minutes to compile, respectively. The computations were performed using a commercial portable computer, with a 2.6Hz processor and 4 cores.
-
-
-\subsection{Signal matching} 
-For a given pixel within the field of view, we compared each dictionary entry $\vec{D}$ with the first 24 points of the signal timecourse $\vec{S}$ at that pixel, to see which dictionary pattern was the most similar. 
-%more detail in description of matching algorithm? 
-As is reported in the original MRF publication \cite{ma2013magnetic}, we used the dot product of each pair of compared vectors, with an aspect of normalisation, to calculate similarity scores. The specific expression that we used for our similarity calculations is shown in eq. \ref{eq:CosDotProduct}, where the resulting similarity score $\cos(\theta)$ is restricted to values between 0 and 1. An exact match would give a score of 1. By dividing the product of the vector norms, the bias towards vectors with large data values was reduced. The intention for reducing this bias was that high similarity scores would highlight the dictionary entry and timecourse pair with the most similar type of pattern variations. Once the entry that gave the highest similarity score was found, the corresponding parameters $T_1$, $T_2$ and $B_1$ were assigned to that particular pixel. Good performance was defined as a close match between the assigned $T_1$ and $T_2$ and the gold standard values. An indication of the proton density $M_0$ was calculated as the mean of the scaling factors for the pairs of corresponding points in the best matched entry and the signal timecourse. The absolute scaling factor values were used for this calculated, as unfortunately some of the simulated signal points were negative. After a circular mask had been applied to the phantoms, the entire matching process was performed for all the pixels that had not been excluded. Our algorithm took approximately 3 and 5 minutes to find the best matches for 1257 pixels in the images of the homogeneous and custom phantoms, respectively.
-%check times are up to date
-\begin{equation} \label{eq:CosDotProduct}
-\frac{\vec{S}\cdot \vec{D}} {\norm{\vec{S}} \norm{\vec{D}}} = \cos{\theta} 
-\end{equation}
+\newpage
 
 %**********************************************************************************
 \section{Results and Discussion}
+%**********************************************************************************
+%-------------------------------------------------------------------------------
 \subsection{Gold standard T1 and T2}
-Figures \ref{fig:JackT1fitALL} and \ref{fig:JackT2fitALL}  show the $T_1$ and $T_2$ fits for the custom phantom signals. The signal curves in Fig. \ref{fig:JackT2fitALL} and Fig. \ref{fig:JackT1fitALL}  all have different initial values, suggesting that the inital longitudinal magnetisation was not at a fully relaxed equilibrium. Also, from Fig. \ref{fig:JackT2fitALL} it is clear that the chosen echo times were not great enough to allow for a significant decay in the signal from the deionised water in compartment 3. These factors could have skewed the gold standard measurements, but the fitting curves seem to closely match the data. 
+%-------------------------------------------------------------------------------
+The plots in Fig. \ref{fig:JackT1fitALL} and Fig. \ref{fig:JackT2fitALL}  all have different initial values, suggesting that the inital longitudinal magnetisation was not at a fully relaxed equilibrium. Also, from Fig. \ref{fig:JackT2fitALL} it is clear that the chosen echo times were not great enough to allow for a significant decay in the signal from the deionised water in compartment 3. These factors could have skewed the gold standard measurements, but the fitting curves seem to closely match the data. 
 
-\begin{figure}
-\centering
-\begin{minipage}[c]{\columnwidth}
-\setlength\figureheight{0.8\columnwidth}
-\setlength\figurewidth{0.8\columnwidth}
-
-\input{JackT2fitALL}
-
-    \caption{T2 decay curve fitted to the measurement data for each compartment in the phantom. The fitted points are represented by plus symbols.}
-    \label{fig:JackT2fitALL}
-\end{minipage}
-\end{figure}
+Figures \ref{fig:GoldStdsphereD170list3} and \ref{fig:GoldStdJacklist3} show maps of the pixel-wise gold standard parameter measurements, for the whole of slice 2 of the homogeneous and custom phantoms, respectively. Figure \ref{fig:GoldStdsphereD170list3} shows unform $T_1$ and $T_2$ across the field of view, as expected. There appears to be a slight difference in the position of the compartments, between the $T_1$ and $_2$ maps of the custom phantom (Fig. \ref{fig:GoldStdJacklist3}). This possibly due to poor fits for $T_1$, as the compartments in the $T_2$ map are a good match with those in Fig. \ref{fig:JackTILabels}.
 
 \begin{figure}
 \centering
@@ -306,91 +324,95 @@ Figures \ref{fig:JackT1fitALL} and \ref{fig:JackT2fitALL}  show the $T_1$ and $T
 
 \input{JackT1fitALL}
 
-    \caption{Sign sensitive T1 recovery curves, for each compartment in the phantom. A log scale for the x-axis is used for clarity. The magnetisation fits are plotted (stars), along with its absolute values (plus marks). }
+    \caption{Sign sensitive T1 recovery curves, for each compartment in the custom phantom. A log scale for the x-axis is used for clarity. The magnetisation fits are plotted (stars), along with its absolute values (plus marks). }
     \label{fig:JackT1fitALL}
 \end{minipage}
 \end{figure}
 
+\begin{figure}
+\centering
+\begin{minipage}[c]{\columnwidth}
+\setlength\figureheight{0.8\columnwidth}
+\setlength\figurewidth{0.8\columnwidth}
+
+\input{JackT2fitALL}
+
+    \caption{T2 decay curve fitted to the measurement data for each compartment in the custom phantom. The fitted points are represented by plus symbols.}
+    \label{fig:JackT2fitALL}
+\end{minipage}
+\end{figure}
+
+\newpage
+\begin{figure}
+\begin{minipage}[c]{0.5\textwidth}
+\begin{subfigure}[b]{1\textwidth}
+\centering
+\setlength\figureheight{0.6\columnwidth}
+\setlength\figurewidth{0.6\columnwidth}
+\input{sphereD170slice2goldStdT1maps3ParamList3}
+\input{sphereD170slice2goldStdT2maps3ParamList3}
+    \caption{Homogeneous phantom}
+    \label{fig:GoldStdsphereD170list3}
+\end{subfigure}
+\begin{subfigure}[b]{1\textwidth}
+\centering
+\setlength\figureheight{0.6\columnwidth}
+\setlength\figurewidth{0.6\columnwidth}
+\input{Jackslice2goldStdT1maps3ParamList3}
+\input{Jackslice2goldStdT2maps3ParamList3}
+    \caption{Custom phantom}
+    \label{fig:GoldStdJacklist3}
+\end{subfigure}
+\caption{Gold standard parameter maps for slice 2 of each phantom.} \label{fig:Maps}
+\end{minipage}
+\end{figure}
+
+\newpage
+
+%-------------------------------------------------------------------------------
 \subsection{Simulation Testing}
-*Simulation matches slice 2 better than slice 1, in particular, Images 11 and 22*
-*Slice 2 data matches the simulation well*
-*greater variation in signal for images 5, 11, 13, 16, 18, 22. Could be caused by combination of small FA1 compared to FA1?*
+%-------------------------------------------------------------------------------
+Figures \ref{fig:sphereD170simCom3slice1} and \ref{fig:sphereD170simCom3slice2} show that the simulated signal was a closer match to slice 2 than slice 1. In particular, the greatest difference between the simulated and aqcuired signal was observed for the $TE$ indices 11 and 22. This difference may have been because spatial variations in $B_{1}$ were not taken into account when the simulated signal for these particular plots was generated. 
+The data for slice 2 matches the simulation well.
 
-\subsection{Property Maps}
-The signal dictionary that was used to produce the parameter maps in Figs. \ref{fig:sphereD170list3} and \ref{fig:Jacklist3} took approximately 5 minutes to create. The similarity calculations for the same list required approximately 10 minutes.
- 
-%include comparison of simulation with data (list 3, sphereD170) -> done
-%* include the best timings list in a table (number 3) -> done
-%*Show the maps (T1, T2, B1dev, M0) from the offset list that performed the best with the spherical phantom (JA 23/09/15: list 3 gives best maps) -> 
-%Show the maps for the same offset list for my phantom* -> done
-%*show differences in the data for different pixels? (as time courses), where the assigned T1 is vastly different for adjacent pixels.
- Ideally, the scaling factors would be identical for all the pairs of corresponding points within the best matched dictionary entry and the data for a given pixel. However, the scaling factors were different for each image. Because of this, the mean of the scaling factors was used to indicate $M_0$. 
+%-------------------------------------------------------------------------------
+\subsection{MRF Parameter Estimates}
+%-------------------------------------------------------------------------------
 
-
-*state how long the scan took*
 \begin{figure*}
 \centering
 \begin{minipage}[b]{1\textwidth}
-
 \begin{subfigure}[b]{1\textwidth}
-\setlength\figureheight{0.3\textwidth}
+\setlength\figureheight{0.25\textwidth}
 \setlength\figurewidth{0.9\textwidth}
-
-
 \input{sphereD170simCom3slice1}
 \caption{Slice 1}
-    \label{fig:sphereD170simCom3slice1}
- 
+    \label{fig:sphereD170simCom3slice1} 
 \end{subfigure}
 \begin{subfigure}[b]{1\textwidth}
-
-\setlength\figureheight{0.3\textwidth}
+\setlength\figureheight{0.25\textwidth}
 \setlength\figurewidth{0.9\textwidth}
-
 \input{sphereD170simCom3slice2}
 \caption{Slice 2}
     \label{fig:sphereD170simCom3slice2}
- 
-
 \end{subfigure}
 \caption{Comparison of the simulated and acquired signal, for the two slices of the homogeneous phantom, for each of the six sample coordinates}
 \end{minipage}
 \end{figure*}
 
-*In the future we should remake the Phantom so that it has T1 and T2 that are found in the brain*
-*comment on further work: improving accuracy of algorithm. apply in vivo, possibly try different sequence styles*
-Once our method has been refined, it is important that it used to apply MRF in vivo, to work towards the goal of implementing the approach at the AVIC. 
-*things that the original paper did differently to me or I left out?*
-*issues that i had that others also had?*
-Previous MRF studies have used a much larger dictionary than we have used in this work. This could improve the ability of our implentation to successfully measure the properties of interest.
-The simulation could be rewritten so that it only computes the signal that is nessecary for the simulation. This would reduce the required computation time, which is a factor that would become more significant if the size of the dictionary is increased.
-
-
-
-*T1 didn't match as well asT2...could be because the TR offset times in the timings list were long compared to the T1 values, so not much difference in Mz at each TE*
-*M0 is not too bad, but need to resolved the problem of negative values...*
-
-%pattern recogn
-
 
 \begin{figure*}
-
 \begin{minipage}[c]{1\textwidth}
-
 \begin{subfigure}[b]{0.5\textwidth}
 \centering
 \setlength\figureheight{0.6\columnwidth}
 \setlength\figurewidth{0.6\columnwidth}
 \input{sphereD170slice2T1list3ParamList3}
-
 \input{sphereD170slice2T2list3ParamList3}
-
 \input{sphereD170slice2FAlist3ParamList3}
-
-\input{sphereD170slice2M0mean3ParamList3}
+\input{sphereD170slice2M0fit_grad3ParamList3}
     \caption{Homogeneous phantom}
     \label{fig:sphereD170list3}
-
 \end{subfigure}
 \begin{subfigure}[b]{0.5\textwidth}
 \centering
@@ -402,25 +424,134 @@ The simulation could be rewritten so that it only computes the signal that is ne
 
 \input{Jackslice2FAlist3ParamList3}
 
-\input{Jackslice2M0mean3ParamList3}
+\input{Jackslice2M0fit_grad3ParamList3}
     \caption{Custom phantom}
     \label{fig:Jacklist3}
 \end{subfigure}
-\caption{Parameter maps for slice 2 of each phantom.}
+\caption{Parameter maps for slice 2 of each phantom.} \label{fig:Maps}
 \end{minipage}
 \end{figure*}
 
+The signal dictionary that was used to produce the parameter maps in Figs. \ref{fig:sphereD170list3} and \ref{fig:Jacklist3} took approximately 5 minutes to create. The similarity calculations for the same list required approximately 10 minutes. Figure \ref{fig:Maps} shows the maps of the parameters that were assigned by the MRF approach. For the homogeneous phantom the values of $T_1$ were not as uniform as the assigned $T_2$. This could be because the $TR$ offset times in the timings list were long compared to the gold standard $T_1$, so there may have been insufficient difference in the longitudinal magnetisation at the end of each repetition time. The matched values for $M_{0}R$ in the homogeneous phantom are relatively uniform across the image, apart from in four areas on the edge of the phantom. It is plausible that the factor $R$ may have caused these four areas of lower signal. It is plausible that the shape of the distribution displayed in the $B_1$ map is a reliable reflection of the true distribution. However, the presence of such large deviations (+30\%) in each intended flip angle may be a sign of underlying problems in the matching algorithm.
 
+The colour scale for the custom phantom $T_1$ and $T_2$ maps have been chosen to highlight contrast in values assigned to the compartments. This means that the other areas of the phantom are saturated. The $T_1$ values vary greatly within each compartment, when in theory they should not. This variation is greater than the variation across the homogeneous phantom (Fig. \ref{fig:sphereD170list3}). As with the homogeneous phantom, the matched $T_2$ values within each compartment are fairly uniform, suggesting that the algorithm was more successful in matching $T_2$. The strength of the assigned $B_1$ for the custom phantom appears to vary between the different compartments. The conductivity of the salt in the surronding liquid may have had an effect on the $B_1$ field within the custom phantom. The $M_{0}R$ map for the custom phantom also small differences in between the pixels in different compartments. However, there are some pixels with especially large values that are not similar to their neighbours. These artifacts could be another sign of fundamental problems with the matching and fitting algorithms.
 
-*sped up by reducing the range of properties of interest*
-*could speed up matching process by storing simulate signal vectors in a 2D matrix, and using parallel for loop, instead of two nested For loops...*
+Other publications have presented different sequence variants, but the results in this report suggest that a $SE$ experiment has the potential to be useful for MRF. Previous MRF studies have used a much larger dictionary than has used in this work \cite{ma2013magnetic} \cite{MRM:MRM25799}. This could also improve the peformance of our algorithm. As mentioned in the Materials and Methods section, the time taken for the matching algorithm to run was already relatively fast (approximately 3 to 5 minutes). However, it is possible that with the proposed increase in dictionary size, the time needed for the matching would become too great to be considered useful in a clinical environment. A framework needs to be developed in order to test the accuracy and error of the assignment of each of the parameters via the MRF method. This could be done by comparing the assigned parameters with gold standard measurements on a pixel-wise basis. The addition of data points to the simulated and acquired timecourses could improve the performance of the algorithm. As the current sequence is only 34 seconds, the number of acquisition points could be multiplied several times and the sequence length would still be clinically acceptable. As the time needed to produce the dictionary and find the best match increased as the range of parameters was increased, the whole process could be sped up by only selecting parameter ranges that are likely to occur. However, there is the a danger that the selected range could not include the true value and some pixels could be assign the wrong parameter.
+The simulations in this report has assumed that the excitation pulses have been instantaneous.
+
+In future work, the excition field strength should be simulated at multiple points during the pulse. This would allow for different pulse profiles to be simulated for different flip angles, therefore making the simulation more realistic. Another issue that requires attention, is whether or not residual coherences from previous pulses have a significant effect on the signal at any of the acquisition points. If so, this could explain differences between the simulated and acquired signal. It would also be beneficial to make another phantom, with the same structure but with a range of $T_{1}$ and $T_{2}$ that is more closely matched to those typical found within the human brain. The algorithm and sequence should be refined and developed so it is able to make measurements over the whole volume. Once this is done, its accuracy and efficiency should be tested in vivo, in order to work towards the goal of implementing the approach in a real emergency setting.
+
 %**********************************************************************************
 \section{Conclusions}
-*Comment on the potential for this to be used in AVIC*
+%**********************************************************************************
+This report presents an example of the MRF approach being used to measure four properties with one scan, varying success. The assigned properties of $T_1$ and $T_2$ were similar to the gold standard measurements for a uniform phantom. However, the assigned $T_1$ values for a more complicated phantom were not as measured by the conventional method. The distribution shapes of the $M_{0}R$ measurements for each phantom were as expected, but to gain a true measurement of proton density, the receiver bias should be calculated via a calibration. If this implementation of the MRF method is to be used to provide realible information in a clinical setting, then much improvement is needed. Nevertheless, parts of these preliminary results suggest that if developed further, MRF could be useful for quickly and simultaneously measuring $T_{1}$, $T_{2}$ and water content in acute stroke patients. 
+
+
+%**********************************************************************************
 \section{Acknowledgements}
+%**********************************************************************************
 Robert Brand for providing the design for the phantom. Sam Hurley for his $T_1$ fitting software.
 
+%**********************************************************************************
+
+\newpage
+\appendix[Signal Simulation Equations] \label{App:signalSimEquations}
+%**********************************************************************************
+%------------------------------------------------------------------------
+
+The follow equations describe the simulation for one repetition time. The expected signal at each echo time TE was calculated by looping through the equations and updating the starting time $t_{0}$ at the end of each of 24 repetitions. The time $t$ progressed in increments of 1ms.
+\subsection{Initial Parameters}
+The initial conditions at the beginning of the sequence are noted in eq. \ref{eq:initialCons1}, \ref{eq:initialCons2}, \ref{eq:initialCons3} and \ref{eq:initialCons4}
+The fully relaxed equilibrium magnetisation $M_{zeq} $ is defined as 1. The total magnetisation vector $\boldsymbol{M}$ at the start of the sequence $t_{0}$ has no component in the $x$ and $y$ directions, but it has the value of $M_{zeq} $ in the z direction.
+\numberwithin{equation}{section}
+\begin{equation} \label{eq:initialCons1}
+M_{zeq} = 1
+\end{equation}
+\begin{equation} \label{eq:initialCons2}
+ t_{0} = 0
+\end{equation}
+\begin{equation} \label{eq:initialCons3}
+M_{x}(t_{0}) = 0, M_{y}(t_{0}) = 0, M_{z}(t_{0}) = 1 
+\end{equation}
+
+\begin{equation} \label{eq:initialCons4}
+\boldsymbol{M(t_{0})} 
+=
+\begin{bmatrix}
+M_{x}(t_{0}) \\
+M_{y}(t_{0}) \\
+M_{z}(t_{0})
+ \end{bmatrix}
+=
+\begin{bmatrix}
+0 \\
+0 \\
+1
+ \end{bmatrix}
+\end{equation}
+
+%------------------------------------------------------------------------
+\subsection{Excitation Pulse 1}
+An rotation matrix $R_{1}$ in eq. \ref{eq:Rot1} represents the first RF pulse and treats the pulse as having an instaneous effect on the total magnetisation vector. The longitudinal magnetisation at the beginning of the current cycle $M_{z}(t_{0})$ is multiplied by $R_{1}$ in eq. \ref{eq:MafterRot1}. This simulates the process of tipping the longitudinal magnetisation at time $t_{0}$ towards the y-axis. The rotation angle $\theta_{1}$ is equivalent to the flip angle $FA_{1}$ in column 3 of the timings list in the report.
+
+\begin{equation} \label{eq:Rot1}
+\boldsymbol{R_{1}} =
+\begin{bmatrix}
+0 \\
+ \sin{\theta_{1}}  \\
+\cos{\theta_{1}}
+ \end{bmatrix}
+\end{equation}
+\begin{equation} \label{eq:MafterRot1}
+\boldsymbol{M(t_{0} + 1)} = M_{z}{(t_{0})} \boldsymbol{R_{1}} 
+\end{equation}
+%------------------------------------------------------------------------
+\subsection{Signal Evolution After Pulse 1}
+After the first pulse, the magnetisation along the y-axis and the z-axis evolve according to eq. \ref{eq:MyFA1} and \ref{eq:MzFA1}, respectively. These equations describe the signal from $t = t_{0}$ to $t =  \tau$, where $\tau = \frac{TE}{2}$ and $TE$ is the echo time for this particular cycle.
+\begin{equation}  \label{eq:MyFA1}
+M_{y}(t) = M_{z}(t_{0})\exp^{\frac{-t}{T_{2}}}\sin{\theta_{1}}
+\end{equation}
+\begin{equation} \label{eq:MzFA1}
+M_{z}(t) = M_{z}(t_{0})\exp^{\frac{-t}{T_{1}}}\cos{\theta_{1}} + M_{zeq}(1-\exp^{\frac{-t}{T_{1}}})
+\end{equation}
+
+%------------------------------------------------------------------------
+\subsection{Excitation Pulse 2}
+A second rotation matrix $R_{2}$ in eq. \ref{eq:Rot2} describes the action of the second excitation pulse, at time $t = \tau$. As described for the first pulse, the effect from the second pulse is assumed to be instant. As described in \ref{eq:MafterRot2}, $R_{2}$ is multiplied by magnetisation vector. The rotation angle $\theta_{2}$ is equivalent to the flip angle $FA_{2}$ in column 4 of the timings list in the report.
+
+\begin{equation} \label{eq:Rot2}
+\boldsymbol{R_{2}} =
+\begin{bmatrix}
+\cos{\theta_{2}} & 0 & -\sin{\theta_{2}}\\
+0 & 1 & 0 \\
+\sin_{\theta_{2}} & 0 &\cos{\theta_{2}}
+ \end{bmatrix}
+\end{equation}
+\begin{equation} \label{eq:MafterRot2}
+\boldsymbol{M(t + 1)} = \boldsymbol{R_{2}} \boldsymbol{M(t)}
+\end{equation}
+%------------------------------------------------------------------------
+\subsection{Signal Evolution After Pulse 2}
+For $t > \tau$, the magnetisation along the x, y and z axes evolve according to eq. \ref{eq:MxFA2}, \ref{eq:MyFA2} and \ref{eq:MzFA2}, respectively.
+\begin{equation}  \label{eq:MxFA2}
+M_{x}(t) = M_{x}(\tau + 1)\exp^{\frac{-(t-\tau +1) }{T_{2}} }
+\end{equation}
+\begin{equation}  \label{eq:MyFA2}
+M_{y}(t) = M_{y}(\tau + 1)\exp^{\frac{-(t-\tau +1) }{T_{2}} }
+\end{equation}
+\begin{equation} \label{eq:MzFA2}
+M_{z}(t) = M_{z}(\tau + 1)\exp^{\frac{-(t-\tau+1)}{T_{1}}} + M_{zeq}(1-\exp^{\frac{-(t-\tau + 1)}{T_{1}}})
+\end{equation}
+%------------------------------------------------------------------------
+\subsection{Signal Measurement at the Echo Time}
+For $t = t_0 + TE_{min} + TE_{offset}$ the transverse magnetisation $M_{transverse}$ was recorded as eq \ref{eq:Acquire}
+describes, where $TE_{offset}$ was a time taken from column 2 of the timings list. As the transverse magnetisation is proportional to the signal detect during an MRI experiment, the magnitude of $M_{transverse}$ was taken to be the simulated signal.
+\begin{equation} \label{eq:Acquire}
+M_{transverse} = M_{z}(t_{0})\sin{\theta_{1}}\sin^2{\frac{\theta_{2}}{2}}\exp^(\frac{-(t-t_{0})}{T_{2}})
+\end{equation}
+%**********************************************************************************
 \bibliography{ONBI_shortproject2_refs}
+
 
 
 \end{document}

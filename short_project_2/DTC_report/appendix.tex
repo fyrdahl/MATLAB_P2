@@ -1,0 +1,95 @@
+\appendix[Signal Simulation Equations] \label{App:signalSimEquations}
+%**********************************************************************************
+%------------------------------------------------------------------------
+
+The follow equations describe the simulation for one repetition time. The expected signal at each echo time TE was calculated by looping through the equations and updating the starting time $t_{0}$ at the end of each of 24 repetitions. The time $t$ progressed in increments of 1ms.
+\subsection{Initial Parameters}
+The initial conditions at the beginning of the sequence are noted in eq. \ref{eq:initialCons1}, \ref{eq:initialCons2}, \ref{eq:initialCons3} and \ref{eq:initialCons4}
+The fully relaxed equilibrium magnetisation $M_{zeq} $ is defined as 1. The total magnetisation vector $\boldsymbol{M}$ at the start of the sequence $t_{0}$ has no component in the $x$ and $y$ directions, but it has the value of $M_{zeq} $ in the z direction.
+\numberwithin{equation}{section}
+\begin{equation} \label{eq:initialCons1}
+M_{zeq} = 1
+\end{equation}
+\begin{equation} \label{eq:initialCons2}
+ t_{0} = 0
+\end{equation}
+\begin{equation} \label{eq:initialCons3}
+M_{x}(t_{0}) = 0, M_{y}(t_{0}) = 0, M_{z}(t_{0}) = 1 
+\end{equation}
+
+\begin{equation} \label{eq:initialCons4}
+\boldsymbol{M(t_{0})} 
+=
+\begin{bmatrix}
+M_{x}(t_{0}) \\
+M_{y}(t_{0}) \\
+M_{z}(t_{0})
+ \end{bmatrix}
+=
+\begin{bmatrix}
+0 \\
+0 \\
+1
+ \end{bmatrix}
+\end{equation}
+
+%------------------------------------------------------------------------
+\subsection{Excitation Pulse 1}
+An rotation matrix $R_{1}$ in eq. \ref{eq:Rot1} represents the first RF pulse and treats the pulse as having an instaneous effect on the total magnetisation vector. The longitudinal magnetisation at the beginning of the current cycle $M_{z}(t_{0})$ is multiplied by $R_{1}$ in eq. \ref{eq:MafterRot1}. This simulates the process of tipping the longitudinal magnetisation at time $t_{0}$ towards the y-axis. The rotation angle $\theta_{1}$ is equivalent to the flip angle $FA_{1}$ in column 3 of the timings list in the report.
+
+\begin{equation} \label{eq:Rot1}
+\boldsymbol{R_{1}} =
+\begin{bmatrix}
+0 \\
+ \sin{\theta_{1}}  \\
+\cos{\theta_{1}}
+ \end{bmatrix}
+\end{equation}
+\begin{equation} \label{eq:MafterRot1}
+\boldsymbol{M(t_{0} + 1)} = M_{z}{(t_{0})} \boldsymbol{R_{1}} 
+\end{equation}
+%------------------------------------------------------------------------
+\subsection{Signal Evolution After Pulse 1}
+After the first pulse, the magnetisation along the y-axis and the z-axis evolve according to eq. \ref{eq:MyFA1} and \ref{eq:MzFA1}, respectively. These equations describe the signal from $t = t_{0}$ to $t =  \tau$, where $\tau = \frac{TE}{2}$ and $TE$ is the echo time for this particular cycle.
+\begin{equation}  \label{eq:MyFA1}
+M_{y}(t) = M_{z}(t_{0})\exp^{\frac{-t}{T_{2}}}\sin{\theta_{1}}
+\end{equation}
+\begin{equation} \label{eq:MzFA1}
+M_{z}(t) = M_{z}(t_{0})\exp^{\frac{-t}{T_{1}}}\cos{\theta_{1}} + M_{zeq}(1-\exp^{\frac{-t}{T_{1}}})
+\end{equation}
+
+%------------------------------------------------------------------------
+\subsection{Excitation Pulse 2}
+A second rotation matrix $R_{2}$ in eq. \ref{eq:Rot2} describes the action of the second excitation pulse, at time $t = \tau$. As described for the first pulse, the effect from the second pulse is assumed to be instant. As described in \ref{eq:MafterRot2}, $R_{2}$ is multiplied by magnetisation vector. The rotation angle $\theta_{2}$ is equivalent to the flip angle $FA_{2}$ in column 4 of the timings list in the report.
+
+\begin{equation} \label{eq:Rot2}
+\boldsymbol{R_{2}} =
+\begin{bmatrix}
+\cos{\theta_{2}} & 0 & -\sin{\theta_{2}}\\
+0 & 1 & 0 \\
+\sin_{\theta_{2}} & 0 &\cos{\theta_{2}}
+ \end{bmatrix}
+\end{equation}
+\begin{equation} \label{eq:MafterRot2}
+\boldsymbol{M(t + 1)} = \boldsymbol{R_{2}} \boldsymbol{M(t)}
+\end{equation}
+%------------------------------------------------------------------------
+\subsection{Signal Evolution After Pulse 2}
+For $t > \tau$, the magnetisation along the x, y and z axes evolve according to eq. \ref{eq:MxFA2}, \ref{eq:MyFA2} and \ref{eq:MzFA2}, respectively.
+\begin{equation}  \label{eq:MxFA2}
+M_{x}(t) = M_{x}(\tau + 1)\exp^{\frac{-(t-\tau +1) }{T_{2}} }
+\end{equation}
+\begin{equation}  \label{eq:MyFA2}
+M_{y}(t) = M_{y}(\tau + 1)\exp^{\frac{-(t-\tau +1) }{T_{2}} }
+\end{equation}
+\begin{equation} \label{eq:MzFA2}
+M_{z}(t) = M_{z}(\tau + 1)\exp^{\frac{-(t-\tau+1)}{T_{1}}} + M_{zeq}(1-\exp^{\frac{-(t-\tau + 1)}{T_{1}}})
+\end{equation}
+%------------------------------------------------------------------------
+\subsection{Signal Measurement at the Echo Time}
+For $t = t_0 + TE_{min} + TE_{offset}$ the transverse magnetisation was recorded as eq \ref{eq:Acquire}
+describes, where $TE_{offset}$ was a time taken from column 2 of the timings list. As the transverse magnetisation is proportional to the signal detect during an MRI experiment, $M_{transverse}$ was taken to be the simulated signal.
+\begin{equation} \label{eq:Acquire}
+M_{transverse} = M_{z}(t_{0})\sin{\theta_{1}}\sin^2{\frac{\theta_{2}}{2}}\exp^(\frac{-(t-t_{0})}{T_{2}})
+\end{equation}
+%**********************************************************************************

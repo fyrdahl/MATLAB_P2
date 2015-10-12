@@ -1,4 +1,4 @@
-function [similarity, matchedT1, matchedT2, matchedFAdev, M0_mean, M0_stdPC, M0,  scales, bestMatch, el, ind1, ind2] = calcSimilarity(data, signalDictionary, sliceNumber, dictionaryParams, workingdir)
+function [similarity, matchedT1, matchedT2, matchedFAdev, M0_mean, M0_stdPC, M0, M0fit_grad,  scales, bestMatch, el, ind1, ind2] = calcSimilarity(data, signalDictionary, sliceNumber, dictionaryParams, workingdir)
 % Jack Allen.
 % University of Oxford.
 % jack.allen@jesus.ox.ac.uk
@@ -24,6 +24,11 @@ matchedT2 = zeros(size(data,1),1);
 matchedFAdev = zeros(size(data,1),1);
 M0_mean = zeros(size(data,1),1);
 scales = zeros(size(data,1),size(data,2));
+bestMatch = zeros(size(data,1),size(data,2));
+M0fit_grad = zeros(size(data,1),1);
+
+M0model = @(a,x) a*x;
+
 tic
 
 pp = parpool(4)
@@ -64,6 +69,10 @@ for data_i = 1 :size(data,1)
        
        scales(data_i, :) = data(data_i,:)./squeeze(bestMatch(data_i, :));
         
+       M0fit = fit(squeeze(bestMatch(data_i, :))', data(data_i,:)',M0model,'Upper',[6000],'Lower',[0],'StartPoint',[1000] );
+       
+       M0fit_grad(data_i,1) = M0fit.a;
+  
         % scalesNorm(data_i, data_j, :) = dNorm./squeeze(bestMatch(data_i, data_j, :));
         
         %         figure;
@@ -99,7 +108,7 @@ matchedT1 = reshape(matchedT1, [sqrt(size(matchedT1)), sqrt(size(matchedT1))]);
 matchedT2 = reshape(matchedT2, [sqrt(size(matchedT2)), sqrt(size(matchedT2))]);
 matchedFAdev = reshape(matchedFAdev, [sqrt(size(matchedFAdev)), sqrt(size(matchedFAdev))]);
 M0_mean = reshape(M0_mean, [sqrt(size(M0_mean)), sqrt(size(M0_mean))]);
-
+M0fit_grad = reshape(M0fit_grad, [sqrt(size(data,1)),sqrt(size(data,1))]);
 delete(pp) %shutdown parpool
 el = toc
 

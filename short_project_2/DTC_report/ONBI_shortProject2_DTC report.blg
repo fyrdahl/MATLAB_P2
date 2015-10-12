@@ -3,44 +3,44 @@ Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
 The top-level auxiliary file: ONBI_shortProject2_DTC report.aux
 The style file: elsarticle-num.bst
 Database file #1: ONBI_shortproject2_refs.bib
-You've used 9 entries,
+You've used 12 entries,
             2937 wiz_defined-function locations,
-            734 strings with 7067 characters,
-and the built_in function-call counts, 2835 in all, are:
-= -- 252
-> -- 123
+            749 strings with 7705 characters,
+and the built_in function-call counts, 3820 in all, are:
+= -- 341
+> -- 174
 < -- 2
-+ -- 47
-- -- 38
-* -- 215
-:= -- 414
-add.period$ -- 10
-call.type$ -- 9
-change.case$ -- 8
++ -- 66
+- -- 54
+* -- 300
+:= -- 558
+add.period$ -- 12
+call.type$ -- 12
+change.case$ -- 11
 chr.to.int$ -- 0
-cite$ -- 9
-duplicate$ -- 82
-empty$ -- 297
-format.name$ -- 47
-if$ -- 708
+cite$ -- 12
+duplicate$ -- 106
+empty$ -- 391
+format.name$ -- 66
+if$ -- 944
 int.to.chr$ -- 0
-int.to.str$ -- 9
-missing$ -- 10
-newline$ -- 37
-num.names$ -- 9
-pop$ -- 59
+int.to.str$ -- 12
+missing$ -- 13
+newline$ -- 45
+num.names$ -- 12
+pop$ -- 76
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 0
-skip$ -- 171
+skip$ -- 221
 stack$ -- 0
-substring$ -- 146
-swap$ -- 17
+substring$ -- 221
+swap$ -- 20
 text.length$ -- 2
 text.prefix$ -- 0
 top$ -- 0
 type$ -- 0
 warning$ -- 0
-while$ -- 21
-width$ -- 10
-write$ -- 82
+while$ -- 30
+width$ -- 14
+write$ -- 104
