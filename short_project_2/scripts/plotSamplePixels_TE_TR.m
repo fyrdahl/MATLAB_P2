@@ -1,3 +1,4 @@
+
 figure;
 imagesc(TEimages(:,:,TE(2)))
 hold on

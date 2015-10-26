@@ -196,16 +196,20 @@ for offsetListNum = 2:8;
     clear signalDictionary
     l = load([savingdir,'/MAT-files/dictionaries/',phantomName,'_list',num2str(offsetListNum),'paramList',num2str(paramList),'dictionary.mat']);
     signalDictionary = l.signalDictionary;
-    [similarity, matchedT1, matchedT2, matchedFAdevInd, M0fit_grad, bestMatch, match_time] = calcSimilarity(data, signalDictionary(:,:,:,:,offsetListNum), sliceNumber, dictionaryParams, savingdir);
+    [similarity, matchedT1, matchedT2, matchedFAdevInd, M0fit_grad, bestMatch, matchT] = calcSimilarity(data, signalDictionary(:,:,:,:,offsetListNum), sliceNumber, dictionaryParams, savingdir);
     
     save([savingdir,'/MAT-files/matches/similarity/',phantomName,'list',num2str(offsetListNum),'paramList',num2str(paramList),'similarity.mat'],'similarity')
     save([savingdir,'/MAT-files/matches/T1/',phantomName,'list',num2str(offsetListNum),'paramList',num2str(paramList),'matchedT1.mat'],'matchedT1')
     save([savingdir,'/MAT-files/matches/T2/',phantomName,'list',num2str(offsetListNum),'paramList',num2str(paramList),'matchedT2.mat'],'matchedT2')
     save([savingdir,'/MAT-files/matches/',phantomName,'list',num2str(offsetListNum),'paramList',num2str(paramList),'matchedFAdevInd.mat'],'matchedFAdevInd')
+    save([savingdir,'/MAT-files/matches/',phantomName,'list',num2str(offsetListNum),'paramList',num2str(paramList),'scales.mat'],'scales')
     save([savingdir,'/MAT-files/matches/',phantomName,'list',num2str(offsetListNum),'paramList',num2str(paramList),'bestMatch.mat'],'bestMatch')
-    save([savingdir,'/MAT-files/matches/',phantomName,'list',num2str(offsetListNum),'paramList',num2str(paramList),'compileDictionaryElapsedTime.mat'],'match_time')
+    save([savingdir,'/MAT-files/matches/',phantomName,'list',num2str(offsetListNum),'paramList',num2str(paramList),'compileDictionaryElapsedTime.mat'],'matchT')
     save([savingdir,'/MAT-files/matches/M0/',phantomName,'list',num2str(offsetListNum),'paramList',num2str(paramList),'M0fit_grad.mat'],'M0fit_grad')
-   
+    
+    %wait to ensure that the MAT files have time to save
+    pause(1)
+    
 end
 %
 %% visualise spread of matched T1s and T2s

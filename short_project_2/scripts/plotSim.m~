@@ -1,4 +1,4 @@
-function plotSimComparison(Mxy, FPimages, nTimeCoursePts,workingdir)
+function plotSimComparison(Mxy, FPimages, nTimeCoursePts)
 
 simCom = figure; hold on
 % title (['fingerprint offset list ', num2str(offsetListNum)])
@@ -16,7 +16,7 @@ for n = 1:plotNumCompartments
     y(n,:) = y(n,:)/y(n,1);
     % residuals = y(n,:) - ySim;
     plot(y(n,1:nTimeCoursePts),'.') 
-    % errorbar(y(n,:),repmat(normStdBG,1,24),'.' );  
+   % errorbar(y(n,:),repmat(normStdBG,1,24),'.' );  
 end
 ylim([0 1.1])
 legend ({'Simulated Signal', 'Sample Pixel 1','Sample Pixel 2','Sample Pixel 3','Sample Pixel 4','Sample Pixel 5','Sample Pixel 6'},'Position',[0.6, 0.7, 0.1,0.1])

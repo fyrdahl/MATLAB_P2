@@ -11,3 +11,4 @@ E2 = exp(-T/T2);
 Afp = [E2 0 0;0 E2 0;0 0 E1]*zrot(phi);
 Bfp = [0 0 1-E1]';
 
+end

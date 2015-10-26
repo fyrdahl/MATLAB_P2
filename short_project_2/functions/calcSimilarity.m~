@@ -14,7 +14,7 @@ load([workingdir,'/MAT-files/mask.mat'])
 mask = reshape(mask,[64*64, 1]);
 
 %time course of interest
-data = reshape(data,[size(data,1)*size(data,2), 24]); 
+data = reshape(data,[size(data,1)*size(data,2), size(data,3]); 
 %simulated signals
 sd = reshape(signalDictionary, [ size(signalDictionary,1)*size(signalDictionary,2)*size(signalDictionary,3), 24]);
 
@@ -48,7 +48,7 @@ for data_i = 1:size(data,1)
         matchedT1(data_i) = max(dictionaryParams(1, bestT1ind));
         matchedT2(data_i) = max(dictionaryParams(2, bestT2ind));
         matchedFAdev(data_i) = max(dictionaryParams(3, bestFAdevInd)); 
-        M0fit = fit(squeeze(bestMatch(data_i, :))', data(data_i,:)',M0model,'Upper',[6000],'Lower',[0],'StartPoint',[500] );
+        M0fit = fit(squeeze(bestMatch(data_i, :))', data(data_i,:)',M0model,'Upper',[6000],'Lower',[0],'StartPoint',[1000] );
         M0fit_grad(data_i,1) = M0fit.a;
     
     end   

@@ -76,8 +76,8 @@ switch phantomName
         TIImageInfo = dir([workingdir,'/nifti_data/20150819/20150819_142314IRep2dseT1*']);
         
         %         FPImageInfo = dir('/Users/jallen/Documents/MATLAB/short_project_2/nifti_data/20150714_100527pjep2dsefpList2burstoffs033a1001.nii.gz');
-        FPImageInfo = dir([workingdir,'/nifti_data/20150806_125113pjep2dsefpList22sltr132stas072a1001.nii.gz']);
-        %FPImageInfo = dir([workingdir,'/nifti_data/fp/20150819_125113pjep2dsefpList',num2str(offsetListNum),'s00',num2str(offsetListNum)+1,'a1001nii.gz']);
+        %FPImageInfo = dir([workingdir,'/nifti_data/20150806_125113pjep2dsefpList22sltr132stas072a1001.nii.gz']);
+        FPImageInfo = dir([workingdir,'/nifti_data/fp/20150819_125113pjep2dsefpList',num2str(offsetListNum),'s00',num2str(offsetListNum),'nii.gz']);
         
         %Read TE and TI values
         for i = 1:numel(TEImageInfo)

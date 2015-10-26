@@ -109,21 +109,15 @@ for n = 1:(numel(fingerprintOffsetList(:,1)))
     
 end
 
-%% plotting the signal evolution
-if plotFlag == 'showPlot'
-    
-    figure
-    hold on
-    plot(M(1,:))
-    plot(M(2,:))
-    plot(M(3,:))
-    plot(imageTimes, Mxy,'+')
-    xlabel 'Time (ms)'
-    ylabel 'Magnetisation'
-    legend 'Mx' 'My' 'Mz' 'Mtransverse'
-    set(gca,'fontsize',20)
-    
-end
-
-% disp('bloch simulation: complete')
+figure
+hold on
+plot(M(1,:))
+plot(M(2,:))
+plot(M(3,:))
+plot(abs(complex(M(1,:),M(2,:))),'--k')
+plot(imageTimes, Mxy,'+')
+xlabel 'Time (ms)'
+ylabel 'Magnetisation'
+legend 'Mx' 'My' 'Mz' 'Mtransverse'
+set(gca,'fontsize',20) 
 end

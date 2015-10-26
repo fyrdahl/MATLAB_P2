@@ -118,7 +118,7 @@ switch region
             if mask(1,r) > 0
                 
                 %T2
-                [fittedCurve, goodness, output] = fit(T2_x,T2images(r,T2_x)',T2model,'Upper',[5000 5000 2500],'Lower',[0 0 0],'StartPoint',[1000 100 100]);
+                [fittedCurve, goodness, output] = fit(T2_x,T2images(r,T2_x),T2model,'Upper',[5000 5000 2500],'Lower',[0 0 0],'StartPoint',[1000 100 100]);
                 
                % T2fits(r,1) = fittedCurve.a;
               % T2fits(r,2) = fittedCurve.T2;

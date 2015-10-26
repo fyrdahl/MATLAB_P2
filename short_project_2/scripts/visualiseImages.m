@@ -27,8 +27,11 @@ end
 
 figure
 for i = 1:size(FPimages,4)
-%  colormap gray
+ colormap gray
+ axis off
+ 
 imagesc(FPimages(:,:,1,i,offsetListNum));
+
 i
 pause
 end

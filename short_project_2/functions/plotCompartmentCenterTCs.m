@@ -1,0 +1,20 @@
+function plotCompartmentCenterTCs(compartmentCenters,TEimages, TIimages, TE, TI)
+
+
+    
+figure
+for i = 1:6
+    hold on
+    plot(TE(2:end),squeeze(TEimages(compartmentCenters(i,1,1),compartmentCenters(i,2,1),TE(2:end))),'-*')
+    
+end
+
+
+figure
+for i = 1:6
+    hold on
+    plot(TI(2:end), squeeze(TIimages(compartmentCenters(i,1,2),compartmentCenters(i,2,2),TI(2:end))),'-*')
+  
+end
+
+end
