@@ -1,7 +1,7 @@
 %% read fingerprint offset timings list
 
 % fileID = fopen('Fingerprint_List.txt','r');
-fileID = fopen([workingdir,'/Fingerprint_List.txt'],'r');
+fileID = fopen([workingdir,'/offsetLists/Fingerprint_List.txt'],'r');
 (fscanf(fileID,'%s',2));
 nList1 = str2num((fscanf(fileID,'%s',1)));
 for i = 1:nList1
@@ -32,20 +32,35 @@ nList6 = str2num((fscanf(fileID,'%s',1)));
 for i = 1:nList6
     fingerprintLists(i,:,6) = fscanf(fileID,'%f',4);
 end
+
 (fscanf(fileID,'%s',2));
 nList7 = str2num((fscanf(fileID,'%s',1)));
 for i = 1:nList7
     fingerprintLists(i,:,7) = fscanf(fileID,'%f',4);
 end
+
 (fscanf(fileID,'%s',2));
 nList8 = str2num((fscanf(fileID,'%s',1)));
 for i = 1:nList8
     fingerprintLists(i,:,8) = fscanf(fileID,'%f',4);
 end
+
 (fscanf(fileID,'%s',2));
 nList9 = str2num((fscanf(fileID,'%s',1)));
 for i = 1:nList9
     fingerprintLists(i,:,9) = fscanf(fileID,'%f',4);
+end
+
+(fscanf(fileID,'%s',2));
+nList10 = str2num((fscanf(fileID,'%s',1)));
+for i = 1:nList10
+    fingerprintLists(i,:,10) = fscanf(fileID,'%f',4);
+end
+
+(fscanf(fileID,'%s',2));
+nList11 = str2num((fscanf(fileID,'%s',2)));
+for i = 1:nList11
+    fingerprintLists(i,:,11) = fscanf(fileID,'%f',4);
 end
 fclose(fileID);
 

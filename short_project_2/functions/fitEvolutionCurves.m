@@ -20,14 +20,14 @@ switch region
             [fittedCurve, goodness, output] = fit(T2_x,T2curves(:,n),T2model,'Upper',[5000 4000 500],'Lower',[0 0 -100],'StartPoint',[0.5 200 100]);
             
             fittedT2s(n) = fittedCurve.T2;
-            %compartment_a(n) = fittedCurve.a;
-           % compartment_c(n) = fittedCurve.c;
+            compartment_a(n) = fittedCurve.a;
+           compartment_c(n) = fittedCurve.c;
             
             plot(T2_x, T2curves(:,n),'.')
             
             hold on
             
-            filename = '/Users/jallen/Documents/MATLAB/short_project_2/DTC_report'
+            filename = '/Users/jallen/Documents/MATLAB/short_project_2/'
             matlab2tikz('figurehandle',T2fig,'filename',[filename,'/',phantomName,'T2fit',num2str(n)],'height','\figureheight','width','\figurewidth')
         end
         
@@ -85,7 +85,7 @@ switch region
         
         
         %%
-        filename = '/Users/jallen/Documents/MATLAB/short_project_2/DTC_report'
+        filename = '/Users/jallen/Documents/MATLAB/short_project_2/'
         
         
         legend ({'Compartment 1', 'Compartment 2', 'Compartment 3', 'Compartment 4', 'Compartment 5', 'Compartment 6'},'Location','best')
@@ -118,7 +118,7 @@ switch region
             if mask(1,r) > 0
                 
                 %T2
-                [fittedCurve, goodness, output] = fit(T2_x,T2images(r,T2_x),T2model,'Upper',[5000 5000 2500],'Lower',[0 0 0],'StartPoint',[1000 100 100]);
+                [fittedCurve, goodness, output] = fit(T2_x,T2images(r,T2_x)',T2model,'Upper',[5000 5000 2500],'Lower',[0 0 0],'StartPoint',[1000 100 100]);
                 
                % T2fits(r,1) = fittedCurve.a;
               % T2fits(r,2) = fittedCurve.T2;

@@ -65,6 +65,5 @@ M0fit_grad = reshape(M0fit_grad, [sqrt(size(data,1)),sqrt(size(data,1))]);
 %shutdown parpool
 delete(pp)
 
-toc
 el = toc;
 end
