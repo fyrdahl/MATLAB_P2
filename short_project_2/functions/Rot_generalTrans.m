@@ -3,10 +3,6 @@ function Rot_generalTrans = Rot_generalTrans(phi, theta)
 phi = deg2rad(phi);
 theta = deg2rad(theta);
 
-Rot_x = zeros(3,3);
-Rot_z = zeros(3,3);
-Rot_generalTrans = zeros(3,3);
-
 Rot_x(1,1:3) = ([1, 0 , 0]);
 Rot_x(2,1:3) = ([0, cos(phi), -sin(phi)]);
 Rot_x(3,1:3) = ([0, sin(phi) , cos(phi)]);

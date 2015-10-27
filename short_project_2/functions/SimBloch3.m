@@ -52,7 +52,7 @@ for i = 1:nRepeats
         %  disp('flip 2');
         tau = (t0 + 1 + (TEmin + TEoffsets(n))/2) ;
         %rotation about the x axis
-        M(:,tau) = Rot_x(flipAngles(n,2))*M(:,tau);
+        M(:,tau) = Rot_x(flipAngles(n,2),M(:,tau));
         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         
         

@@ -1,4 +1,4 @@
-function Rot_x = rot_x(flipAngle)
+function Rot_x = Rot_x(flipAngle)
 %clockwise rotation about the x-axis
 flipAngle = deg2rad(flipAngle);
 Rot_x = zeros(3,3);

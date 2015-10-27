@@ -77,8 +77,8 @@ T2 = 214.8;
 %T2 = 100;
 %fingerprintLists(:,1,offsetListNum) = 50;
 %fingerprintLists(:,2,offsetListNum) = 50;
-% fingerprintLists(:,3,offsetListNum) = 90;
-% fingerprintLists(:,4,offsetListNum) = 180;
+ %fingerprintLists(:,3,offsetListNum) = 90;
+ fingerprintLists(:,4,offsetListNum) = 180;
 freqOffset = 0;
 nSlices = 2;
 offsetListNum = 3;
@@ -86,10 +86,10 @@ nTimeCoursePts = 48;
 nRepeats = 2;
 
 [M, Mxy,flipAngles, imageTimes, t0s] = SimBloch(T1, T2, fingerprintLists(:,:,offsetListNum), 'showPlot', freqOffset, nSlices, nTimeCoursePts);
+%[M, Mxy,imageTimes,flipAngles, t0s] = SimBloch3(T1, T2, fingerprintLists(:,:,offsetListNum),nRepeats, freqOffset, nSlices,0);
 
 plotSimulatedSignal(M,Mxy,imageTimes)
 
-%[M, Mxy,imageTimes,flipAngles, t0s] = SimBloch3(T1, T2, fingerprintLists(:,:,offsetListNum),nRepeats, freqOffset, nSlices,1);
 %%
 % 8. check signal simulation by plotting positions of sample pixels for the fingerprinting images
 compartmentCentersList = 3;
