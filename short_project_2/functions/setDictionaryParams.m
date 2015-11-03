@@ -7,17 +7,17 @@ switch phantomName
      switch paramList
          case 1
         paramList = 1
-        T1s = 200:10:300
-        T2s = 200:10:300
-        FAdevs = 0.7:0.05:1.3
+        T1s = 200:10:300;
+        T2s = 200:10:300;
+        FAdevs = 0.7:0.05:1.3;
         dictionaryParams(1,1:numel(T1s)) = T1s; % T1
         dictionaryParams(2,1:numel(T2s)) = T2s ; % T2
         dictionaryParams(3,1:numel(FAdevs)) = FAdevs ; % B1 fraction
     case 3
         paramList = 3
-        T1s = 200:10:300
-        T2s = 200:10:300
-        FAdevs = 0.7:0.01:1.3
+        T1s = 200:10:300;
+        T2s = 200:10:300;
+        FAdevs = 0.7:0.01:1.3;
         dictionaryParams(1,1:numel(T1s)) = T1s; % T1
         dictionaryParams(2,1:numel(T2s)) = T2s ; % T2
         dictionaryParams(3,1:numel(FAdevs)) = FAdevs ; % B1 fraction

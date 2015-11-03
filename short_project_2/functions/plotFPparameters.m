@@ -1,4 +1,4 @@
-function plotFPlist(fingerprintLists)
+function plotFPparameters(fingerprintLists)
 list = squeeze(fingerprintLists);
 
 figure

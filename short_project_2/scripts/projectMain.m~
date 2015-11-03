@@ -14,6 +14,8 @@ addpath(genpath(workingdir)); % sometimes causes MATLAB to freeze
 savingdir = '/Users/jallen/Documents/short_project_2';
 addpath(genpath(savingdir)); 
 
+set(0,'DefaultFigureWindowStyle','docked')
+
 % If working on jalapeno00, uncomment the following lines:
 % addpath(genpath('/Applications/fsl/'))
 % addpath(genpath('/usr/local/fsl/bin'))
@@ -21,7 +23,7 @@ addpath(genpath(savingdir));
 
 %% 2. Read in the images
 %which phantom is the data from? ('sphereD170' or 'Jack'?)
-phantomName = 'sphereD170';
+phantomName = 'Jack';
 
 % Choose the offset list to use. List 2 is the original 'random' list of
 % offsets. Lists 3:8 are variations on List2, as described below.
@@ -40,10 +42,16 @@ for offsetListNum = 2:8
     save([savingdir,'/MAT-files/images/',phantomName,'_list',num2str(offsetListNum),'TE.mat'],'TE')
     save([savingdir,'/MAT-files/images/',phantomName,'_list',num2str(offsetListNum),'TI.mat'],'TI')
 end
+%%
+% Load the data
 offsetListNum = 3;
+load([savingdir,'/MAT-files/images/',phantomName,'_list',num2str(offsetListNum),'TEimages.mat'],'TEimages')
+load([savingdir,'/MAT-files/images/',phantomName,'_list',num2str(offsetListNum),'TIimages.mat'],'TIimages')
+load([savingdir,'/MAT-files/images/',phantomName,'_list',num2str(offsetListNum),'FPimages.mat'],'FPimages')
+load([savingdir,'/MAT-files/images/',phantomName,'_list',num2str(offsetListNum),'TE.mat'],'TE')
+load([savingdir,'/MAT-files/images/',phantomName,'_list',num2str(offsetListNum),'TI.mat'],'TI')
 
-%% 3. Select a ROI and a sample of the background, to calculate SNR
-[SNR, signal, background] = calcSNR(TEimages,TE,'showFigure');
+[SNR,bgStd] = calcSNR(TEimages,TE,[40 2 7 7], [24 18 7 7],1);
 
 %% 4. find signals at sample pixels
 compartmentCenters = setCompartmentCenters(phantomName);
@@ -77,95 +85,74 @@ T2 = 214.8;
 %T2 = 100;
 %fingerprintLists(:,1,offsetListNum) = 50;
 %fingerprintLists(:,2,offsetListNum) = 50;
-% fingerprintLists(:,3,offsetListNum) = 90;
-% fingerprintLists(:,4,offsetListNum) = 180;
+ %fingerprintLists(:,3,offsetListNum) = 90;
+ fingerprintLists(:,4,offsetListNum) = 180;
 freqOffset = 0;
 nSlices = 2;
 offsetListNum = 3;
-nTimeCoursePts = 47;
 nRepeats = 2;
+nTimeCoursePts = nRepeats*size(fingerprintLists,1);
 
-[M, Mxy,flipAngles, imageTimes, t0s] = SimBloch(T1, T2, fingerprintLists(:,:,offsetListNum), 'showPlot', freqOffset, nSlices, nTimeCoursePts);
+clear M
+clear Mxy
+[M, Mxy,flipAngles, imageTimes, t0s] = SimSE_Bernstein(T1, T2, fingerprintLists(:,:,offsetListNum), 'showPlot', freqOffset, nSlices, nTimeCoursePts);
+plotSimulatedSignal(M,Mxy,imageTimes,offsetListNum)
 
-plotSimulatedSignal(M,Mxy,imageTimes)
-%[M, Mxy,imageTimes,flipAngles, t0s] = SimBloch3(T1, T2, fingerprintLists(:,:,offsetListNum),nRepeats, freqOffset, nSlices,1);
+clear M
+clear Mxy
+[M, Mxy,imageTimes,flipAngles, t0s] = SimSE(T1, T2, fingerprintLists(:,:,offsetListNum),nRepeats, freqOffset, nSlices,0);
+plotSimulatedSignal(M,Mxy,imageTimes,offsetListNum)
+
 %%
-% 8. check signal simulation by plotting positions of sample pixels for the fingerprinting images
 compartmentCentersList = 3;
-clear FPimages
-load ([phantomName,'_list',num2str(offsetListNum),'FPimages.mat'])
-FPdata = reshape(squeeze(FPimages(:,:,1,:,offsetListNum)), [size(FPimages,1)*size(FPimages,2),size(FPimages,4)]);
-run('plotSamplePixels.m')
+
+%plotting positions of sample pixels for the fingerprinting images
+plotSamplePixels(FPimages,sliceNumber,2,offsetListNum,plotNumCompartments,compartmentCenters,compartmentCentersList)
+
 %%
-% plot comparison of simulation with sampled pixels
+% plot and save comparison of simulation with sampled pixels
 for n = 1:6
 data(n,:) = FPimages(compartmentCenters(n,1,3),compartmentCenters(n,2,3),sliceNumber,:,offsetListNum);
 end
+plotSimComparison(Mxy,data,nTimeCoursePts,phantomName,workingdir)
 
-plotSimComparison(Mxy,data,compartmentCenters,compartmentCentersList,nRepeats*nTimeCoursePts,sliceNumber,phantomName,workingdir)
-
-savefig([workingdir,'/figures/compareSimwithData_Phantom_',phantomName,'__Offset_list_',num2str(offsetListNum),'_compartmentcentercoordslist:',num2str(compartmentCentersList),'.fig'])
-matlab2tikz('figurehandle',simCom,'filename',[workingdir,'/DTC_report/',phantomName,'simCom',num2str(offsetListNum),'slice',num2str(sliceNumber)],'height', '\figureheight', 'width', '\figurewidth')
- 
 %% 9. create dictionary
 load /Users/jallen/Documents/short_project_2/MAT-files/fingerprintLists.mat
 %
-paramList = 3;
-[dictionaryParams, paramList] = setDictionaryParams(phantomName,paramList);
-%
-nTimeCoursePts = 24;
-%%
+[dictionaryParams, paramRangeList] = setDictionaryParams(phantomName,3);
+
 for offsetListNum = 2:8;
     %%
     [signalDictionary, sdelT] = compileDictionary(fingerprintLists, offsetListNum, dictionaryParams, nTimeCoursePts, freqOffset, nSlices, phantomName, background);
     save([savingdir,'/MAT-files/dictionaries/',phantomName,'_list',num2str(offsetListNum),'paramList',num2str(paramList),'dictionary.mat'],'signalDictionary')
     save([savingdir,'/MAT-files/dictionaries/',phantomName,'_list',num2str(offsetListNum),'paramList',num2str(paramList),'signalDictionaryTime.mat'],'sdelT')
     
-    pause(1)
 end
 
-%% 10. check similarity and use dictionary to measure T1 and T2
-
-sliceNumber = 2 ;% slice to be analysed
-clear data
-
-% data = FPimages(compartmentCenters(1,1),compartmentCenters(1,2),:,:);
-
-% for r = 1:size(compartmentCenters,1)
-% data(r,1,sliceNumber,:) = FPimages(compartmentCenters(r,1),compartmentCenters(r,2),sliceNumber,:);
-% end
-%% SIMILARITY
+%% 10. check similarity and use dictionary to assign values of T1, T2 etc.
+% SIMILARITY
 for offsetListNum = 2:8;
     %%
     load([savingdir,'/MAT-files/images/',phantomName,'_list',num2str(offsetListNum),'FPimages.mat'])
-    data = zeros(size(FPimages,1),size(FPimages,2), 24);
+    data = zeros(size(FPimages,1),size(FPimages,2), nTimeCoursePts);
     %   data(r,c,sliceNumber,1:24) = squeeze(FPimages(r,c,sliceNumber,1:24,offsetListNum));
-    data = squeeze(FPimages(:,:,sliceNumber,1:24,offsetListNum));
+    data = squeeze(FPimages(:,:,sliceNumber,:,offsetListNum));
     
     disp(['offsetList',num2str(offsetListNum),', phantom:',phantomName])
     clear signalDictionary
-    l = load([savingdir,'/MAT-files/dictionaries/',phantomName,'_list',num2str(offsetListNum),'paramList',num2str(paramList),'dictionary.mat']);
+    l = load([savingdir,'/MAT-files/dictionaries/',phantomName,'_list',num2str(offsetListNum),'paramList',num2str(paramRangeList),'dictionary.mat']);
     signalDictionary = l.signalDictionary;
-    [similarity, matchedT1, matchedT2, matchedFAdevInd, M0fit_grad, bestMatch, match_time] = calcSimilarity(data, signalDictionary(:,:,:,:,offsetListNum), sliceNumber, dictionaryParams, savingdir);
-    
-    save([savingdir,'/MAT-files/matches/similarity/',phantomName,'list',num2str(offsetListNum),'paramList',num2str(paramList),'similarity.mat'],'similarity')
-    save([savingdir,'/MAT-files/matches/T1/',phantomName,'list',num2str(offsetListNum),'paramList',num2str(paramList),'matchedT1.mat'],'matchedT1')
-    save([savingdir,'/MAT-files/matches/T2/',phantomName,'list',num2str(offsetListNum),'paramList',num2str(paramList),'matchedT2.mat'],'matchedT2')
-    save([savingdir,'/MAT-files/matches/B1/',phantomName,'list',num2str(offsetListNum),'paramList',num2str(paramList),'matchedFAdevInd.mat'],'matchedFAdevInd')
-    save([savingdir,'/MAT-files/matches/BestMatch/',phantomName,'list',num2str(offsetListNum),'paramList',num2str(paramList),'bestMatch.mat'],'bestMatch')
-    save([savingdir,'/MAT-files/matches/MatchingTimes/',phantomName,'list',num2str(offsetListNum),'paramList',num2str(paramList),'compileDictionaryElapsedTime.mat'],'match_time')
-    save([savingdir,'/MAT-files/matches/M0/',phantomName,'list',num2str(offsetListNum),'paramList',num2str(paramList),'M0fit_grad.mat'],'M0fit_grad')
+    [similarity, matchedT1, matchedT2, matchedFAdev, M0fit_grad, bestMatch, match_time] = calcSimilarity(data, signalDictionary(:,:,:,:,offsetListNum),nTimeCoursePts, dictionaryParams, savingdir);
+            
+    save([savingdir,'/MAT-files/matches/similarity/',phantomName,'list',num2str(offsetListNum),'paramList',num2str(paramRangeList),'similarity.mat'],'similarity')
+    save([savingdir,'/MAT-files/matches/T1/',phantomName,'list',num2str(offsetListNum),'paramList',num2str(paramRangeList),'matchedT1.mat'],'matchedT1')
+    save([savingdir,'/MAT-files/matches/T2/',phantomName,'list',num2str(offsetListNum),'paramList',num2str(paramRangeList),'matchedT2.mat'],'matchedT2')
+    save([savingdir,'/MAT-files/matches/B1/',phantomName,'list',num2str(offsetListNum),'paramList',num2str(paramRangeList),'matchedFAdevInd.mat'],'matchedFAdev')
+    save([savingdir,'/MAT-files/matches/BestMatch/',phantomName,'list',num2str(offsetListNum),'paramList',num2str(paramRangeList),'bestMatch.mat'],'bestMatch')
+    save([savingdir,'/MAT-files/matches/MatchingTimes/',phantomName,'list',num2str(offsetListNum),'paramList',num2str(paramRangeList),'compileDictionaryElapsedTime.mat'],'match_time')
+    save([savingdir,'/MAT-files/matches/M0/',phantomName,'list',num2str(offsetListNum),'paramList',num2str(paramRangeList),'M0fit_grad.mat'],'M0fit_grad')
    
 end
-%
-%% visualise spread of matched T1s and T2s
-% figure; hist(squeeze(matchedT1(offsetListNum,:)))
-% figure;
-% hist(squeeze(matchedT2(offsetListNum,:)))
-% %
-% figure; plot(squeeze(data(1,1,1,:)), '-*')
-% hold on
-% plot(squeeze(bestMatch(1,1,:))*data(1,1,1,1),'--.')
 
 %% Once the similarity function has been run, plot and save the T1, T2 and FA deviation maps
 run('plotAssignedMaps.m')

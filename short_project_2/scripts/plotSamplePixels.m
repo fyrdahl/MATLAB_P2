@@ -1,6 +1,6 @@
-
+function plotSamplePixels(FPimages,sliceNumber,frame,offsetListNum,plotNumCompartments,compartmentCenters,compartmentCentersList)
 figure;
-imagesc(FPimages(:,:,sliceNumber,2,offsetListNum))
+imagesc(FPimages(:,:,sliceNumber,frame,offsetListNum))
 hold on
 compartmentLabels = ['1', '2','3','4','5','6'];
 for i = 1:plotNumCompartments
