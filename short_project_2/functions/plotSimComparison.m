@@ -1,4 +1,4 @@
-function plotSimComparison(Mxy,data,nPts,phantomName,workingdir)
+function plotSimComparison(Mxy,data,nPts,phantomName,savingdir,compartmentCentersList,offsetListNum, sliceNumber)
 
 simCom = figure; hold on
 % title (['fingerprint offset list ', num2str(offsetListNum)])
@@ -23,8 +23,8 @@ ylim([0 1.1])
 legend ({'Simulated Signal', 'Sample Pixel 1','Sample Pixel 2','Sample Pixel 3','Sample Pixel 4','Sample Pixel 5','Sample Pixel 6'},'Position',[0.6, 0.7, 0.1,0.1],'location','best')
 xlabel 'TE Index'
 ylabel 'Normalised Signal'
-savefig([workingdir,'/figures/compareSimwithData_Phantom_',phantomName,'__Offset_list_',num2str(offsetListNum),'_compartmentcentercoordslist:',num2str(compartmentCentersList),'.fig'])
-matlab2tikz('figurehandle',simCom,'filename',[workingdir,'/DTC_report/',phantomName,'simCom',num2str(offsetListNum),'slice',num2str(sliceNumber)],'height', '\figureheight', 'width', '\figurewidth')
+savefig([savingdir,'/figures/compareSimwithData_Phantom_',phantomName,'__Offset_list_',num2str(offsetListNum),'_compartmentcentercoordslist:',num2str(compartmentCentersList),'.fig'])
+matlab2tikz('figurehandle',simCom,'filename',[savingdir,'/DTC_report/',phantomName,'simCom',num2str(offsetListNum),'slice',num2str(sliceNumber)],'height', '\figureheight', 'width', '\figurewidth')
     
 %% figure; plot(residuals,'+')
 

@@ -1,10 +1,15 @@
 function plotAssignedMaps(savingdir,phantomName,paramList,offsetListNum,dictionaryParams,mapType, ROI)
+%% Author: Jack Allen
+% jack.allen@jesus.ox.ac.uk
+%
+% Function to plot a map of parameters that have been assigned via the MRF method
 
+%%
     load([savingdir,'/MAT-files/matches/T1/',phantomName,'list',num2str(offsetListNum),'paramList',num2str(paramList),'matchedT1.mat'])
     load([savingdir,'/MAT-files/matches/T2/',phantomName,'list',num2str(offsetListNum),'paramList',num2str(paramList),'matchedT2.mat'])
     load([savingdir,'/MAT-files/matches/BestMatch/',phantomName,'list',num2str(offsetListNum),'paramList',num2str(paramList),'bestMatch.mat'])
     load([savingdir,'/MAT-files/matches/M0/',phantomName,'list',num2str(offsetListNum),'paramList',num2str(paramList),'M0fit_grad.mat'])
-    
+
     switch mapType
         case 'B1'
     % B1

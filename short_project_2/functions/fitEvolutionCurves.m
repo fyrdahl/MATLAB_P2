@@ -27,7 +27,7 @@ switch region
             
             hold on
             
-            filename = '/Users/jallen/Documents/MATLAB/short_project_2/'
+            filename = '/Users/jallen/Documents/MATLAB/short_project_2/';
             matlab2tikz('figurehandle',T2fig,'filename',[filename,'/',phantomName,'T2fit',num2str(n)],'height','\figureheight','width','\figurewidth')
         end
         

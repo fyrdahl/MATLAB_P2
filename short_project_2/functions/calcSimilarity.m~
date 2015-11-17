@@ -13,8 +13,8 @@ loadDictionary.sd = load([savingdir,'/MAT-files/dictionaries/',phantomName,'_lis
 signalDictionary = loadDictionary.sd(:,:,:,:,offsetListNum);
 
 %mask to exclude time course outside of ROI
-%loadMask.Mask = load([savingdir,'/MAT-files/mask.mat']);
-%mask = reshape(loadMask.mask,[64*64, 1]);
+loadMask.Mask = load([savingdir,'/MAT-files/mask.mat']);
+mask = reshape(loadMask.mask,[64*64, 1]);
 
 %time course of interest
 data = reshape(data,[size(data,1)*size(data,2), nTimeCoursePts]);
@@ -35,16 +35,17 @@ M0model = @(a,x) a*x;
 tic
 
 pp = parpool(4);
-for data_i = 1:size(data,1) %for all pixels
+for data_i = 1:size(data,1)
     disp('calculating similarity...')
     
     %if mask(data_i,1) > 0
-    parfor sd_i = 1:size(sd,1) % for all entries in the dictionary
+    parfor sd_i = 1:size(sd,1)
         tempData = data;
-        TCsimilarity(data_i,sd_i) = dot(sd(sd_i,:), tempData(data_i,:))/(norm(sd(sd_i,:))*norm(tempData(data_i,:)));
+        similarity(data_i,sd_i) = dot(sd(sd_i,:), tempData(data_i,:))/(norm(sd(sd_i,:))*norm(tempData(data_i,:))) ;
     end
+    TCsimilarity = similarity(data_i,:);
     TCsimilarity = reshape(TCsimilarity,[size(signalDictionary,1),size(signalDictionary,2),size(signalDictionary,3)]);
-    
+   
     %   find highest similarity score for TC of interest
     [maxSimilarityScore(data_i), bestSimulatedSignalIndex]  = max(TCsimilarity(:));
     %Find the parameters associated with the best match
@@ -56,10 +57,10 @@ for data_i = 1:size(data,1) %for all pixels
     matchedT2(data_i,1) = dictionaryParams(2, bestT2ind);
     matchedFAdev(data_i,1) = dictionaryParams(3, bestFAdevInd);
     bestMatch(data_i, :) = squeeze(signalDictionary(bestT1ind, bestT2ind, bestFAdevInd, :));
-    M0fit = fit(squeeze(bestMatch(data_i, :))', data(data_i,:)',M0model,'Upper',6000,'Lower',0,'StartPoint',500 );
+    M0fit = fit(squeeze(bestMatch(data_i, :))', data(data_i,:)',M0model,'Upper',[6000],'Lower',[0],'StartPoint',[500] );
     M0fit_grad(data_i,1) = M0fit.a;
     
-    % end
+    %  end
     disp(['calculating similarity: ',num2str( (data_i/size(data,1))*100) , ' percent complete'])
     
 end

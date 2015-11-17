@@ -1,45 +1,22 @@
-% mask including whole phantom
-load([workingdir,'/MAT-files/mask.mat'])
-
-%% normalise pixel values
-% TEimages(:,:,TE) = TEimages(:,:,TE)/max(max(max(TEimages(:,:,:))));
-% TIimages(:,:,TE) = TIimages(:,:,TI)/max(max(max(TIimages(:,:,:))));
-
+function visualiseImages(data)
+%% Jack Allen
+% jack.allen@jesus.ox.ac.uk
+% Function to visualise a series of images, one by one.
+%
+% DATA must be 3-dimensional
 %%
-TEfig = figure
-set(TEfig,'name','TE')
-for i = TE
-    i
+
+figure;
+for i = 1:size(data,3)
+  
+    if max(max(data(:,:,i))) > 0
  colormap gray
-imagesc(TEimages(:,:,i))
+ title ([num2str(i)])
+imagesc(data(:,:,i))
+caxis([0 max(max(max(data(:,:,:))))]);
+colorbar
 pause
+    end
 end
 
-figure
-for i = TI
-    i
-%     colormap gray
-%  TIimages(:,:,TI(i)) = TIimages(:,:,TI(i));
-
-imagesc(TIimages(:,:,i))
-pause
 end
-
-figure
-for i = 1:size(FPimages,4)
- colormap gray
- axis off
- 
-imagesc(FPimages(:,:,1,i,offsetListNum));
-
-i
-pause
-end
-
-n = 1
-for i = 1:size(FPimages,4)/2
-y(i) = squeeze(FPimages(compartmentCenters(n,1),compartmentCenters(n,2),1,i,offsetListNum));
-end
-y(1:end) = y(1:end)./y(1)
-figure; plot(y,'*')
-

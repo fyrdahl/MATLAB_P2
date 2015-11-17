@@ -1,4 +1,4 @@
-function [TEImageInfo, TIImageInfo, FPImageInfo, TEimages, TIimages, FPimages, TE, TI] = readData(phantomName, offsetListNum, workingdir)
+function [TEImageInfo, TIImageInfo, FPImageInfo, TEimages, TIimages, fullFPimages, TE, TI] = readData(phantomName, offsetListNum, workingdir, savingdir)
 
 switch phantomName
     
@@ -64,7 +64,7 @@ switch phantomName
         %FINGERPRINTING IMAGES
         
         fp_filename = [workingdir,'/nifti_data/20150819/fp/', FPImageInfo.name(1,:)];
-        FPimages(:,:,:,:) = read_avw(fp_filename);
+        fullFPimages(:,:,:,:) = read_avw(fp_filename);
         
         
         %********************
@@ -89,7 +89,7 @@ switch phantomName
             end
             str2num(tmpTE(i,:));
             i;
-            TE(i) = str2num(tmpTE(i,:)); 
+            TE(i) = str2num(tmpTE(i,:));
         end
         TE = unique(sort(TE));
         
@@ -110,17 +110,17 @@ switch phantomName
         end
         TI = unique(sort(TI));
         
-%Read TE and TI images
+        %Read TE and TI images
         TEimages = zeros(64,64,TE(end));
         TIimages = zeros(64,64,TI(end));
         for TE_ind = 1:numel(TE)
-     
-            for i = 1:size(TEImageInfo,1)         
+            
+            for i = 1:size(TEImageInfo,1)
                 if strfind(TEImageInfo(i).name,['TE',num2str(TE(TE_ind))]) > 0
                     filename = [workingdir,'/nifti_data/20150819/', TEImageInfo(i).name(1,:)];
-                    TEimages(:,:,TE(TE_ind)) = read_avw(filename);        
+                    TEimages(:,:,TE(TE_ind)) = read_avw(filename);
                 end
-            end     
+            end
         end
         
         for TI_ind = 1:numel(TI)
@@ -138,12 +138,17 @@ switch phantomName
         
         %READ FINGERPRINTING IMAGES
         filename = [workingdir,'/nifti_data/', FPImageInfo.name(1,:)];
-        FPimages(:,:,:,:) = read_avw(filename);
+        fullFPimages(:,:,:,:) = read_avw(filename);
         
     otherwise
         error('Unrecognised phantom name') %('sphereD170' or 'Jack'?)
 end
 
+save([savingdir,'/MAT-files/images/',phantomName,'_list',num2str(offsetListNum),'TEimages.mat'],'TEimages')
+save([savingdir,'/MAT-files/images/',phantomName,'_list',num2str(offsetListNum),'TIimages.mat'],'TIimages')
+save([savingdir,'/MAT-files/images/',phantomName,'_list',num2str(offsetListNum),'fullFPimages.mat'],'fullFPimages')
+save([savingdir,'/MAT-files/images/',phantomName,'_list',num2str(offsetListNum),'TE.mat'],'TE')
+save([savingdir,'/MAT-files/images/',phantomName,'_list',num2str(offsetListNum),'TI.mat'],'TI')
 
 disp(['readData: complete for offsetList ',num2str(offsetListNum)])
 end
