@@ -30,7 +30,6 @@ phantomName = 'Jack';
 % 7: TR offset = 1500, TE offset = 20
 % 8: TR offset = 15000
 
-
 for offsetListNum = 2:8
     [TEImageInfo, TIImageInfo, ~, TEimages, TIimages, fullFPimages(:,:,:,:,offsetListNum), TE, TI] = readData(phantomName, offsetListNum, [savingdir,'/Data/'], savingdir );
 end

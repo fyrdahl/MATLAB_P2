@@ -76,9 +76,9 @@ for n = 1:nTimeCoursePts
     % disp('decay 2')
     for t = (tau) : t0 + TRmin + (nSlices*TEoffsets(n)) + TRoffsets(n)
         
-        M(:,t) = [exp(-(t-tau)/T2)*( M(1,tau)*cos(freqOffset*(t-tau)) + M(2,tau)*sin(freqOffset*(t-tau)) );
-            exp(-(t-tau)/T2)*( -M(1,tau)*sin(freqOffset*(t-tau)) + M(2,tau)*cos(freqOffset*(t-tau)) );
-            Mzeq*(1 - exp(-(t-tau)/T1)) + M(3,tau)*exp(-(t-tau)/T1)] ;
+        M(:,t) = [exp(-(t-(tau+1))/T2)*( M(1,tau)*cos(freqOffset*(t-(tau+1))) + M(2,tau)*sin(freqOffset*(t-(tau+1))) );
+            exp(-(t-(tau+1))/T2)*( -M(1,tau)*sin(freqOffset*(t-(tau+1))) + M(2,tau)*cos(freqOffset*(t-(tau+1))) );
+            Mzeq*(1 - exp(-(t-(tau+1))/T1)) + M(3,tau)*exp(-(t-(tau+1))/T1)] ;
         
         %         Mtransverse(t) = complex(M(1,t), M(2,t))  ;
         

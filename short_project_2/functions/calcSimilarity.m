@@ -42,6 +42,8 @@ for data_i = 1:size(data,1) %for all pixels
     parfor sd_i = 1:size(sd,1) % for all entries in the dictionary
         tempData = data;
         TCsimilarity(data_i,sd_i) = dot(sd(sd_i,:), tempData(data_i,:))/(norm(sd(sd_i,:))*norm(tempData(data_i,:)));
+    
+    
     end
     TCsimilarity = reshape(TCsimilarity,[size(signalDictionary,1),size(signalDictionary,2),size(signalDictionary,3)]);
     
