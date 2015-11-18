@@ -18,7 +18,7 @@ addpath(genpath(savingdir));
 % addpath(genpath('/opt/fmrib/fsl/etc/matlab'))
 %% 2. Read in the images
 %which phantom is the data from? ('sphereD170' or 'Jack'?)
-phantomName = 'Jack';
+phantomName = 'sphereD170';
 
 % Choose the offset list to use. List 2 is the original 'random' list of
 % offsets. Lists 3:8 are variations on List2, as described below.
@@ -35,6 +35,8 @@ for offsetListNum = 2:8
 end
 %%
 % Load the data
+offsetListNum = 3;
+sliceNumber = 2;
 loadData
 [SNR,bgStd] = calcSNR(TEimages,TE,[40 2 7 7], [24 18 7 7],1);
 
@@ -44,14 +46,14 @@ plotCompartmentCenterTCs(compartmentCenters,TEimages, TIimages, TE, TI)
 
 %% 5. plot positions of sample pixels for TE and TR images
 plotNumCompartments = 6;
-sliceNumber = 2;
+
 %%
 plotSamplePixels_TE_TR
 %%
 visualiseImages(FPimages)
 
 %% fit curves to calculate T1 and T2
-ROI = 'fullPhantom';
+ROI = 'compartments';
 [compartmentT1s, compartmentT2s, T2curves, T1curves, fittedCurve, goodness, output, F] = fitEvolutionCurves(phantomName,TEimages, TIimages, TE(2:end)', TI(2:end), ROI, compartmentCenters);
 
 plotGoldStdT1T2

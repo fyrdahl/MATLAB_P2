@@ -66,15 +66,15 @@ switch region
         end
         
         figure
+       x = 0:max(T1_x)+0.2*max(T1_x);
         for n = 1:6
-            plot((T1_x), T1curves(n,:) ,'x')
+            plot((T1_x), T1curves(n,:) ,'o')
             hold on
         end
-        x = 0:max(T1_x)+0.2*max(T1_x);
         for n = 1:6
             T1(n) = (1/r1(n))*1000;
             y(n,:) = pd(n) - (2*pd(n))*eff(n)*exp(-x*(1/T1(n)));
-            plot(x,y(n,:));
+            
             minY(n) = y(n,1);
             maxY(n) = y(n,end);
             hold on

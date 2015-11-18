@@ -130,8 +130,8 @@ for ii = find(~(sum(data, 2) == 0))';
     vox_data = data(ii,:);
     
     % Update Progress
-    qmap_progressbar(pt/npts);
-    pt = pt + 1;
+    %qmap_progressbar(pt/npts);
+    %pt = pt + 1;
     
     % Initial Guess
     [v idx]   = min(abs(vox_data)); %#ok<ASGLU>
@@ -181,7 +181,7 @@ for ii = find(~(sum(data, 2) == 0))';
        ti = tivals; % JA edit
         
         % Plot actual vs fitted data
-        figure(dbfig);
+        %figure(dbfig);
         plot(tivals, data(ii,:), 'o', ti, ir_model(x,1), '-');
         
    [F(ii,:) mz(ii,:)] = ir_model(x, 1); % added by JA
