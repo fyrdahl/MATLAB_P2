@@ -9,9 +9,9 @@ function [similarity, matchedT1, matchedT2, matchedFAdev, M0fit_grad, bestMatch,
 %% simularity measure
 disp('calculating similarity: started')
 
-loadDictionary.sd = load([savingdir,'/MAT-files/dictionaries/',phantomName,'_list',num2str(offsetListNum),'paramList',num2str(paramRangeList),'dictionary.mat']);
-signalDictionary = loadDictionary.sd(:,:,:,:,offsetListNum);
-
+load([savingdir,'/MAT-files/dictionaries/',phantomName,'_list',num2str(offsetListNum),'paramList',num2str(paramRangeList),'dictionary.mat']);
+signalDictionary = sd(:,:,:,:,offsetListNum);
+signalDictionary = squeeze(signalDictionary);
 %mask to exclude time course outside of ROI
 %loadMask.Mask = load([savingdir,'/MAT-files/mask.mat']);
 %mask = reshape(loadMask.mask,[64*64, 1]);
@@ -42,8 +42,6 @@ for data_i = 1:size(data,1) %for all pixels
     parfor sd_i = 1:size(sd,1) % for all entries in the dictionary
         tempData = data;
         TCsimilarity(data_i,sd_i) = dot(sd(sd_i,:), tempData(data_i,:))/(norm(sd(sd_i,:))*norm(tempData(data_i,:)));
-    
-    
     end
     TCsimilarity = reshape(TCsimilarity,[size(signalDictionary,1),size(signalDictionary,2),size(signalDictionary,3)]);
     
@@ -78,11 +76,11 @@ delete(pp)
 
 el = toc;
 
-save([savingdir,'/MAT-files/matches/similarity/',phantomName,'list',num2str(offsetListNum),'paramList',num2str(paramRangeList),'similarity.mat'],'similarity')
-save([savingdir,'/MAT-files/matches/T1/',phantomName,'list',num2str(offsetListNum),'paramList',num2str(paramRangeList),'matchedT1.mat'],'matchedT1')
-save([savingdir,'/MAT-files/matches/T2/',phantomName,'list',num2str(offsetListNum),'paramList',num2str(paramRangeList),'matchedT2.mat'],'matchedT2')
-save([savingdir,'/MAT-files/matches/B1/',phantomName,'list',num2str(offsetListNum),'paramList',num2str(paramRangeList),'matchedFAdev.mat'],'matchedFAdev')
-save([savingdir,'/MAT-files/matches/BestMatch/',phantomName,'list',num2str(offsetListNum),'paramList',num2str(paramRangeList),'bestMatch.mat'],'bestMatch')
-save([savingdir,'/MAT-files/matches/MatchingTimes/',phantomName,'list',num2str(offsetListNum),'paramList',num2str(paramRangeList),'compileDictionaryElapsedTime.mat'],'match_time')
-save([savingdir,'/MAT-files/matches/M0/',phantomName,'list',num2str(offsetListNum),'paramList',num2str(paramRangeList),'M0fit_grad.mat'],'M0fit_grad')
+save([savingdir,'/MAT-files/matches/similarity/',phantomName,'offsetlist',num2str(offsetListNum),'paramList',num2str(paramRangeList),'similarity.mat'],'similarity')
+save([savingdir,'/MAT-files/matches/T1/',phantomName,'offsetlist',num2str(offsetListNum),'paramList',num2str(paramRangeList),'matchedT1.mat'],'matchedT1')
+save([savingdir,'/MAT-files/matches/T2/',phantomName,'offsetlist',num2str(offsetListNum),'paramList',num2str(paramRangeList),'matchedT2.mat'],'matchedT2')
+save([savingdir,'/MAT-files/matches/B1/',phantomName,'offsetlist',num2str(offsetListNum),'paramList',num2str(paramRangeList),'matchedFAdev.mat'],'matchedFAdev')
+save([savingdir,'/MAT-files/matches/BestMatch/',phantomName,'offsetlist',num2str(offsetListNum),'paramList',num2str(paramRangeList),'bestMatch.mat'],'bestMatch')
+save([savingdir,'/MAT-files/matches/MatchingTimes/',phantomName,'offsetlist',num2str(offsetListNum),'paramList',num2str(paramRangeList),'compileDictionaryElapsedTime.mat'],'match_time')
+save([savingdir,'/MAT-files/matches/M0/',phantomName,'offsetlist',num2str(offsetListNum),'paramList',num2str(paramRangeList),'M0fit_grad.mat'],'M0fit_grad')
 end

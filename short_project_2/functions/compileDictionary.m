@@ -1,6 +1,10 @@
-function [sd,sdelT] = compileDictionary(fingerprintLists, offsetListNum, dictionaryParams,paramList, nTimeCoursePts, freqOffset, nSlices, phantomName, savingdir)
+function [sd,sdelT] = compileDictionary(fingerprintLists, offsetListNum, nTimeCoursePts, freqOffset, nSlices, phantomName, savingdir)
 
 %% DICTIONARY
+
+%% Import fingerprint timings list and dictionary parameters
+load /Users/jallen/Documents/short_project_2/MAT-files/fingerprintLists.mat
+[dictionaryParams, paramList] = setDictionaryParams(phantomName,3);
 
 %%
 sd = zeros(sum(dictionaryParams(1,:)>0), sum(dictionaryParams(2,:)>0), sum(dictionaryParams(3,:)>0) , nTimeCoursePts, max(offsetListNum));

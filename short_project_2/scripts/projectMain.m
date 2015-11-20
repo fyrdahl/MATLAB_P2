@@ -38,7 +38,8 @@ end
 offsetListNum = 3;
 sliceNumber = 2;
 loadData
-[SNR,bgStd] = calcSNR(TEimages,TE,[40 2 7 7], [24 18 7 7],1);
+
+[bgMean,bgStd,SNR] = calcNoise(FPimages,1,[40 2 7 7], [24 18 7 7],1);
 
 %% 4. find signals at sample pixels
 compartmentCenters = setCompartmentCenters(phantomName);
@@ -49,6 +50,7 @@ plotNumCompartments = 6;
 
 %%
 plotSamplePixels_TE_TR
+
 %%
 visualiseImages(FPimages)
 
@@ -71,13 +73,12 @@ T1 = 282.3;
 T2 = 214.8;
 %T1 = 600;
 %T2 = 100;
-%fingerprintLists(:,1,offsetListNum) = 50;
-%fingerprintLists(:,2,offsetListNum) = 50;
-%fingerprintLists(:,3,offsetListNum) = 90;
-%fingerprintLists(:,4,offsetListNum) = 180;
+fingerprintLists(:,1,offsetListNum) = 50;
+fingerprintLists(:,2,offsetListNum) = 50;
+fingerprintLists(:,3,offsetListNum) = 90;
+fingerprintLists(:,4,offsetListNum) = 180;
 freqOffset = 0;
 nSlices = 2;
-offsetListNum = 3;
 nRepeats = 2;
 nTimeCoursePts = nRepeats*size(fingerprintLists,1);
 
@@ -99,12 +100,8 @@ end
 plotSimComparison(Mxy,data,nTimeCoursePts,phantomName,savingdir,compartmentCentersList,offsetListNum, sliceNumber)
 
 %% 9. create dictionary
-load /Users/jallen/Documents/short_project_2/MAT-files/fingerprintLists.mat
-%
-[dictionaryParams, paramRangeList] = setDictionaryParams(phantomName,3);
-%%
 for offsetListNum = 2:8;
-    [signalDictionary, sdelT] = compileDictionary(fingerprintLists, offsetListNum, dictionaryParams,paramRangeList, nTimeCoursePts, freqOffset, nSlices, phantomName, savingdir);
+    [signalDictionary, sdelT] = compileDictionary(fingerprintLists, offsetListNum, nTimeCoursePts, freqOffset, nSlices, phantomName, savingdir);
 end
 %% 10. check similarity and use dictionary to assign values of T1, T2 etc.
 % SIMILARITY
@@ -115,4 +112,4 @@ end
 plotAssignedMaps(savingdir,phantomName,paramRangeList,offsetListNum,dictionaryParams,'T2');
 
 %% choose pixels and plot time courses for the fingerprinting images
-plotTCs(FPimages)
+plotTCs(FPimages,savingdir,phantomName,offsetListNum,'1')
