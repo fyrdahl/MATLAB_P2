@@ -1,4 +1,7 @@
 function plotFPparameters(fingerprintLists)
+%% PlotFPparameters
+% jack.allen@jesus.ox.ac.uk
+% University of Oxford
 list = squeeze(fingerprintLists);
 
 figure

@@ -1,4 +1,4 @@
-function [M, Mxy,flipAngles,imageTimes, t0s] = SimSE_Bernstein(T1, T2, fingerprintOffsetList, plotFlag,freqOffset, nSlices, nTimeCoursePts)
+function [M, Mxy,flipAngles,imageTimes, t0s] = SimSE_Bernstein(T1, T2, fingerprintOffsetList,freqOffset, nSlices, nTimeCoursePts)
 % Jack Allen
 
 % magnetisation evolution equations in this function are from 'Handbook of MRI pulse sequences - section 3.3'

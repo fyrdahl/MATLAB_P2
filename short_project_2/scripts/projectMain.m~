@@ -108,10 +108,9 @@ end
 for offsetListNum = 2:8;
     [similarity, matchedT1, matchedT2, matchedFAdev, M0fit_grad, bestMatch, match_time] = calcSimilarity(FPimages,nTimeCoursePts, dictionaryParams, paramRangeList, savingdir, phantomName, offsetListNum);
 end
-[dictionaryParams, paramList] = setDictionaryParams('sphereD170',3)
-    [similarity, matchedT1, matchedT2, matchedFAdev, M0fit_grad, bestMatch, match_time] = calcSimilarity(TC,24, dictionaryParams, paramList, savingdir, 'sphereD170','test',3);
 
 
+    [similarity, matchedT1, matchedT2, matchedFAdev, M0fit_grad, bestMatch, match_time] = 
 %% Once the similarity function has been run, plot and save the T1, T2 and FA deviation maps
 plotAssignedMaps(savingdir,phantomName,paramRangeList,offsetListNum,dictionaryParams,'T2');
 
