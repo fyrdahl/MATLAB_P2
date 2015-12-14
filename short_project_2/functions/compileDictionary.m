@@ -27,8 +27,9 @@ for i = 1:sum(dictionaryParams(1,:)>0)
             fingerprintLists(:,3,offsetListNum) = originalFA1s*(dictionaryParams(3,k));
             fingerprintLists(:,4,offsetListNum) = originalFA2s*(dictionaryParams(3,k));
             
+            if T1>=T2 % T1 must be larger than T2
             [~, sd(i,j,k,:,offsetListNum), ~, ~] = SimSE_Bernstein(T1, T2, fingerprintLists(:,:,offsetListNum), 'dontPlot', freqOffset, nSlices, nTimeCoursePts);
-            
+            end
             %% add noise to the simulated signals
             %             SNR = 0.655*squeeze(signalDictionary(i,j,k,:))/std(background(:));
             %             for tPt = 1:size(signalDictionary,4)
@@ -37,7 +38,7 @@ for i = 1:sum(dictionaryParams(1,:)>0)
             
         end
     end
-    
+
     disp(['compiling dictionary for offset list ', num2str(offsetListNum),': ',num2str( (i/(sum(dictionaryParams(1,:)~=0)) )*100) , ' percent complete'])
 end
 toc

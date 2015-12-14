@@ -1,11 +1,12 @@
 function [maxSimilarity, matchedT1, matchedT2, matchedFAdev, M0fit_grad, bestMatch, matchTime] = calcSimilarity(data, nTimeCoursePts, dictionaryParams, paramRangeList,savingdir, inputPhantomName,outputPhantomName,offsetListNum)
+% calcSimilarity
+% Description: A function to calculate the similarity of a time course with
+% each entry in a dictionary of time courses and find the best match.
+%
 % Author: Jack Allen.
 % Institution: University of Oxford.
 % Contact: jack.allen@jesus.ox.ac.uk
 %
-% Description: A function to calculate the similarity of a time course with
-% each entry in a dictionary of time courses and find the best match.
-
 %% simularity measure
 disp('calculating similarity: started')
 
@@ -17,18 +18,12 @@ signalDictionary = squeeze(signalDictionary);
 %mask = reshape(loadMask.mask,[64*64, 1]);
 
 %time course of interest
-imagesc(data(:,:,1))
-pause
 data = reshape(data,[size(data,1)*size(data,2), nTimeCoursePts]);
-size(data)
-imagesc(data)
-pause
 %simulated signals
 sd = reshape(signalDictionary(:,:,:,1:nTimeCoursePts), [ size(signalDictionary,1)*size(signalDictionary,2)*size(signalDictionary,3), nTimeCoursePts]);
 
 %initialise maps
-TCsimilarity = zeros(size(data,1), size(sd,1) );
-tempTCsimilarity = zeros(1, size(sd,1) );
+tempTCsimilarity = zeros(size(sd,1),1);
 maxSimilarity = zeros(size(data,1),1);
 bestMatch = zeros(size(data,1),nTimeCoursePts);
 matchedT1 = zeros(size(data,1),1);
@@ -38,24 +33,26 @@ M0fit_grad = zeros(size(data,1),1);
 
 M0model = @(a,x) a*x;
 
-tic
+tic % start timing how long matching takes
 
+disp('calculating similarity...')
 for data_i = 1:size(data,1) %for all pixels
-    disp('calculating similarity...')
     
+    %compare the TC with each dictionary entry
     %if mask(data_i,1) > 0
-    for sd_i = 1:size(sd,1) % for all entries in the dictionary
-        tempData = data;
-        tempTCsimilarity(sd_i) = dot(sd(sd_i,:), tempData(data_i,:))/(norm(sd(sd_i,:))*norm(tempData(data_i,:)));
+    for sd_i = 1:size(sd,1) %for all entries in the dictionary
+        tempTCsimilarity(sd_i) = dot(sd(sd_i,:), data(data_i,:))/(norm(sd(sd_i,:))*norm(data(data_i,:)));
     end
-
-    %   find highest similarity score for TC of interest
-    [maxSimilarity(data_i)]  = max(tempTCsimilarity(:));
-    %Find the parameters associated with the best match
     
-    [bestT1ind, bestT2ind, bestFAdevInd] = ind2sub(size(tempTCsimilarity),maxSimilarity(data_i));
-
-    %Assign the parameters to the timecourse of interest
+    %find highest similarity score for the TC of interest
+    [maxSimilarity(data_i)]  = max(tempTCsimilarity(:));
+    
+    %Find the parameters associated with the best match
+    tempTCsimilarity =  reshape(tempTCsimilarity,[size(signalDictionary,1),size(signalDictionary,2),size(signalDictionary,3)]);
+    
+    [bestT1ind, bestT2ind, bestFAdevInd] = ind2sub(size(tempTCsimilarity), find(tempTCsimilarity == maxSimilarity(data_i)));
+    
+    %Assign the parameters  to the timecourse of interest
     matchedT1(data_i,1) = dictionaryParams(1, bestT1ind);
     matchedT2(data_i,1) = dictionaryParams(2, bestT2ind);
     matchedFAdev(data_i,1) = dictionaryParams(3, bestFAdevInd);
@@ -63,7 +60,6 @@ for data_i = 1:size(data,1) %for all pixels
     M0fit = fit(squeeze(bestMatch(data_i, :))', data(data_i,:)',M0model,'Upper',6000,'Lower',0,'StartPoint',500 );
     M0fit_grad(data_i,1) = M0fit.a;
     
-    % end
     disp(['calculating similarity: ',num2str( (data_i/size(data,1))*100) , ' percent complete'])
     
 end
@@ -76,7 +72,7 @@ M0fit_grad = reshape(M0fit_grad, [sqrt(size(data,1)),sqrt(size(data,1))]);
 bestMatch = reshape(bestMatch, [sqrt(size(bestMatch,1)), sqrt(size(bestMatch,1)),nTimeCoursePts]);
 
 
-matchTime = toc
+matchTime = toc;
 
 save([savingdir,'/MAT-files/matches/similarity/',outputPhantomName,'offsetlist',num2str(offsetListNum),'paramList',num2str(paramRangeList),'maxSimilarity.mat'],'maxSimilarity')
 save([savingdir,'/MAT-files/matches/T1/',outputPhantomName,'offsetlist',num2str(offsetListNum),'paramList',num2str(paramRangeList),'matchedT1.mat'],'matchedT1')

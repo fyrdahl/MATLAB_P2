@@ -1,5 +1,6 @@
-function plotTCs(data,savingdir,phantomName,offsetListNum,FPflag)
-% plotTCs: Plots of signal time courses
+function plot_FP_TCs(data,savingdir,phantomName,offsetListNum,dictionaryParamList)
+% plotTCs: Plots of fingerprinting signal time courses and their best
+% matches.
 %
 % Function to plot the time courses from selected pixels, with the option
 % of also plotting the best match from the dictionary, if the images were
@@ -14,7 +15,7 @@ fig = figure;
 subplot 121
 title ('example image (image 1)')
 testTC = data(size(data,1)/2,size(data,2)/2,:);
-bestMatchLoad = load([savingdir,'/MAT-files/matches/BestMatch/',phantomName,'offsetlist',num2str(offsetListNum),'paramList3bestMatch.mat'],'bestMatch');
+bestMatchLoad = load([savingdir,'/MAT-files/matches/BestMatch/',phantomName,'list',num2str(offsetListNum),'paramList',num2str(dictionaryParamList),'bestMatch.mat'],'bestMatch');
 bestMatch = bestMatchLoad.bestMatch;
 testInd = find(testTC);
 imagesc(data(:,:,testInd(1)))
@@ -24,6 +25,7 @@ y = round(y);
 nTimePts = size(data,3);
 dataTCs = zeros(size(x,1),nTimePts);
 bestMatchTCs = zeros(size(x,1),nTimePts);
+size(x,1)  
 for i = 1:size(x,1)   
     dataTCs(i,:) = squeeze(data(x(i),y(i),:));
     bestMatchTCs(i,:) = squeeze(bestMatch(x(i),y(i),:));
@@ -42,18 +44,18 @@ end
 %% Plot the timecourses for the selected points
 subplot 122
 title 'selected time courses'
+size(dataTCs)
 for i = 1:size(x,1)  
     plot(dataTCs(i,:),'-')
     hold on
 end
 legend([num2str(labels)])
 
-if FPflag == '1'
+
 if size(x,1) == 1 %if only one point is selected, the best match will also be plotted.
-plot(bestMatchTCs(1,:),'r-');
+plot(bestMatchTCs(1,:),'r--');
 
 legend(num2str(labels),'Best Match')
-end
 end
 xlabel 'Image Index'
 ylabel 'Normalised Signal'

@@ -40,7 +40,7 @@
 
 function [pd r1 eff res, F, mz] = qmap_t1_fit_ir(data, tivals, opts)
 
-tic;
+%tic;
 
 %% OO. Optomization settings
 % Levenburg-Marquardt /w Numerical Jacobian Matrix, Tolerance is 1e-4
@@ -90,7 +90,7 @@ end
 LOG2 = log(2);
 
 % Banner
-disp('==============IR Fit Signa===================')
+%disp('==============IR Fit Signa===================')
 
 %% I. Load in image & DICOM header
 
@@ -108,7 +108,7 @@ else
     disp('NOTE: Subset of TI times used for fitting.');
 end
 
-disp(['TI Values: ' num2str(tivals,'%01.3f ')]);
+%disp(['TI Values: ' num2str(tivals,'%01.3f ')]);
 
 % Grab only the TI values specified
 data = data(:,points);
@@ -122,7 +122,7 @@ res = zeros([size(data,1) 1]);
 % Number of non-zero data points
 npts = size(find(~(sum(data, 2) == 0)),1);
 pt   = 0;
-fprintf('T1 IR Fitting:');
+%fprintf('T1 IR Fitting:');
 
 %% II. For each point, perform IR fitting
 for ii = find(~(sum(data, 2) == 0))';
@@ -200,7 +200,7 @@ end
 
 % Done.
 %qmap_progressbar(1);
-toc;
+%toc;
 
 %% V. IR Model Function
 %    function [F J mz] = ir_model(x, dbgmode) %#ok<INUSD>

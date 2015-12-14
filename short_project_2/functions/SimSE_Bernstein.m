@@ -1,14 +1,18 @@
 function [M, Mxy,flipAngles,imageTimes, t0s] = SimSE_Bernstein(T1, T2, fingerprintOffsetList,freqOffset, nSlices, nTimeCoursePts)
-% Jack Allen
-
-% magnetisation evolution equations in this function are from 'Handbook of MRI pulse sequences - section 3.3'
+%% SimSE_Bernstein
+% Function to simulate the signal expect for given flip angles, echo times (TEs) and
+% repetition times (TRs).
+%
+% Author: Jack Allen <jack.allen@jesus.ox.ac.uk>
+%
+% The magnetisation evolution equations in this function are from 'Handbook of MRI pulse sequences - section 3.3'
 %%
-
-if rem(nTimeCoursePts,24) ~= 0
+nOffsets = size(fingerprintOffsetList,1);
+if rem(nTimeCoursePts,nOffsets) ~= 0
     error('number of time points is not a multiple of the number of timings list entries')
 end
 
-nRepeats = nTimeCoursePts/24;
+nRepeats = nTimeCoursePts/nOffsets;
 
 TRmin = 130;
 TEmin = 32;

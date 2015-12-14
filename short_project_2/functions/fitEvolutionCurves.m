@@ -1,4 +1,4 @@
-function[fittedT1s, fittedT2s, T2curves, T1curves, fittedCurve, goodness, output,F] = fitEvolutionCurves(phantomName,TEimages, TIimages, T2_x, T1_x, region, varargin)
+function[fittedT1s, fittedT2s, T2curves, T1curves, fittedCurve, goodness, output,F] = fit_evolution_curves(phantomName,TEimages, TIimages, T2_x, T1_x, region, varargin)
 
 % Models to fit to the data
 T2model = @(a,T2,c, x) a*exp(-x*(1/T2)) + c;

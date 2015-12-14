@@ -37,27 +37,28 @@ end
 % Load the data
 offsetListNum = 3;
 sliceNumber = 2;
-loadData
 
-[bgMean,bgStd,SNR] = calcNoise(FPimages,1,[40 2 7 7], [24 18 7 7],1);
+[TEimages, TIimages, TE, TI] = load_GS_Data(phantomName, offsetListNum, savingdir);
+[FPimages] = load_FP_Data(phantomName, offsetListNum, sliceNumber, savingdir);
+
+[bgMean,bgStd,SNR] = calc_Noise(FPimages,1,[40 2 7 7], [24 18 7 7],1);
 
 %% 4. find signals at sample pixels
-compartmentCenters = setCompartmentCenters(phantomName);
-plotCompartmentCenterTCs(compartmentCenters,TEimages, TIimages, TE, TI)
+compartmentCenters = set_Compartment_Centers(phantomName);
+plot_Compartment_Center_TCs(compartmentCenters,TEimages, TIimages, TE, TI)
 
 %% 5. plot positions of sample pixels for TE and TR images
 plotNumCompartments = 6;
 
 %%
-plotSamplePixels_TE_TR
+plot_Sample_Pixels_TE_TR
 
 %%
-visualiseImages(FPimages)
+visualise_Images(FPimages,[1,1])
 
 %% fit curves to calculate T1 and T2
-ROI = 'compartments';
-[compartmentT1s, compartmentT2s, T2curves, T1curves, fittedCurve, goodness, output, F] = fitEvolutionCurves(phantomName,TEimages, TIimages, TE(2:end)', TI(2:end), ROI, compartmentCenters);
-
+[compartmentT1s, compartmentT2s, T2curves, T1curves, fittedCurve, goodness, output, F] = fit_evolution_curves(phantomName,TEimages, TIimages, TE(2:end)', TI(2:end), 'fullPhantom', compartmentCenters);
+[T1map] = fit_evolution_curves(phantomName, 'fullPhantom', 'T1', 'noPlot', TIimages, TI(2:end));
 plotGoldStdT1T2
 
 %% 6. read in the list of timing offsets used for acquisition
@@ -108,12 +109,14 @@ end
 for offsetListNum = 2:8;
     [similarity, matchedT1, matchedT2, matchedFAdev, M0fit_grad, bestMatch, match_time] = calcSimilarity(FPimages,nTimeCoursePts, dictionaryParams, paramRangeList, savingdir, phantomName, offsetListNum);
 end
-[dictionaryParams, paramList] = setDictionaryParams('sphereD170',3)
-    [similarity, matchedT1, matchedT2, matchedFAdev, M0fit_grad, bestMatch, match_time] = calcSimilarity(TC,24, dictionaryParams, paramList, savingdir, 'sphereD170','test',3);
+
+TC = generateTestFPdata(48,3,0,1,workingdir);
+[dictionaryParams, paramList] = setDictionaryParams('sphereD170',3);
+[similarity, matchedT1, matchedT2, matchedFAdev, M0fit_grad, bestMatch, match_time] = calcSimilarity(TC,48, dictionaryParams, paramList, savingdir, 'sphereD170','test',3);
 
 
 %% Once the similarity function has been run, plot and save the T1, T2 and FA deviation maps
 plotAssignedMaps(savingdir,phantomName,paramRangeList,offsetListNum,dictionaryParams,'T2');
 
 %% choose pixels and plot time courses for the fingerprinting images
-plotTCs(FPimages,savingdir,phantomName,offsetListNum,'1')
+plot_TCs(TIimages,phantomName,offsetListNum,3)
