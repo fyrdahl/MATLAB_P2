@@ -1,10 +1,18 @@
+<<<<<<< HEAD
 function [dictionaryParams, paramList] = set_dictionary_params(phantomName,varargin)
+=======
+function [dictionaryParams, paramList] = setDictionaryParams(phantomName,paramList)
+>>>>>>> 47303176e9617d0556d5fc1882e1cda83864dfe1
 
 switch phantomName
     case 'sphereD170'
         
         disp('Phantom: sphereD170')
+<<<<<<< HEAD
         switch varargin{1}
+=======
+        switch paramList
+>>>>>>> 47303176e9617d0556d5fc1882e1cda83864dfe1
             case 1
                 paramList = 1;
                 T1s = 200:10:300;
@@ -13,6 +21,7 @@ switch phantomName
                 dictionaryParams(1,1:numel(T1s)) = T1s; % T1
                 dictionaryParams(2,1:numel(T2s)) = T2s ; % T2
                 dictionaryParams(3,1:numel(FAdevs)) = FAdevs ; % B1 fraction
+<<<<<<< HEAD
             case 2
                 paramList = 2;
                 T1s = 275:1:290;
@@ -21,6 +30,8 @@ switch phantomName
                 dictionaryParams(1,1:numel(T1s)) = T1s; % T1
                 dictionaryParams(2,1:numel(T2s)) = T2s ; % T2
                 dictionaryParams(3,1:numel(FAdevs)) = FAdevs ; % B1 fraction
+=======
+>>>>>>> 47303176e9617d0556d5fc1882e1cda83864dfe1
             case 3
                 paramList = 3;
                 T1s = 200:10:300;
@@ -28,6 +39,7 @@ switch phantomName
                 FAdevs = 0.7:0.05:1.3;
                 dictionaryParams(1,1:numel(T1s)) = T1s; % T1
                 dictionaryParams(2,1:numel(T2s)) = T2s ; % T2
+<<<<<<< HEAD
                 dictionaryParams(3,1:numel(FAdevs)) = FAdevs ; % B1 fraction
             case 4
                 paramList = 4;
@@ -104,6 +116,14 @@ switch phantomName
     case 'Jack1'
         disp('Phantom: Jack1')
         switch varargin{1}
+=======
+                dictionaryParams(3,1:numel(FAdevs)) = FAdevs ; % B1 fraction       
+        end
+            
+    case 'Jack'
+        disp('Phantom: Jack')
+        switch paramList
+>>>>>>> 47303176e9617d0556d5fc1882e1cda83864dfe1
             case 1
                 paramList = 1;
                 T1s = [30:10:300, 3050:10:3200];
@@ -119,15 +139,19 @@ switch phantomName
                 T1s = [30:20:260, 3050:20:3150];
                 T2s = [10:10:120, 1770:10:1820];
                 FAdevs = 0.7:0.01:1.3;
+<<<<<<< HEAD
             case 4
                 paramList = 4;
                 T1s = [20:10:300, 3000:10:3200];
                 T2s = [10:10:150, 1750:10:2000];
                 FAdevs = 0.7:0.01:1.3;
+=======
+>>>>>>> 47303176e9617d0556d5fc1882e1cda83864dfe1
         end
         
         dictionaryParams(1,1:numel(T1s)) = T1s;
         dictionaryParams(2,1:numel(T2s)) = T2s;
+<<<<<<< HEAD
         dictionaryParams(3,1:numel(FAdevs)) = FAdevs;
         
     case 'brainTemplate'
@@ -140,5 +164,8 @@ switch phantomName
         dictionaryParams(2,1:numel(T2s)) = T2s ; % T2
         dictionaryParams(3,1:numel(FAdevs)) = FAdevs ; % B1 fraction
         
+=======
+        dictionaryParams(3,1:numel(FAdevs)) = FAdevs;    
+>>>>>>> 47303176e9617d0556d5fc1882e1cda83864dfe1
 end
 end

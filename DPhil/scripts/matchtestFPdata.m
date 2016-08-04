@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 %% Test the fingerprinting framework with a synthetic phantom
 % Author: Jack Allen <jack.allen@jesu.ox.ac.uk>
 %
@@ -103,3 +104,10 @@ c.Label.String = 'ms';
 caxis([0 300])
 title('Matched T2 map','FontSize',18)
 axis square
+=======
+offsetList = generate_offset_list([900, 500, 90, 170],[1100 600 100 190],24,1);
+
+TC = generateTestFPdata(48,9,0,1,workingdir);
+[dictionaryParams, paramList] = setDictionaryParams('sphereD170',3);
+[similarity, matchedT1, matchedT2, matchedFAdev, M0fit_grad, bestMatch, match_time] = calcSimilarity(TC,48, dictionaryParams, paramList, savingdir, 'sphereD170','test',9);
+>>>>>>> 47303176e9617d0556d5fc1882e1cda83864dfe1

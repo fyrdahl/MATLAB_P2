@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 function Rot_general = rot_general_trans(phi, theta)
 % ROT_GENERAL_TRANS counter-clockwise rotation (degrees) about the y-axis
 %
@@ -14,6 +15,10 @@ function Rot_general = rot_general_trans(phi, theta)
 % Author: Jack Allen <jack.allen@jesus.ox.ac.uk>
 % Copyright © 2016 University of Oxford
 
+=======
+function Rot_generalTrans = Rot_generalTrans(phi, theta)
+%clockwise rotation about the y-axis
+>>>>>>> 47303176e9617d0556d5fc1882e1cda83864dfe1
 phi = deg2rad(phi);
 theta = deg2rad(theta);
 
@@ -29,6 +34,10 @@ Rot_z2(1,1:3) = ([cos(-theta), -sin(-theta), 0 ]);
 Rot_z2(2,1:3) = ([sin(-theta) , cos(-theta) , 0]);
 Rot_z2(3,1:3) = ([0,0, 1]);
 
+<<<<<<< HEAD
 Rot_general = Rot_z1*Rot_x*Rot_z2;
+=======
+Rot_generalTrans = Rot_z1*Rot_x*Rot_z2;
+>>>>>>> 47303176e9617d0556d5fc1882e1cda83864dfe1
 
 end
