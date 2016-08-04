@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:svg="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" version="1.1" preserveAspectRatio="xMinYMin meet" viewBox="-.5 -.5 1 1">
+<title>NewPhantom</title>
+<desc>Generated with ExportPhantom.m on 30-Jun-2016 22:00:08</desc>
+<desc>Recommanded viewers: recent verion of Opera or Firefox</desc>
+<desc>Contact: Matthieu Guerquin-Kern, Biomedical Imaging Group / EPF Lausanne</desc>
+<defs>
+	<ellipse id="Ra" rx=".2902" ry=".2970" transform="translate(-.1560,-.2140) rotate(62.0349,0,0)"/>
+</defs>
+<g>
+	<rect width="1" height="1" x="-.5" y="-.5"/>
+	<use xlink:href="#Ra" fill="rgb(100%,100%,100%)"/>
+</g>
+</svg>
