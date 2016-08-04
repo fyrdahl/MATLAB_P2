@@ -1,0 +1,287 @@
+%% Script to simulate the performance of SSEPI fingerprinting sequence
+%
+% Jack Allen <jack.allen@jesus.ox.ac.uk>
+clear all
+disp('Simulate Performance of SSEPI MRF sequence...')
+%% Make Synthetic Phantom
+SNR = 75;
+addpath('~/Documents/MATLAB/Ma2013')
+dim = 32;
+refT1 = 282;
+refT2 = 214;
+
+phantomName = 'simpleBrain';
+
+switch phantomName
+    
+    case 'SL'
+        if dim > 1;
+            T1 = round(phantom('Modified Shepp-Logan',dim)*10);
+            T2 = round(phantom('Modified Shepp-Logan',dim)*10);
+            T1(T1<2) = 0;
+            T2(T2<2) = 0;
+            
+            T1(T1==2) = 1*refT1;
+            T1(T1==3) = 0.9*refT1;
+            T1(T1==4) = 0.95*refT1;
+            T1(T1==10) = 0.9*refT1;
+            
+            T2(T2==2) = 1*refT2;
+            T2(T2==3) = 1.05*refT2;
+            T2(T2==4) = 1*refT2;
+            T2(T2==10) = 1.1*refT2;
+            
+            T1 = awgn(T1,5);
+            T2 = awgn(T2,5);
+            
+            T1(T1<10) = 0;
+            T2(T2<10) = 0;
+            
+            
+        end
+        
+    case 'Brain' %Brain Values
+        T1 = ones(dim);
+        T2 = ones(dim);
+        
+        [wmT1, wmT2] = get_relaxation_times(3,'wm');
+        [gmT1, gmT2] = get_relaxation_times(3,'gm');
+        [bloodT1, bloodT2] = get_relaxation_times(3,'blood');
+        csfT1 = 3000;
+        csfT2 = 300;
+        T1(:,1:dim/4) = wmT1;
+        T1(:,dim/4:dim/2) = gmT1;
+        T1(:,dim/2:(3*dim/4)) = bloodT1;
+        T1(:,(3*dim/4):end) = csfT1;
+        
+        T2(:,1:dim/4) = wmT2;
+        T2(:,dim/4:dim/2) = gmT2;
+        T2(:,dim/2:(3*dim/4)) = bloodT2;
+        T2(:,(3*dim/4):end) = csfT2;
+        
+    case 'simpleBrain' %Brain Values
+        
+        nTissue = 4;
+        T1 = ones(1,nTissue);
+        T2 = ones(1,nTissue);
+        
+        [wmT1, wmT2] = get_relaxation_times(3,'wm');
+        [gmT1, gmT2] = get_relaxation_times(3,'gm');
+        [bloodT1, bloodT2] = get_relaxation_times(3,'blood');
+        csfT1 = 3000;
+        csfT2 = 300;
+        T1(:,1) = wmT1;
+        T1(:,2) = gmT1;
+        T1(:,3) = bloodT1;
+        T1(:,4) = csfT1;
+        
+        T2(:,1) = wmT2;
+        T2(:,2) = gmT2;
+        T2(:,3) = bloodT2;
+        T2(:,4) = csfT2;
+        
+        
+        %% Generate Synthetic B1 Distribution
+        B1 = fspecial('gaussian', dim, dim/12);
+        B1 = B1./(max(max(B1)));
+        %inver the distribution, to make it more like an expected B1 efficiency distribution
+        B1 = (-B1+1)/5;
+        B1 = (B1 + (1-max(B1(:))));
+        B1 = B1(size(B1,1)/2,:);
+end
+%
+%
+
+%% generate offset list
+nPts = 100;
+% add hard-coded sequence timings
+minTR = 130; % ms, from sequence protocol card.
+minTE = 32; % ms, from sequence protocol card.
+%   offsets = generate_offset_list(lower,upper,nPts,seed,seq,saveFlag);
+offsets = generate_offset_list([0 0 75 165],[50 50 105 195],nPts,[1 2 3 4],'SSEPI','noSave');
+
+%% make dictionary
+% Specify the list of dictionary parameters
+
+switch phantomName
+    case 'SL'
+        dictT1 = 0:5:300;
+        dictT2 = 0:5:300;
+    case 'simpleBrain'
+        dictT1 = [700:5:900, 1300:5:1700, 2900:5:3100];
+        dictT2 = [50:5:90, 130:5:350] ;
+end
+%FAdevs = 0.75:0.01:1.25;
+FAdevs = 1;
+dictionaryParams(1,1:numel(dictT1)) = dictT1; % T1
+dictionaryParams(2,1:numel(dictT2)) = dictT2 ; % T2
+dictionaryParams(3,1:numel(FAdevs)) = FAdevs ; % B1 fraction
+%
+nRuns = 1;
+df = 0;
+[dict, paramIndices] = compile_SE_dictionary_Bernstein(offsets, minTR, minTE, nRuns, df, dictionaryParams);
+
+%% simulate acquired data
+SNR = 10000;
+tmpoffsets(:,1:2) = offsets(:,1:2);
+for nVoxel=1:numel(T1);
+    for nB1 = 1:numel(B1)
+        tmpoffsets(:,3) = offsets(:,3)*B1(nB1);
+        tmpoffsets(:,4) = offsets(:,4)*B1(nB1);
+        simsig(:,nVoxel,nB1) = sim_SE_bernstein(T1(nVoxel), T2(nVoxel), minTR, minTE, tmpoffsets, nRuns,df);
+    end
+end
+disp 'Making Synthetic Data... Done.'
+
+%% Compare dictionary with simulated signal
+addpath '~/Documents/MATLAB/Ma2013'
+SNRs = [100];
+seqLs = 10:20:100;
+for nB1 = 1:numel(B1)
+    B1(nB1)
+for seqL = seqLs;
+    for SNR = SNRs;
+        for seed = 1:100;
+            for nVoxel=1:size(simsig,2);
+                % add random noise drawn from specific seed
+                rng(seed);
+                sig(:,n,nB1) = awgn(abs(squeeze(simsig(:,nVoxel,nB1))),SNR);
+            end
+            %% Match Signal
+            [matchout]=templatematch(dict(:,1:seqL),sig(1:seqL,:));
+             matchedT1 = paramIndices(1,matchout);
+             matchedT2 = paramIndices(2,matchout);
+             matchedB1 = paramIndices(3,matchout);
+            %% Calculate RMSE
+            for nVoxel = 1:numel(T1)
+                T1err(nVoxel,SNR,seqL,nB1,seed) = matchedT1(nVoxel) - T1(nVoxel);   % Errors
+                T2err(nVoxel,SNR,seqL,nB1,seed) = matchedT2(nVoxel) - T2(nVoxel);   % Errors
+            end
+            
+        end
+        
+    end
+end
+end
+T1RMSE = sqrt(mean((T1err).^2));  % Root Mean Squared Error
+T2RMSE = sqrt(mean((T2err).^2));  % Root Mean Squared Error
+
+%
+%%
+for nB1 = 1:numel(B1)
+for nVoxel = 1:numel(T1)
+    for nSNR = SNRs
+        for nSeqL = seqLs
+            T1stds(nVoxel,nSNR,nSeqL,nB1) = std((squeeze(T1err(nVoxel,nSNR,nSeqL,nB1,:))));
+            T2stds(nVoxel,nSNR,nSeqL,nB1) = std((squeeze(T2err(nVoxel,nSNR,nSeqL,nB1,:))));
+            T1means(nVoxel,nSNR,nSeqL,nB1) = mean((squeeze(T1err(nVoxel,nSNR,nSeqL,nB1,:))));
+            T2means(nVoxel,nSNR,nSeqL,nB1) = mean((squeeze(T2err(nVoxel,nSNR,nSeqL,nB1,:))));
+        end
+    end
+end
+end
+
+%% Plot Results
+figure
+x = repmat(SNRs,numel(seqLs),1);
+y = repmat(seqLs,numel(SNRs),1);
+z = squeeze(T1means(1,SNRs,seqLs));
+e = squeeze(T1stds(1,SNRs,seqLs));
+plot3d_errorbars(x,y',z,e,'surf')
+
+
+
+
+
+
+%%
+%% Plot Results
+disp 'Plotting Results...'
+T1 = reshape(T1,dim,dim);
+T2 = reshape(T2,dim,dim);
+matchedT1 = reshape(matchedT1,dim,dim);
+matchedT2 = reshape(matchedT2,dim,dim);
+%
+%
+figure('name',['SSEPI - with Gaussian Noise (SNR = ',num2str(SNR),' nPts = ',num2str(nPts),')'])
+%
+cmin = 200;
+cmax = 300;
+%
+subplot 341
+imagesc(T1);
+caxis([cmin cmax])
+c=colorbar;
+colormap hot
+ylabel(c,'T1 [ms]')
+title 'Synthetic T1'
+%
+subplot 345
+imagesc(T2);
+caxis([cmin cmax])
+c=colorbar;
+colormap hot
+ylabel(c,'T2 [ms]')
+title 'Synthetic T2'
+%
+subplot 342
+imagesc(matchedT1);
+caxis([cmin cmax])
+c=colorbar;
+colormap hot
+ylabel(c,'T1 [ms]')
+title 'Matched T1'
+%
+subplot 346
+imagesc(matchedT2);
+caxis([cmin cmax])
+c=colorbar;
+colormap hot
+ylabel(c,'T2 [ms]')
+title 'Matched T2'
+%
+
+subplot 343
+imagesc(abs(matchedT1-T1))
+%caxis([0 300])
+c=colorbar;
+colormap hot
+ylabel(c,'T1 [ms]')
+title(['Error (RMSE = ',num2str(T1RMSE),')'])
+%
+subplot 347
+imagesc(abs(matchedT2-T2))
+%caxis([0 300])
+c=colorbar;
+colormap hot
+ylabel(c,'T2 [ms]')
+title(['Error (RMSE = ',num2str(T2RMSE),')'])
+%
+subplot 344
+plot(T1(:),matchedT1(:),'o')
+hold on
+plot(0:300,0:300)
+xlim([0 300])
+ylim([0 300])
+ylabel(c,'T1 [ms]')
+ylabel 'Matched T1'
+xlabel 'Synthetic T1'
+%
+subplot 348
+plot(T2(:),matchedT2(:),'o')
+hold on
+plot(0:300,0:300)
+xlim([0 300])
+ylim([0 300])
+ylabel(c,'T2 [ms]')
+ylabel 'Matched T2'
+xlabel 'Synthetic T2'
+%
+subplot 349
+imagesc(B1);
+c=colorbar;
+colormap hot
+ylabel(c,'Efficiency')
+title 'Synthetic B1'
+
+disp 'Plotting Results... Done.'
